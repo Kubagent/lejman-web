@@ -56,3 +56,86 @@ export interface ResolvedRiverVideo extends Omit<RiverVideo, 'videoFile' | 'post
   videoUrl: string;
   posterUrl: string;
 }
+
+// Artwork Types
+export interface ArtworkDimensions {
+  width?: number;
+  height?: number;
+  depth?: number;
+  unit?: 'cm' | 'in' | 'm';
+}
+
+export interface Artwork {
+  _id: string;
+  title: LocalizedText;
+  slug: {
+    _type: 'slug';
+    current: string;
+  };
+  year: number;
+  medium: LocalizedText;
+  dimensions?: ArtworkDimensions;
+  images: SanityImageAsset[];
+  description?: LocalizedText;
+  mainImage: SanityImageAsset;
+  featured?: boolean;
+  exhibitions?: string[]; // Array of exhibition _id references
+}
+
+// Props for Artwork Components
+export interface ArtworkCardProps {
+  artwork: Artwork;
+  locale?: 'en' | 'de' | 'pl';
+  viewMode?: 'grid' | 'list';
+}
+
+export interface ArtworkGridProps {
+  artworks: Artwork[];
+  locale?: 'en' | 'de' | 'pl';
+  viewMode?: 'grid' | 'list';
+}
+
+// Filter types for artwork archive
+export interface ArtworkFilters {
+  year?: number;
+  medium?: string;
+  search?: string;
+}
+
+// Exhibition Types
+export interface Exhibition {
+  _id: string;
+  slug: {
+    _type: 'slug';
+    current: string;
+  };
+  title: LocalizedText;
+  year: number;
+  startDate?: string; // ISO format: '2024-03-15'
+  endDate?: string;
+  type: 'solo' | 'group' | 'institutional';
+  venue: {
+    name: LocalizedText;
+    city: string;
+    country: string;
+  };
+  description?: LocalizedText;
+  featuredArtworks?: string[]; // Array of artwork IDs
+  images?: SanityImageAsset[];
+  pressRelease?: SanityFileAsset;
+  mainImage?: SanityImageAsset;
+}
+
+// Props for Exhibition Components
+export interface ExhibitionCardProps {
+  exhibition: Exhibition;
+  locale?: 'en' | 'de' | 'pl';
+  viewMode?: 'detailed' | 'compact';
+}
+
+// Filter types for exhibitions
+export interface ExhibitionFilters {
+  year?: number;
+  type?: 'solo' | 'group' | 'institutional' | 'all';
+  search?: string;
+}

@@ -72,7 +72,7 @@ export default function RiverVideoSlot({
   const [showPlayPauseOverlay, setShowPlayPauseOverlay] = useState(false);
   const [overlayIcon, setOverlayIcon] = useState<'play' | 'pause'>('play');
   const lastTapTimeRef = useRef<number>(0);
-  const overlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayTimeoutRef = useRef<number | null>(null);
 
   // Playback status for screen readers
   const [playbackStatus, setPlaybackStatus] = useState<'playing' | 'paused' | 'loading'>('paused');
@@ -94,9 +94,11 @@ export default function RiverVideoSlot({
   const title = video.title[locale] ?? video.title.en ?? 'Untitled';
   const description = video.description?.[locale] ?? video.description?.en;
 
-  // Generate Sanity asset URLs
+  // Generate Sanity asset URLs (or use mock URLs in development)
   const posterUrl = video.posterImage
-    ? urlFor(video.posterImage).width(1920).height(1080).quality(85).url()
+    ? (video.posterImage.asset._ref.startsWith('http://') || video.posterImage.asset._ref.startsWith('https://'))
+      ? video.posterImage.asset._ref  // Mock URL - use directly
+      : urlFor(video.posterImage).width(1920).height(1080).quality(85).url()  // Sanity asset
     : undefined;
 
   const videoUrl = video.videoFile

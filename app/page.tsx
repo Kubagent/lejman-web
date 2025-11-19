@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import River from '@/components/River';
 import { getRiverVideos } from '@/lib/sanity/riverVideos';
+import { mockRiverVideos } from '@/lib/mockData';
 
 /**
  * Home Page - Features the River video component
@@ -9,10 +10,18 @@ import { getRiverVideos } from '@/lib/sanity/riverVideos';
  * in a vertical river layout.
  *
  * Data fetching uses Next.js App Router server components for optimal performance.
+ *
+ * DEVELOPMENT MODE: Currently using mock data for preview.
+ * Switch to real Sanity data once CMS is populated.
  */
 export default async function Home() {
   // Fetch river videos from Sanity CMS
-  const riverVideos = await getRiverVideos();
+  let riverVideos = await getRiverVideos();
+
+  // DEVELOPMENT MODE: Use mock data if no Sanity content available
+  if (!riverVideos || riverVideos.length === 0) {
+    riverVideos = mockRiverVideos;
+  }
 
   return (
     <Layout>

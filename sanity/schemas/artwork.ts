@@ -54,11 +54,26 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'mainImage',
+      title: 'Main Image (Grid Thumbnail)',
+      type: 'image',
+      options: { hotspot: true },
+      validation: (Rule) => Rule.required(),
+      description: 'Primary image shown in the grid view',
+    }),
+    defineField({
       name: 'images',
-      title: 'Images',
+      title: 'Additional Images',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
-      validation: (Rule) => Rule.required().min(1),
+      description: 'Gallery images shown on the artwork detail page',
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Featured Artwork',
+      type: 'boolean',
+      description: 'Display this artwork prominently on the homepage',
+      initialValue: false,
     }),
     defineField({
       name: 'description',
@@ -81,13 +96,14 @@ export default defineType({
     select: {
       title: 'title.en',
       year: 'year',
-      media: 'images.0',
+      medium: 'medium.en',
+      media: 'mainImage',
     },
     prepare(selection) {
-      const { title, year, media } = selection;
+      const { title, year, medium, media } = selection;
       return {
-        title: title,
-        subtitle: year ? `${year}` : 'No year',
+        title: title || 'Untitled',
+        subtitle: `${year || 'No year'} · ${medium || 'No medium'}`,
         media: media,
       };
     },

@@ -10,6 +10,19 @@ import { SanityFileAsset } from '../types';
  * const videoUrl = getFileAssetUrl(video.videoFile);
  */
 export function getFileAssetUrl(file: SanityFileAsset): string {
+  if (!file?.asset?._ref) {
+    console.error('[getFileAssetUrl] Invalid file asset:', file);
+    return '';
+  }
+
+  const ref = file.asset._ref;
+
+  // DEVELOPMENT MODE: Handle mock URLs (full HTTP/HTTPS URLs)
+  if (ref.startsWith('http://') || ref.startsWith('https://')) {
+    return ref;
+  }
+
+  // PRODUCTION MODE: Build Sanity CDN URL
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 
@@ -19,14 +32,8 @@ export function getFileAssetUrl(file: SanityFileAsset): string {
     return '';
   }
 
-  if (!file?.asset?._ref) {
-    console.error('[getFileAssetUrl] Invalid file asset:', file);
-    return '';
-  }
-
   // Extract asset ID and extension from the reference
   // Format: file-{assetId}-{extension}
-  const ref = file.asset._ref;
   const parts = ref.split('-');
 
   if (parts.length < 3 || parts[0] !== 'file') {
