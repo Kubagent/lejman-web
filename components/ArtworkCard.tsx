@@ -21,11 +21,16 @@ import { urlFor } from '@/lib/sanity/image';
  * - Optimized image sizes for different viewports
  * - CSS-based hover effects (no JS)
  */
+interface ArtworkCardInternalProps extends ArtworkCardProps {
+  index?: number;
+}
+
 export default function ArtworkCard({
   artwork,
   locale = 'en',
-  viewMode = 'grid'
-}: ArtworkCardProps) {
+  viewMode = 'grid',
+  index = 0
+}: ArtworkCardInternalProps) {
   // State for mobile overlay (must be at top level, before any returns)
   const [showOverlay, setShowOverlay] = useState(false);
 
@@ -57,42 +62,47 @@ export default function ArtworkCard({
   // ARIA label for accessibility
   const ariaLabel = `${title}, ${artwork.year}${medium ? `, ${medium}` : ''}`;
 
+  // Alternating background for list view
+  const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]';
+
   if (viewMode === 'list') {
     return (
-      <Link
-        href={`/works/${artwork.slug.current}`}
-        className="group block w-full"
-        aria-label={ariaLabel}
-      >
-        <article className="relative flex flex-col md:flex-row gap-6 md:gap-8 py-8 border-b border-light-gray transition-colors hover:bg-near-white">
-          {/* Image */}
-          <div className="relative w-full md:w-64 h-64 flex-shrink-0 bg-near-white overflow-hidden">
-            <img
-              src={imageUrl}
-              alt={`${title} by Dominik L.`}
-              loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
-
-          {/* Metadata */}
-          <div className="flex-1 flex flex-col justify-center gap-3">
-            <h3 className="font-heading text-2xl md:text-3xl font-semibold text-black group-hover:text-dark-gray transition-colors">
-              {title}
-            </h3>
-            <div className="flex flex-wrap gap-x-4 gap-y-1 font-body text-base text-dark-gray">
-              <span>{artwork.year}</span>
-              {medium && <span className="before:content-['·'] before:mr-4">{medium}</span>}
-              {dimensions && <span className="before:content-['·'] before:mr-4">{dimensions}</span>}
+      <article className={`group ${bgClass}`}>
+        <Link
+          href={`/works/${artwork.slug.current}`}
+          className="block"
+          aria-label={ariaLabel}
+        >
+          <div className="relative flex flex-col md:flex-row gap-6 md:gap-8 py-10 px-6 md:px-8 hover:opacity-80 transition-opacity duration-200">
+            {/* Image */}
+            <div className="relative w-full md:w-64 h-64 flex-shrink-0 bg-near-white overflow-hidden">
+              <img
+                src={imageUrl}
+                alt={`${title} by Dominik L.`}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
-            {description && (
-              <p className="font-body text-base text-mid-gray line-clamp-2">
-                {description}
-              </p>
-            )}
+
+            {/* Metadata */}
+            <div className="flex-1 flex flex-col justify-center gap-3">
+              <h3 className="font-heading text-2xl md:text-3xl font-semibold text-black group-hover:text-dark-gray transition-colors">
+                {title}
+              </h3>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 font-body text-base text-dark-gray">
+                <span>{artwork.year}</span>
+                {medium && <span className="before:content-['·'] before:mr-4">{medium}</span>}
+                {dimensions && <span className="before:content-['·'] before:mr-4">{dimensions}</span>}
+              </div>
+              {description && (
+                <p className="font-body text-base text-mid-gray line-clamp-2">
+                  {description}
+                </p>
+              )}
+            </div>
           </div>
-        </article>
-      </Link>
+        </Link>
+      </article>
     );
   }
 

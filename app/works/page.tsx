@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Layout from '@/components/Layout';
 import ArtworkGrid from '@/components/ArtworkGrid';
 import ArtworkFilters from '@/components/ArtworkFilters';
 import { Artwork, ArtworkFilters as Filters } from '@/lib/types';
@@ -70,14 +69,14 @@ export default function WorksPage() {
   }, [filters, artworks]);
 
   return (
-    <Layout>
+    <>
       {/* Page Header */}
-      <section className="bg-white border-b border-light-gray">
+      <section className="bg-white">
         <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
-          <h1 className="font-heading text-4xl md:text-6xl font-semibold text-black mb-4">
+          <h1 className="font-heading text-4xl md:text-6xl font-semibold text-black mb-4 ml-8">
             Works
           </h1>
-          <p className="font-body text-base md:text-lg text-dark-gray max-w-2xl">
+          <p className="font-body text-base md:text-lg text-dark-gray max-w-2xl ml-8">
             An archive of selected artworks spanning various mediums and years.
           </p>
         </div>
@@ -94,7 +93,7 @@ export default function WorksPage() {
       />
 
       {/* Artwork Grid */}
-      <section className="bg-near-white min-h-screen">
+      <section className="bg-white min-h-screen">
         <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
           <ArtworkGrid
             artworks={filteredArtworks}
@@ -103,6 +102,6 @@ export default function WorksPage() {
           />
         </div>
       </section>
-    </Layout>
+    </>
   );
 }

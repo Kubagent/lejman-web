@@ -50,12 +50,13 @@ export default function ArtworkGrid({
       {viewMode === 'list' ? (
         // List View - Single column with horizontal cards
         <div className="flex flex-col">
-          {artworks.map((artwork) => (
+          {artworks.map((artwork, index) => (
             <ArtworkCard
               key={artwork._id}
               artwork={artwork}
               locale={locale}
               viewMode="list"
+              index={index}
             />
           ))}
         </div>

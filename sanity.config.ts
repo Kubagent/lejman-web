@@ -1,6 +1,6 @@
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
-import { visionTool } from '@sanity/vision';
+import { muxInput } from 'sanity-plugin-mux-input';
 import { schemaTypes } from './sanity/schemas';
 
 export default defineConfig({
@@ -12,7 +12,10 @@ export default defineConfig({
 
   basePath: '/studio',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool(),
+    muxInput()
+  ],
 
   schema: {
     types: schemaTypes,

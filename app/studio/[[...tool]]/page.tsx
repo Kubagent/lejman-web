@@ -1,10 +1,22 @@
-import { NextStudio } from 'next-sanity/studio';
-import config from '@/sanity.config';
+'use client';
 
-export const dynamic = 'force-static';
+import dynamic from 'next/dynamic';
 
-export { metadata, viewport } from 'next-sanity/studio';
+const StudioWrapper = dynamic(() => import('./StudioWrapper'), {
+  ssr: false,
+  loading: () => (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      fontFamily: 'sans-serif'
+    }}>
+      Loading Sanity Studio...
+    </div>
+  ),
+});
 
 export default function StudioPage() {
-  return <NextStudio config={config} />;
+  return <StudioWrapper />;
 }

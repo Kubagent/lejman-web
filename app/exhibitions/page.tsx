@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Layout from '@/components/Layout';
 import ExhibitionCard from '@/components/ExhibitionCard';
 import { Exhibition, ExhibitionFilters } from '@/lib/types';
 import { mockExhibitions } from '@/lib/mockData';
@@ -93,120 +92,105 @@ export default function ExhibitionsPage() {
   const hasActiveFilters = filters.year || filters.type || (filters.search && filters.search.length >= 2);
 
   return (
-    <Layout>
+    <>
       {/* Page Header */}
-      <section className="bg-white border-b border-light-gray">
+      <section className="bg-white">
         <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16 lg:py-20">
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-4">
+          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-4 ml-8">
             Exhibitions
           </h1>
-          <p className="font-body text-base md:text-lg text-dark-gray max-w-2xl">
+          <p className="font-body text-base md:text-lg text-dark-gray max-w-2xl ml-8">
             A comprehensive chronological record of solo and group exhibitions spanning {years[years.length - 1]}-{years[0]}.
           </p>
         </div>
       </section>
 
       {/* Filters Bar */}
-      <section className="bg-near-white border-b border-light-gray sticky top-16 md:top-20 z-10">
+      <section className="bg-white sticky top-0 z-10">
         <div className="container mx-auto px-6 md:px-12 lg:px-24 py-6">
-          <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-center md:justify-between">
-            {/* Left side - Filters */}
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 flex-1">
-              {/* Search */}
-              <div className="flex-1 max-w-sm">
-                <label htmlFor="search" className="sr-only">Search exhibitions</label>
-                <input
-                  id="search"
-                  type="text"
-                  placeholder="Search by title or venue..."
-                  value={filters.search ?? ''}
-                  onChange={(e) => handleFilterChange('search', e.target.value)}
-                  className="w-full px-4 py-2 bg-white border border-light-gray text-black placeholder-mid-gray font-body text-sm focus:outline-none focus:border-dark-gray transition-colors"
-                  aria-label="Search exhibitions by title or venue"
-                />
-              </div>
+          <div className="flex flex-wrap items-center gap-3 max-w-5xl ml-8">
+            {/* Search */}
+            <input
+              id="search"
+              type="text"
+              placeholder="Search..."
+              value={filters.search ?? ''}
+              onChange={(e) => handleFilterChange('search', e.target.value)}
+              className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors w-64"
+              aria-label="Search exhibitions by title or venue"
+            />
 
-              {/* Year Filter */}
-              <div className="w-full sm:w-auto">
-                <label htmlFor="year-filter" className="sr-only">Filter by year</label>
-                <select
-                  id="year-filter"
-                  value={filters.year ?? ''}
-                  onChange={(e) => handleFilterChange('year', e.target.value ? parseInt(e.target.value) : undefined)}
-                  className="w-full sm:w-auto px-4 py-2 bg-white border border-light-gray text-black font-body text-sm focus:outline-none focus:border-dark-gray transition-colors cursor-pointer"
-                  aria-label="Filter exhibitions by year"
-                >
-                  <option value="">All Years</option>
-                  {years.map(year => (
-                    <option key={year} value={year}>{year}</option>
-                  ))}
-                </select>
-              </div>
+            {/* Year Filter */}
+            <select
+              id="year-filter"
+              value={filters.year ?? ''}
+              onChange={(e) => handleFilterChange('year', e.target.value ? parseInt(e.target.value) : undefined)}
+              className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
+              aria-label="Filter exhibitions by year"
+            >
+              <option value="">All Years</option>
+              {years.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
 
-              {/* Type Filter */}
-              <div className="w-full sm:w-auto">
-                <label htmlFor="type-filter" className="sr-only">Filter by type</label>
-                <select
-                  id="type-filter"
-                  value={filters.type ?? 'all'}
-                  onChange={(e) => handleFilterChange('type', e.target.value === 'all' ? undefined : e.target.value)}
-                  className="w-full sm:w-auto px-4 py-2 bg-white border border-light-gray text-black font-body text-sm focus:outline-none focus:border-dark-gray transition-colors cursor-pointer"
-                  aria-label="Filter exhibitions by type"
-                >
-                  <option value="all">All Types</option>
-                  <option value="solo">Solo</option>
-                  <option value="group">Group</option>
-                  <option value="institutional">Institutional</option>
-                </select>
-              </div>
+            {/* Type Filter */}
+            <select
+              id="type-filter"
+              value={filters.type ?? 'all'}
+              onChange={(e) => handleFilterChange('type', e.target.value === 'all' ? undefined : e.target.value)}
+              className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
+              aria-label="Filter exhibitions by type"
+            >
+              <option value="all">All Types</option>
+              <option value="solo">Solo</option>
+              <option value="group">Group</option>
+              <option value="institutional">Institutional</option>
+            </select>
 
-              {/* Reset Filters */}
-              {hasActiveFilters && (
-                <button
-                  onClick={resetFilters}
-                  className="px-4 py-2 bg-black text-white font-body text-sm hover:bg-dark-gray transition-colors"
-                  aria-label="Clear all filters"
-                >
-                  Clear Filters
-                </button>
-              )}
+            {/* View Mode Toggle */}
+            <div className="flex gap-1" role="group" aria-label="View mode toggle">
+              <button
+                onClick={() => setViewMode('detailed')}
+                className={`px-3 py-2 font-body text-sm transition-colors ${
+                  viewMode === 'detailed'
+                    ? 'bg-black text-white'
+                    : 'bg-[#FAFAFA] text-dark-gray hover:bg-[#F0F0F0]'
+                }`}
+                aria-label="Detailed view"
+                aria-pressed={viewMode === 'detailed'}
+              >
+                Detailed
+              </button>
+              <button
+                onClick={() => setViewMode('compact')}
+                className={`px-3 py-2 font-body text-sm transition-colors ${
+                  viewMode === 'compact'
+                    ? 'bg-black text-white'
+                    : 'bg-[#FAFAFA] text-dark-gray hover:bg-[#F0F0F0]'
+                }`}
+                aria-label="Compact view"
+                aria-pressed={viewMode === 'compact'}
+              >
+                Compact
+              </button>
             </div>
 
-            {/* Right side - View mode toggle & Count */}
-            <div className="flex items-center gap-4">
-              {/* Count */}
-              <span className="font-body text-sm text-mid-gray whitespace-nowrap">
-                {filteredExhibitions.length} {filteredExhibitions.length === 1 ? 'exhibition' : 'exhibitions'}
-              </span>
+            {/* Clear Filters */}
+            {hasActiveFilters && (
+              <button
+                onClick={resetFilters}
+                className="px-4 py-2 font-body text-sm text-[#666666] hover:text-black transition-colors"
+                aria-label="Clear all filters"
+              >
+                Clear
+              </button>
+            )}
 
-              {/* View Mode Toggle */}
-              <div className="flex gap-2" role="group" aria-label="View mode toggle">
-                <button
-                  onClick={() => setViewMode('detailed')}
-                  className={`px-3 py-2 font-body text-sm transition-colors ${
-                    viewMode === 'detailed'
-                      ? 'bg-black text-white'
-                      : 'bg-white text-black border border-light-gray hover:bg-near-white'
-                  }`}
-                  aria-label="Detailed view"
-                  aria-pressed={viewMode === 'detailed'}
-                >
-                  Detailed
-                </button>
-                <button
-                  onClick={() => setViewMode('compact')}
-                  className={`px-3 py-2 font-body text-sm transition-colors ${
-                    viewMode === 'compact'
-                      ? 'bg-black text-white'
-                      : 'bg-white text-black border border-light-gray hover:bg-near-white'
-                  }`}
-                  aria-label="Compact view"
-                  aria-pressed={viewMode === 'compact'}
-                >
-                  Compact
-                </button>
-              </div>
-            </div>
+            {/* Results Count */}
+            <span className="ml-auto font-body text-sm text-mid-gray">
+              {filteredExhibitions.length} {filteredExhibitions.length === 1 ? 'exhibition' : 'exhibitions'}
+            </span>
           </div>
         </div>
       </section>
@@ -216,12 +200,13 @@ export default function ExhibitionsPage() {
         <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
           {filteredExhibitions.length > 0 ? (
             <div className={viewMode === 'detailed' ? 'space-y-0' : 'space-y-0'}>
-              {filteredExhibitions.map(exhibition => (
+              {filteredExhibitions.map((exhibition, index) => (
                 <ExhibitionCard
                   key={exhibition._id}
                   exhibition={exhibition}
                   locale="en"
                   viewMode={viewMode}
+                  index={index}
                 />
               ))}
             </div>
@@ -243,6 +228,6 @@ export default function ExhibitionsPage() {
           )}
         </div>
       </section>
-    </Layout>
+    </>
   );
 }

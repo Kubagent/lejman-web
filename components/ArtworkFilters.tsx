@@ -75,136 +75,96 @@ export default function ArtworkFilters({
   const hasActiveFilters = searchTerm.length >= 2 || selectedYear !== undefined || selectedMedium !== undefined;
 
   return (
-    <div className="w-full bg-white border-b border-light-gray sticky top-0 z-10">
+    <div className="w-full bg-white sticky top-0 z-10">
       <div className="container mx-auto px-6 md:px-12 lg:px-24 py-6">
-        {/* Top Row: Search + View Toggle */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-6 mb-4">
+        {/* Single Row: All Filters Compact */}
+        <div className="flex flex-wrap items-center gap-3 max-w-5xl ml-8">
           {/* Search Input */}
-          <div className="flex-1">
-            <label htmlFor="artwork-search" className="sr-only">
-              Search artworks by title
-            </label>
-            <input
-              id="artwork-search"
-              type="text"
-              placeholder="Search artworks..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 font-body text-base border border-light-gray rounded focus:outline-none focus:ring-2 focus:ring-focus focus:border-transparent"
-              aria-label="Search artworks by title"
-            />
-            {searchTerm.length > 0 && searchTerm.length < 2 && (
-              <p className="mt-1 text-xs text-mid-gray">Type at least 2 characters to search</p>
-            )}
-          </div>
+          <input
+            id="artwork-search"
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors w-64"
+            aria-label="Search artworks by title"
+          />
 
-          {/* View Mode Toggle */}
-          <div
-            role="group"
-            aria-label="View mode"
-            className="flex gap-2 border border-light-gray rounded overflow-hidden"
+          {/* Year Filter */}
+          <select
+            id="year-filter"
+            value={selectedYear ?? ''}
+            onChange={(e) => setSelectedYear(e.target.value ? Number(e.target.value) : undefined)}
+            className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
+            aria-label="Filter by year"
           >
+            <option value="">All Years</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+
+          {/* Medium Filter */}
+          <select
+            id="medium-filter"
+            value={selectedMedium ?? ''}
+            onChange={(e) => setSelectedMedium(e.target.value || undefined)}
+            className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
+            aria-label="Filter by medium"
+          >
+            <option value="">All Mediums</option>
+            {mediums.map((medium) => (
+              <option key={medium} value={medium}>
+                {medium}
+              </option>
+            ))}
+          </select>
+
+          {/* View Mode Toggle - Compact */}
+          <div role="group" aria-label="View mode" className="flex gap-1">
             <button
               onClick={() => onViewModeChange('grid')}
-              className={`px-4 py-2 font-body text-sm transition-colors ${
+              className={`px-3 py-2 font-body text-sm transition-colors ${
                 viewMode === 'grid'
                   ? 'bg-black text-white'
-                  : 'bg-white text-dark-gray hover:bg-near-white'
+                  : 'bg-[#FAFAFA] text-dark-gray hover:bg-[#F0F0F0]'
               }`}
               aria-label="Grid view"
               aria-pressed={viewMode === 'grid'}
             >
-              <span className="flex items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                  <rect x="0" y="0" width="7" height="7" />
-                  <rect x="9" y="0" width="7" height="7" />
-                  <rect x="0" y="9" width="7" height="7" />
-                  <rect x="9" y="9" width="7" height="7" />
-                </svg>
-                Grid
-              </span>
+              Grid
             </button>
             <button
               onClick={() => onViewModeChange('list')}
-              className={`px-4 py-2 font-body text-sm transition-colors ${
+              className={`px-3 py-2 font-body text-sm transition-colors ${
                 viewMode === 'list'
                   ? 'bg-black text-white'
-                  : 'bg-white text-dark-gray hover:bg-near-white'
+                  : 'bg-[#FAFAFA] text-dark-gray hover:bg-[#F0F0F0]'
               }`}
               aria-label="List view"
               aria-pressed={viewMode === 'list'}
             >
-              <span className="flex items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                  <rect x="0" y="0" width="16" height="3" />
-                  <rect x="0" y="6" width="16" height="3" />
-                  <rect x="0" y="12" width="16" height="3" />
-                </svg>
-                List
-              </span>
+              List
             </button>
           </div>
-        </div>
 
-        {/* Bottom Row: Year + Medium Filters + Clear */}
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          {/* Year Filter */}
-          <div className="w-full sm:w-auto">
-            <label htmlFor="year-filter" className="sr-only">
-              Filter by year
-            </label>
-            <select
-              id="year-filter"
-              value={selectedYear ?? ''}
-              onChange={(e) => setSelectedYear(e.target.value ? Number(e.target.value) : undefined)}
-              className="w-full sm:w-auto px-4 py-2 font-body text-sm border border-light-gray rounded focus:outline-none focus:ring-2 focus:ring-focus focus:border-transparent"
-              aria-label="Filter artworks by year"
-            >
-              <option value="">All Years</option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Medium Filter */}
-          <div className="w-full sm:w-auto">
-            <label htmlFor="medium-filter" className="sr-only">
-              Filter by medium
-            </label>
-            <select
-              id="medium-filter"
-              value={selectedMedium ?? ''}
-              onChange={(e) => setSelectedMedium(e.target.value || undefined)}
-              className="w-full sm:w-auto px-4 py-2 font-body text-sm border border-light-gray rounded focus:outline-none focus:ring-2 focus:ring-focus focus:border-transparent"
-              aria-label="Filter artworks by medium"
-            >
-              <option value="">All Mediums</option>
-              {mediums.map((medium) => (
-                <option key={medium} value={medium}>
-                  {medium}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Results Count */}
-          <div className="flex-1 font-body text-sm text-mid-gray">
-            {totalCount} {totalCount === 1 ? 'artwork' : 'artworks'}
-          </div>
-
-          {/* Clear Filters Button */}
+          {/* Clear Filters */}
           {hasActiveFilters && (
             <button
               onClick={handleClearFilters}
-              className="px-4 py-2 font-body text-sm text-dark-gray hover:text-black border border-light-gray rounded hover:bg-near-white transition-colors"
+              className="px-4 py-2 font-body text-sm text-[#666666] hover:text-black transition-colors"
               aria-label="Clear all filters"
             >
-              Clear Filters
+              Clear
             </button>
           )}
+
+          {/* Results Count */}
+          <span className="ml-auto font-body text-sm text-mid-gray">
+            {totalCount} {totalCount === 1 ? 'artwork' : 'artworks'}
+          </span>
         </div>
       </div>
     </div>

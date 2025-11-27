@@ -6,7 +6,19 @@ export const riverVideosQuery = groq`
     _id,
     title,
     order,
-    videoFile,
+    video {
+      asset->{
+        _id,
+        playbackId,
+        status,
+        data {
+          aspect_ratio,
+          max_stored_resolution,
+          max_stored_frame_rate,
+          duration
+        }
+      }
+    },
     posterImage,
     description,
     year

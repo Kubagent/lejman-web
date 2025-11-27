@@ -23,13 +23,10 @@ export default defineType({
       validation: (Rule) => Rule.required().min(1).max(5).integer(),
     }),
     defineField({
-      name: 'videoFile',
-      title: 'Video File',
-      type: 'file',
-      options: {
-        accept: 'video/*',
-      },
-      description: 'Upload MP4/MOV video file (1080p, 45-90s, <5GB). Mux integration coming soon.',
+      name: 'video',
+      title: 'Video',
+      type: 'mux.video',
+      description: 'Upload video file. Mux will automatically optimize it for streaming with adaptive quality.',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

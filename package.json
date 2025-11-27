@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "Professional artist portfolio for Dominik L.",
   "dependencies": {
+    "@mux/mux-player-react": "^3.9.0",
     "@sanity/client": "^7.12.1",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.14.2",
@@ -23,12 +24,16 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.1",
+    "lucide-react": "^0.555.0",
     "next": "^16.0.1",
     "next-sanity": "^10.1.4",
     "postcss": "^8.5.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sanity": "^4.3.0",
+    "sanity-plugin-mux-input": "^2.12.0",
+    "styled-components": "^6.1.19",
+    "swr": "^2.3.6",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
   }

@@ -139,3 +139,41 @@ export interface ExhibitionFilters {
   type?: 'solo' | 'group' | 'institutional' | 'all';
   search?: string;
 }
+
+// Publication/Text Document Types
+export interface Publication {
+  _id: string;
+  slug: {
+    _type: 'slug';
+    current: string;
+  };
+  title: LocalizedText;
+  description?: LocalizedText;
+  year: number;
+  type: 'pdf' | 'doc' | 'epub' | 'other';
+  category: 'essay' | 'catalog' | 'interview' | 'press' | 'monograph' | 'other';
+  file: SanityFileAsset;
+  fileUrl?: string; // For direct file paths in public folder
+  fileSize?: string; // e.g., "2.4 MB"
+  pageCount?: number;
+  thumbnail?: SanityImageAsset; // Preview image of first page
+  author?: LocalizedText;
+  publisher?: string;
+  language?: 'en' | 'de' | 'pl' | 'multiple';
+  featured?: boolean;
+}
+
+// Props for Publication Components
+export interface PublicationCardProps {
+  publication: Publication;
+  locale?: 'en' | 'de' | 'pl';
+  viewMode?: 'grid' | 'list';
+}
+
+// Filter types for publications
+export interface PublicationFilters {
+  year?: number;
+  type?: 'pdf' | 'doc' | 'epub' | 'other' | 'all';
+  category?: 'essay' | 'catalog' | 'interview' | 'press' | 'monograph' | 'other' | 'all';
+  search?: string;
+}

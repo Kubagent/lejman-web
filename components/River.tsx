@@ -1,7 +1,7 @@
 'use client';
 
 import { RiverProps } from '@/lib/types';
-import RiverVideoSlot from './RiverVideoSlot';
+import RiverVideoSlotMux from './RiverVideoSlotMux';
 import { RiverErrorBoundary } from './RiverErrorBoundary';
 
 /**
@@ -77,7 +77,7 @@ export default function River({ videos, locale = 'en' }: RiverProps) {
             role="listitem"
             data-river-slot={index + 1}
           >
-            <RiverVideoSlot
+            <RiverVideoSlotMux
               video={video}
               locale={locale}
             />

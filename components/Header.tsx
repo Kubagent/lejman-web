@@ -1,48 +1,102 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 
 interface HeaderProps {
   onMenuClick: () => void;
+  isMenuOpen: boolean;
+  onMenuClose: () => void;
 }
 
-export default function Header({ onMenuClick }: HeaderProps) {
+export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-light-gray">
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 py-4 md:py-6">
-        <div className="flex items-center justify-between">
-          {/* Artist Name / Logo */}
-          <Link
-            href="/"
-            className="font-heading text-2xl md:text-3xl font-semibold text-black hover:text-dark-gray transition-colors"
-            aria-label="Home"
-          >
-            Dominik L.
-          </Link>
-
-          {/* Menu Button & Language */}
-          <div className="flex items-center gap-6">
-            {/* Language Switcher - Placeholder */}
-            <span className="text-sm text-mid-gray font-body hidden md:inline">
-              EN
-            </span>
-
-            {/* Menu Button */}
-            <button
-              onClick={onMenuClick}
-              className="font-body text-sm md:text-base text-black hover:text-dark-gray transition-colors focus:outline-none focus:ring-2 focus:ring-focus focus:ring-offset-2 rounded px-2 py-1"
-              aria-label="Open navigation menu"
-              aria-expanded="false"
-            >
-              <span className="flex items-center gap-2">
-                <span className="text-xl md:text-2xl">☰</span>
-                <span className="hidden sm:inline">Menu</span>
-              </span>
-            </button>
-          </div>
-        </div>
+    <>
+      {/* Top Left - Artist Name/Logo */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '32px',
+          left: '72px',
+          zIndex: 40
+        }}
+      >
+        <Link
+          href="/"
+          className="text-xl md:text-2xl font-semibold text-black hover:text-dark-gray transition-colors underline decoration-1 underline-offset-4"
+          aria-label="Home"
+          style={{
+            display: 'block',
+            lineHeight: '1.2',
+            fontFamily: 'Cormorant Garamond, serif'
+          }}
+        >
+          Dominik<br />Lejman
+        </Link>
       </div>
-    </header>
+
+      {/* Top Right - Animated Menu Button (hamburger/cross) */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '32px',
+          right: '72px',
+          zIndex: isMenuOpen ? 60 : 40
+        }}
+      >
+        <button
+          onClick={isMenuOpen ? onMenuClose : onMenuClick}
+          className="group relative flex items-center justify-center hover:opacity-70 focus:outline-none"
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isMenuOpen}
+          style={{
+            width: '40px',
+            height: '40px',
+            backgroundColor: 'transparent',
+            border: 'none',
+            padding: 0,
+            transition: 'opacity 0.3s ease'
+          }}
+        >
+          <span style={{ position: 'relative', width: '28px', height: '18px', display: 'block' }}>
+            {/* Top line - rotates to form top part of X */}
+            <span style={{
+              position: 'absolute',
+              height: '2px',
+              width: '28px',
+              backgroundColor: '#000000',
+              display: 'block',
+              top: isMenuOpen ? '8px' : '0px',
+              left: '0',
+              transform: isMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+              transition: 'all 0.5s ease'
+            }}></span>
+            {/* Middle line - fades out */}
+            <span style={{
+              position: 'absolute',
+              height: '2px',
+              width: '28px',
+              backgroundColor: '#000000',
+              display: 'block',
+              top: '8px',
+              left: '0',
+              opacity: isMenuOpen ? 0 : 1,
+              transition: 'opacity 0.3s ease'
+            }}></span>
+            {/* Bottom line - rotates to form bottom part of X */}
+            <span style={{
+              position: 'absolute',
+              height: '2px',
+              width: '28px',
+              backgroundColor: '#000000',
+              display: 'block',
+              top: isMenuOpen ? '8px' : '16px',
+              left: '0',
+              transform: isMenuOpen ? 'rotate(-45deg)' : 'rotate(0deg)',
+              transition: 'all 0.5s ease'
+            }}></span>
+          </span>
+        </button>
+      </div>
+    </>
   );
 }

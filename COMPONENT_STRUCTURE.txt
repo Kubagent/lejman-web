@@ -1,0 +1,187 @@
+ARTWORK DETAIL PAGE - COMPONENT STRUCTURE
+==========================================
+
+┌─────────────────────────────────────────────────────────────┐
+│                    Browser: /works/[slug]                    │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Next.js Route: /app/works/[slug]/page.tsx                  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ • Fetch artwork by slug from mockArtworks             │  │
+│  │ • Generate SEO metadata (title, description, OG)      │  │
+│  │ • Return 404 if not found                             │  │
+│  │ • Static generation at build time                     │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│                    Layout Component                          │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ Header (fixed)                                        │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │ Navigation (overlay menu)                             │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │                                                       │  │
+│  │              ArtworkDetail Component ↓                │  │
+│  │                                                       │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │ Footer                                                │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│         ArtworkDetail Component (/components/)               │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │ Back Button → /works                                   │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │               Main Image (clickable)                   │ │
+│  │  • Max 960px width on desktop                          │ │
+│  │  • Edge-to-edge on mobile                              │ │
+│  │  • Hover effect with zoom hint                         │ │
+│  │  • onClick → Opens Lightbox                            │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │                   Metadata Section                     │ │
+│  │  • Title (Cormorant Garamond, 36-48px)                │ │
+│  │  • Year, Medium, Dimensions                            │ │
+│  │  • Description (if available)                          │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │         Additional Images Grid (if available)          │ │
+│  │  [Thumb 1] [Thumb 2] [Thumb 3]                        │ │
+│  │  • 2-3 column grid                                     │ │
+│  │  • onClick → Opens Lightbox at index                   │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │ Back to Archive Link                                   │ │
+│  └────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+                      (When image clicked)
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│           Lightbox Component (Portal to body)                │
+│                                                              │
+│  ┌─[ X Close Button ]─────────────────────────────────────┐ │
+│  │                                                         │ │
+│  │  [<]            ┌───────────────┐              [>]     │ │
+│  │   Prev          │               │               Next   │ │
+│  │   Button        │     Image     │               Button │ │
+│  │                 │  (centered,   │                      │ │
+│  │                 │   scalable)   │                      │ │
+│  │                 └───────────────┘                      │ │
+│  │                                                         │ │
+│  │  ┌─────────────────────────────────────────────────┐   │ │
+│  │  │ Title, Year                                     │   │ │
+│  │  │ Image 1 / 3                                     │   │ │
+│  │  └─────────────────────────────────────────────────┘   │ │
+│  │                                                         │ │
+│  │                              [Keyboard Shortcuts Hint]  │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  Features:                                                   │
+│  • ESC to close                                              │
+│  • ← → for prev/next                                         │
+│  • Space to zoom                                             │
+│  • Swipe down to close (mobile)                              │
+│  • Body scroll locked                                        │
+│  • Focus trapped                                             │
+└─────────────────────────────────────────────────────────────┘
+
+
+DATA FLOW
+=========
+
+Mock Data (mockArtworks)
+    ↓
+Page Component (fetch by slug)
+    ↓
+ArtworkDetail Component (display & manage state)
+    ↓
+Lightbox Component (when triggered)
+
+
+STATE MANAGEMENT
+================
+
+ArtworkDetail Component:
+  • lightboxOpen: boolean
+  • selectedImageIndex: number
+
+Lightbox Component:
+  • currentIndex: number
+  • isZoomed: boolean
+  • touchStart: number | null
+
+
+RESPONSIVE BREAKPOINTS
+======================
+
+Mobile:   < 768px    → Edge-to-edge images, 24px padding
+Tablet:   768-1023px → 48px margins, contained images
+Desktop:  > 1024px   → 96px margins, max 960px images
+
+
+NAVIGATION FLOW
+===============
+
+Archive Page (/works)
+    ↓ (Click artwork card)
+Individual Artwork (/works/[slug])
+    ↓ (Click image)
+Lightbox (full-screen viewer)
+    ↓ (Press ESC or click close)
+Individual Artwork
+    ↓ (Click back button)
+Archive Page
+
+
+ACCESSIBILITY TREE
+==================
+
+<main>
+  <article> (artwork detail)
+    <div> (back button container)
+      <a href="/works">Back to Archive</a>
+    </div>
+    
+    <div> (image container)
+      <button aria-label="Open image in lightbox">
+        <img alt="Untitled (Blue Series) by Dominik L., 2024" />
+      </button>
+    </div>
+    
+    <div> (metadata)
+      <h1>Untitled (Blue Series)</h1>
+      <div>2024 · Oil on canvas · 120 × 150 cm</div>
+      <p>Description text...</p>
+    </div>
+    
+    <div> (additional images)
+      <h2>Additional Views</h2>
+      <div role="grid">
+        <button aria-label="View additional image 1">
+          <img alt="..." />
+        </button>
+        ...
+      </div>
+    </div>
+  </article>
+</main>
+
+<Portal> (when lightbox open)
+  <div role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button aria-label="Close lightbox">×</button>
+    <button aria-label="Previous image"><</button>
+    <img alt="..." />
+    <button aria-label="Next image">></button>
+    <div>Title, Year | Image 1 / 3</div>
+  </div>
+</Portal>

@@ -25,11 +25,16 @@ import { urlFor } from '@/lib/sanity/image';
  * Usage:
  * <ExhibitionCard exhibition={exhibition} locale="en" viewMode="detailed" />
  */
+interface ExhibitionCardInternalProps extends ExhibitionCardProps {
+  index?: number;
+}
+
 export default function ExhibitionCard({
   exhibition,
   locale = 'en',
-  viewMode = 'detailed'
-}: ExhibitionCardProps) {
+  viewMode = 'detailed',
+  index = 0
+}: ExhibitionCardInternalProps) {
   // Get localized text
   const title = exhibition.title[locale] ?? exhibition.title.en ?? 'Untitled Exhibition';
   const venueName = exhibition.venue.name[locale] ?? exhibition.venue.name.en ?? '';
@@ -89,47 +94,53 @@ export default function ExhibitionCard({
   // ARIA label for accessibility
   const ariaLabel = `${title}, ${exhibition.year}, ${typeLabel} at ${venueName}, ${location}`;
 
+  // Alternating background
+  const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]';
+
   // Compact view - Timeline style (minimal info, single line)
   if (viewMode === 'compact') {
     return (
-      <Link
-        href={`/exhibitions/${exhibition.slug.current}`}
-        className="group block py-4 border-b border-light-gray hover:bg-near-white transition-colors"
-        aria-label={ariaLabel}
-      >
-        <article className="flex items-baseline gap-6">
-          {/* Year - Fixed width for alignment */}
-          <span className="font-body text-lg md:text-xl font-semibold text-black w-16 flex-shrink-0">
-            {exhibition.year}
-          </span>
+      <article className={`group ${bgClass}`}>
+        <Link
+          href={`/exhibitions/${exhibition.slug.current}`}
+          className="block py-6 px-6 md:px-8 hover:opacity-80 transition-opacity duration-200"
+          aria-label={ariaLabel}
+        >
+          <div className="flex items-baseline gap-6">
+            {/* Year - Fixed width for alignment */}
+            <span className="font-body text-lg md:text-xl font-semibold text-black w-16 flex-shrink-0">
+              {exhibition.year}
+            </span>
 
-          {/* Title & Venue */}
-          <div className="flex-1 flex flex-col md:flex-row md:items-baseline md:gap-2">
-            <h3 className="font-heading text-lg md:text-xl font-semibold text-black group-hover:text-dark-gray transition-colors">
-              {title}
-            </h3>
-            <span className="font-body text-sm md:text-base text-mid-gray">
-              {venueName}, {location}
+            {/* Title & Venue */}
+            <div className="flex-1 flex flex-col md:flex-row md:items-baseline md:gap-2">
+              <h3 className="font-heading text-lg md:text-xl font-semibold text-black group-hover:text-dark-gray transition-colors">
+                {title}
+              </h3>
+              <span className="font-body text-sm md:text-base text-mid-gray">
+                {venueName}, {location}
+              </span>
+            </div>
+
+            {/* Arrow indicator */}
+            <span className="font-body text-mid-gray hidden md:inline" aria-hidden="true">
+              →
             </span>
           </div>
-
-          {/* Arrow indicator */}
-          <span className="font-body text-mid-gray hidden md:inline" aria-hidden="true">
-            →
-          </span>
-        </article>
-      </Link>
+        </Link>
+      </article>
     );
   }
 
   // Detailed view (default) - Full card with image and metadata
   return (
-    <Link
-      href={`/exhibitions/${exhibition.slug.current}`}
-      className="group block"
-      aria-label={ariaLabel}
-    >
-      <article className="flex flex-col md:flex-row gap-6 pb-8 md:pb-12 border-b border-light-gray hover:bg-near-white transition-colors md:p-6">
+    <article className={`group ${bgClass}`}>
+      <Link
+        href={`/exhibitions/${exhibition.slug.current}`}
+        className="block"
+        aria-label={ariaLabel}
+      >
+        <div className="flex flex-col md:flex-row gap-6 py-10 px-6 md:px-8 hover:opacity-80 transition-opacity duration-200">
         {/* Image thumbnail (if available) */}
         {imageUrl && (
           <div className="relative w-full md:w-80 h-56 md:h-60 flex-shrink-0 bg-near-white overflow-hidden">
@@ -189,7 +200,8 @@ export default function ExhibitionCard({
             View Exhibition →
           </div>
         </div>
-      </article>
-    </Link>
+        </div>
+      </Link>
+    </article>
   );
 }

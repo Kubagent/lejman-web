@@ -1,4 +1,4 @@
-import { RiverVideo, Artwork, Exhibition } from './types';
+import { RiverVideo, Artwork, Exhibition, Publication } from './types';
 
 /**
  * Mock River Videos for Development/Preview
@@ -1241,5 +1241,354 @@ export const mockExhibitions: Exhibition[] = [
         _type: 'reference'
       }
     }
+  }
+];
+
+/**
+ * Mock Publications Data
+ *
+ * Sample texts, catalogs, essays, and other downloadable documents.
+ * Replace with real Sanity content once CMS is populated.
+ */
+export const mockPublications: Publication[] = [
+  {
+    _id: 'publication-1',
+    slug: {
+      _type: 'slug',
+      current: 'painting-and-projection-monograph-2023'
+    },
+    title: {
+      en: 'Painting and Projection: A Monograph',
+      de: 'Malerei und Projektion: Eine Monografie',
+      pl: 'Malarstwo i Projekcja: Monografia'
+    },
+    description: {
+      en: 'Comprehensive monograph covering three decades of artistic practice, exploring the intersection of traditional painting with video projection and new media.',
+      de: 'Umfassende Monografie über drei Jahrzehnte künstlerischer Praxis, die die Schnittstelle von traditioneller Malerei mit Videoprojektion und neuen Medien erforscht.',
+      pl: 'Kompleksowa monografia obejmująca trzy dekady praktyki artystycznej, badająca przecięcie tradycyjnego malarstwa z projekcją wideo i nowymi mediami.'
+    },
+    year: 2023,
+    type: 'pdf',
+    category: 'monograph',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-monograph-2023',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/monograph-2023.pdf',
+    fileSize: '12.4 MB',
+    pageCount: 184,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub1/400/566',
+        _type: 'reference'
+      }
+    },
+    author: {
+      en: 'Dr. Anna Kowalska, Prof. Michael Schmidt',
+      de: 'Dr. Anna Kowalska, Prof. Michael Schmidt',
+      pl: 'Dr Anna Kowalska, Prof. Michael Schmidt'
+    },
+    publisher: 'Hatje Cantz',
+    language: 'multiple',
+    featured: true
+  },
+  {
+    _id: 'publication-2',
+    slug: {
+      _type: 'slug',
+      current: 'temporal-boundaries-catalog-2024'
+    },
+    title: {
+      en: 'Temporal Boundaries Exhibition Catalog',
+      de: 'Temporale Grenzen Ausstellungskatalog',
+      pl: 'Katalog Wystawy Granice Czasowe'
+    },
+    description: {
+      en: 'Exhibition catalog featuring new works exploring the boundaries between static and moving images, with essays by leading art historians.',
+      de: 'Ausstellungskatalog mit neuen Werken, die die Grenzen zwischen statischen und bewegten Bildern erforschen, mit Essays führender Kunsthistoriker.',
+      pl: 'Katalog wystawy prezentujący nowe prace badające granice między obrazem statycznym a ruchomym, z esejami czołowych historyków sztuki.'
+    },
+    year: 2024,
+    type: 'pdf',
+    category: 'catalog',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-catalog-2024',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/temporal-boundaries-catalog.pdf',
+    fileSize: '8.7 MB',
+    pageCount: 96,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub2/400/566',
+        _type: 'reference'
+      }
+    },
+    publisher: 'Galerie Eigen + Art',
+    language: 'multiple',
+    featured: true
+  },
+  {
+    _id: 'publication-3',
+    slug: {
+      _type: 'slug',
+      current: 'between-media-essay-2022'
+    },
+    title: {
+      en: 'Between Media: The Painted Screen',
+      de: 'Zwischen den Medien: Die bemalte Leinwand',
+      pl: 'Między Mediami: Malowany Ekran'
+    },
+    description: {
+      en: 'Critical essay examining the artist\'s unique approach to combining painting and video, published in Artforum International.',
+      de: 'Kritischer Essay über den einzigartigen Ansatz des Künstlers, Malerei und Video zu verbinden, veröffentlicht in Artforum International.',
+      pl: 'Esej krytyczny analizujący unikalne podejście artysty do łączenia malarstwa i wideo, opublikowany w Artforum International.'
+    },
+    year: 2022,
+    type: 'pdf',
+    category: 'essay',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-essay-2022',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/between-media-essay.pdf',
+    fileSize: '1.2 MB',
+    pageCount: 12,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub3/400/566',
+        _type: 'reference'
+      }
+    },
+    author: {
+      en: 'Prof. Sarah Chen',
+      de: 'Prof. Sarah Chen',
+      pl: 'Prof. Sarah Chen'
+    },
+    publisher: 'Artforum International',
+    language: 'en',
+    featured: false
+  },
+  {
+    _id: 'publication-4',
+    slug: {
+      _type: 'slug',
+      current: 'in-conversation-interview-2021'
+    },
+    title: {
+      en: 'In Conversation: On Light and Movement',
+      de: 'Im Gespräch: Über Licht und Bewegung',
+      pl: 'W Rozmowie: O Świetle i Ruchu'
+    },
+    description: {
+      en: 'Extended interview discussing the role of light, time, and movement in contemporary art practice, conducted by Hans Ulrich Obrist.',
+      de: 'Ausführliches Interview über die Rolle von Licht, Zeit und Bewegung in der zeitgenössischen Kunstpraxis, geführt von Hans Ulrich Obrist.',
+      pl: 'Rozszerzony wywiad omawiający rolę światła, czasu i ruchu we współczesnej praktyce artystycznej, przeprowadzony przez Hansa Ulricha Obrista.'
+    },
+    year: 2021,
+    type: 'pdf',
+    category: 'interview',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-interview-2021',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/interview-light-movement.pdf',
+    fileSize: '2.8 MB',
+    pageCount: 24,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub4/400/566',
+        _type: 'reference'
+      }
+    },
+    author: {
+      en: 'Hans Ulrich Obrist',
+      de: 'Hans Ulrich Obrist',
+      pl: 'Hans Ulrich Obrist'
+    },
+    publisher: 'Mousse Magazine',
+    language: 'en',
+    featured: true
+  },
+  {
+    _id: 'publication-5',
+    slug: {
+      _type: 'slug',
+      current: 'venice-biennale-press-2022'
+    },
+    title: {
+      en: 'Venice Biennale 2022: Lunatics Pavilion Press Release',
+      de: 'Venedig Biennale 2022: Lunatics Pavillon Pressemitteilung',
+      pl: 'Biennale w Wenecji 2022: Komunikat Prasowy Pawilonu Lunatics'
+    },
+    description: {
+      en: 'Official press materials for the Lunatics exhibition at the Madnicity Pavilion, 59th Venice Biennale, including artist statement and curatorial text.',
+      de: 'Offizielle Pressematerialien für die Lunatics-Ausstellung im Madnicity-Pavillon, 59. Venedig-Biennale, einschließlich Künstlerstatement und kuratorischem Text.',
+      pl: 'Oficjalne materiały prasowe do wystawy Lunatics w Pawilonie Madnicity, 59. Biennale w Wenecji, zawierające oświadczenie artysty i tekst kuratorski.'
+    },
+    year: 2022,
+    type: 'pdf',
+    category: 'press',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-press-2022',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/venice-biennale-press.pdf',
+    fileSize: '3.5 MB',
+    pageCount: 18,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub5/400/566',
+        _type: 'reference'
+      }
+    },
+    publisher: 'Madnicity Pavilion',
+    language: 'multiple',
+    featured: false
+  },
+  {
+    _id: 'publication-6',
+    slug: {
+      _type: 'slug',
+      current: 'air-wants-to-go-catalog-2020'
+    },
+    title: {
+      en: 'Air Wants to Go: Retrospective Catalog',
+      de: 'Luft will gehen: Retrospektiv-Katalog',
+      pl: 'Powietrze Chce Iść: Katalog Retrospektywny'
+    },
+    description: {
+      en: 'Comprehensive catalog of the retrospective exhibition at OPENHEIM Wrocław, featuring works from 1995-2020 with scholarly essays and full documentation.',
+      de: 'Umfassender Katalog der Retrospektive im OPENHEIM Wrocław mit Werken von 1995-2020, wissenschaftlichen Essays und vollständiger Dokumentation.',
+      pl: 'Kompleksowy katalog wystawy retrospektywnej w OPENHEIM Wrocław, prezentujący prace z lat 1995-2020 z esejami naukowymi i pełną dokumentacją.'
+    },
+    year: 2020,
+    type: 'pdf',
+    category: 'catalog',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-catalog-2020',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/air-wants-to-go-catalog.pdf',
+    fileSize: '15.6 MB',
+    pageCount: 224,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub6/400/566',
+        _type: 'reference'
+      }
+    },
+    publisher: 'OPENHEIM',
+    language: 'multiple',
+    featured: true
+  },
+  {
+    _id: 'publication-7',
+    slug: {
+      _type: 'slug',
+      current: 'post-communist-aesthetics-2019'
+    },
+    title: {
+      en: 'Post-Communist Aesthetics and New Media',
+      de: 'Postkommunistische Ästhetik und Neue Medien',
+      pl: 'Estetyka Postkomunistyczna i Nowe Media'
+    },
+    description: {
+      en: 'Academic essay exploring the development of video art in Eastern Europe after 1989, with focus on Polish artists of the transition generation.',
+      de: 'Akademischer Essay über die Entwicklung der Videokunst in Osteuropa nach 1989, mit Fokus auf polnische Künstler der Übergangsgeneration.',
+      pl: 'Esej akademicki badający rozwój sztuki wideo w Europie Wschodniej po 1989 roku, ze szczególnym uwzględnieniem polskich artystów pokolenia transformacji.'
+    },
+    year: 2019,
+    type: 'pdf',
+    category: 'essay',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-essay-2019',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/post-communist-aesthetics.pdf',
+    fileSize: '2.1 MB',
+    pageCount: 28,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub7/400/566',
+        _type: 'reference'
+      }
+    },
+    author: {
+      en: 'Dr. Piotr Kowalski',
+      de: 'Dr. Piotr Kowalski',
+      pl: 'Dr Piotr Kowalski'
+    },
+    publisher: 'October Journal',
+    language: 'en',
+    featured: false
+  },
+  {
+    _id: 'publication-8',
+    slug: {
+      _type: 'slug',
+      current: 'macht-licht-catalog-2022'
+    },
+    title: {
+      en: 'Macht! Licht! Exhibition Catalog',
+      de: 'Macht! Licht! Ausstellungskatalog',
+      pl: 'Katalog Wystawy Macht! Licht!'
+    },
+    description: {
+      en: 'Exhibition catalog from Kunstmuseum Wolfsburg exploring the relationship between power, light, and visibility in contemporary art.',
+      de: 'Ausstellungskatalog des Kunstmuseum Wolfsburg, der die Beziehung zwischen Macht, Licht und Sichtbarkeit in der zeitgenössischen Kunst untersucht.',
+      pl: 'Katalog wystawy z Kunstmuseum Wolfsburg badający relację między władzą, światłem i widocznością we współczesnej sztuce.'
+    },
+    year: 2022,
+    type: 'pdf',
+    category: 'catalog',
+    file: {
+      _type: 'file',
+      asset: {
+        _ref: 'file-catalog-wolfsburg-2022',
+        _type: 'reference'
+      }
+    },
+    fileUrl: '/texts/macht-licht-catalog.pdf',
+    fileSize: '9.2 MB',
+    pageCount: 128,
+    thumbnail: {
+      _type: 'image',
+      asset: {
+        _ref: 'https://picsum.photos/seed/pub8/400/566',
+        _type: 'reference'
+      }
+    },
+    publisher: 'Kunstmuseum Wolfsburg',
+    language: 'de',
+    featured: false
   }
 ];

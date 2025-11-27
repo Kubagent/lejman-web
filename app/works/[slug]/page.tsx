@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { mockArtworks } from '@/lib/mockData';
-import Layout from '@/components/Layout';
 import ArtworkDetail from '@/components/ArtworkDetail';
 
 interface ArtworkPageProps {
@@ -98,8 +97,6 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
   const locale = 'en';
 
   return (
-    <Layout>
-      <ArtworkDetail artwork={artwork} locale={locale} />
-    </Layout>
+    <ArtworkDetail artwork={artwork} locale={locale} />
   );
 }

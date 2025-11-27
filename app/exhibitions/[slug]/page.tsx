@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import Layout from '@/components/Layout';
 import ExhibitionDetail from '@/components/ExhibitionDetail';
 import { mockExhibitions, mockArtworks } from '@/lib/mockData';
 
@@ -99,12 +98,10 @@ export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
     : [];
 
   return (
-    <Layout>
-      <ExhibitionDetail
-        exhibition={exhibition}
-        featuredArtworks={featuredArtworks}
-        locale="en"
-      />
-    </Layout>
+    <ExhibitionDetail
+      exhibition={exhibition}
+      featuredArtworks={featuredArtworks}
+      locale="en"
+    />
   );
 }

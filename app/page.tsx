@@ -1,4 +1,3 @@
-import Layout from '@/components/Layout';
 import River from '@/components/River';
 import { getRiverVideos } from '@/lib/sanity/riverVideos';
 import { mockRiverVideos } from '@/lib/mockData';
@@ -24,7 +23,7 @@ export default async function Home() {
   }
 
   return (
-    <Layout>
+    <>
       {/* River Video Section */}
       {riverVideos.length > 0 ? (
         <River videos={riverVideos} locale="en" />
@@ -45,6 +44,6 @@ export default async function Home() {
           </div>
         </div>
       )}
-    </Layout>
+    </>
   );
 }

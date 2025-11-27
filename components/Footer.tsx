@@ -1,27 +1,55 @@
+'use client';
+
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-light-gray py-12 md:py-16">
-      <div className="container mx-auto px-6 md:px-12 lg:px-24">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          {/* Copyright */}
-          <p className="font-body text-sm text-mid-gray">
-            © {new Date().getFullYear()} Dominik L. All rights reserved.
-          </p>
-
-          {/* Gallery Credit */}
-          <div className="font-body text-sm text-mid-gray">
-            <span>Represented by </span>
+    <footer className="relative w-full" style={{ height: '150px' }}>
+      {/* Bottom Left - Copyright */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '72px',
+          left: '72px',
+          zIndex: 10,
+          fontFamily: 'Cormorant Garamond, serif'
+        }}
+      >
+        <div className="text-xs md:text-sm text-mid-gray">
+          <div>© Dominik Lejman</div>
+          <div className="mt-1">
+            represented by{' '}
             <a
-              href="https://molskigallery.com"
+              href="https://www.molskigallery.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black hover:text-dark-gray underline transition-colors focus:outline-none focus:ring-2 focus:ring-focus focus:ring-offset-2 rounded"
-              aria-label="Visit Molski Gallery website"
+              className="text-black underline decoration-1 underline-offset-2 hover:text-[#666666] transition-colors"
             >
               Molski Gallery
             </a>
           </div>
         </div>
+      </div>
+
+      {/* Bottom Right - Created By */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '72px',
+          right: '72px',
+          zIndex: 10,
+          fontFamily: 'Cormorant Garamond, serif'
+        }}
+      >
+        <span className="text-xs md:text-sm text-mid-gray">
+          created by{' '}
+          <a
+            href="https://0usia.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-black underline decoration-1 underline-offset-2 hover:text-[#666666] transition-colors"
+          >
+            0usia
+          </a>
+        </span>
       </div>
     </footer>
   );
