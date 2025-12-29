@@ -80,7 +80,7 @@ export default function ExhibitionDetail({
     if (!image) return '';
 
     // Handle mock URLs (development)
-    if (image.asset._ref.startsWith('http://') || image.asset._ref.startsWith('https://')) {
+    if (image.asset?._ref?.startsWith('http://') || image.asset?._ref?.startsWith('https://')) {
       return image.asset._ref;
     }
     // Production: Use Sanity CDN
@@ -238,7 +238,7 @@ export default function ExhibitionDetail({
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {featuredArtworks.map((artwork) => {
                   const artworkTitle = artwork.title[locale] ?? artwork.title.en ?? 'Untitled';
-                  const artworkImageUrl = artwork.mainImage.asset._ref.startsWith('http')
+                  const artworkImageUrl = artwork.mainImage.asset?._ref?.startsWith('http')
                     ? artwork.mainImage.asset._ref
                     : urlFor(artwork.mainImage).width(400).quality(85).auto('format').url();
 

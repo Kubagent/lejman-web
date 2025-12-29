@@ -21,7 +21,10 @@ export const riverVideosQuery = groq`
     },
     posterImage,
     description,
-    year
+    year,
+    linkedArtwork-> {
+      slug
+    }
   }
 `;
 
@@ -101,7 +104,7 @@ export const exhibitionBySlugQuery = groq`
 
 // All Texts - ordered by publishedDate desc
 export const textsQuery = groq`
-  *[_type == "text"] | order(publishedDate desc) {
+  *[_type == "publication"] | order(publishedDate desc) {
     _id,
     title,
     slug,
@@ -114,7 +117,7 @@ export const textsQuery = groq`
 
 // Single Text by slug
 export const textBySlugQuery = groq`
-  *[_type == "text" && slug.current == $slug][0] {
+  *[_type == "publication" && slug.current == $slug][0] {
     _id,
     title,
     slug,
@@ -135,6 +138,7 @@ export const siteSettingsQuery = groq`
     galleryName,
     galleryUrl,
     biography,
+    biographyImage,
     metaDescription
   }
 `;

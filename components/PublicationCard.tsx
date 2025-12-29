@@ -53,14 +53,14 @@ export default function PublicationCard({
       <a
         href={publication.fileUrl || '#'}
         download
-        className="flex gap-6 items-start py-10 hover:opacity-80 transition-opacity duration-200 px-6 md:px-8"
+        className="group flex gap-6 items-start py-10 px-6 md:px-8 no-underline"
         aria-label={`Download ${title}`}
       >
         {/* Left: Content */}
         <div className="flex-1 min-w-0">
           {/* Title & Year */}
-          <div className="flex items-baseline gap-3 mb-1">
-            <h3 className="font-serif text-lg md:text-xl font-medium text-black group-hover:text-[#666666] transition-colors duration-200">
+          <div className="flex items-baseline justify-between gap-6 mb-3">
+            <h3 className="font-serif text-lg md:text-xl font-medium text-black group-hover:underline transition-all inline-block">
               {title}
             </h3>
             <span className="flex-shrink-0 font-sans text-sm text-[#999999]">
@@ -93,7 +93,7 @@ export default function PublicationCard({
           )}
 
           {/* Download Info */}
-          <div className="flex items-center gap-3 text-xs text-[#999999] font-sans">
+          <div className="flex items-center justify-end gap-4 text-xs text-[#999999] font-sans mt-4">
             <span className="inline-flex items-center gap-1.5">
               <Download className="w-3 h-3" />
               {publication.type.toUpperCase()}

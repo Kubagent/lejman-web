@@ -49,7 +49,7 @@ export default function ArtworkCard({
   // Generate optimized image URL
   // Grid view: smaller size (600px), List view: larger (800px)
   const imageUrl = artwork.mainImage
-    ? (artwork.mainImage.asset._ref.startsWith('http://') || artwork.mainImage.asset._ref.startsWith('https://'))
+    ? (artwork.mainImage.asset?._ref?.startsWith('http://') || artwork.mainImage.asset?._ref?.startsWith('https://'))
       ? artwork.mainImage.asset._ref  // Mock URL
       : urlFor(artwork.mainImage)
           .width(viewMode === 'grid' ? 600 : 800)
@@ -70,10 +70,10 @@ export default function ArtworkCard({
       <article className={`group ${bgClass}`}>
         <Link
           href={`/works/${artwork.slug.current}`}
-          className="block"
+          className="block no-underline group"
           aria-label={ariaLabel}
         >
-          <div className="relative flex flex-col md:flex-row gap-6 md:gap-8 py-10 px-6 md:px-8 hover:opacity-80 transition-opacity duration-200">
+          <div className="relative flex flex-col md:flex-row gap-6 md:gap-8 py-10 px-6 md:px-8">
             {/* Image */}
             <div className="relative w-full md:w-64 h-64 flex-shrink-0 bg-near-white overflow-hidden">
               <img
@@ -86,7 +86,7 @@ export default function ArtworkCard({
 
             {/* Metadata */}
             <div className="flex-1 flex flex-col justify-center gap-3">
-              <h3 className="font-heading text-2xl md:text-3xl font-semibold text-black group-hover:text-dark-gray transition-colors">
+              <h3 className="font-heading text-2xl md:text-3xl font-semibold text-black group-hover:underline transition-all inline-block">
                 {title}
               </h3>
               <div className="flex flex-wrap gap-x-4 gap-y-1 font-body text-base text-dark-gray">
@@ -110,7 +110,7 @@ export default function ArtworkCard({
   return (
     <Link
       href={`/works/${artwork.slug.current}`}
-      className="group block"
+      className="group block no-underline"
       aria-label={ariaLabel}
       onTouchStart={() => setShowOverlay(true)}
       onTouchEnd={() => setShowOverlay(false)}

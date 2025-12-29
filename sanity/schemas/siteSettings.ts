@@ -52,6 +52,27 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'biographyImage',
+      title: 'Biography Portrait Image',
+      type: 'image',
+      description: 'Portrait image for the biography section',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+        },
+        {
+          name: 'caption',
+          title: 'Caption',
+          type: 'string',
+        },
+      ],
+    }),
+    defineField({
       name: 'metaDescription',
       title: 'Meta Description (SEO)',
       type: 'object',

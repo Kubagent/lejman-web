@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { mockPublications } from '@/lib/mockData';
 import PublicationCard from '@/components/PublicationCard';
 import { Publication, PublicationFilters } from '@/lib/types';
+import CustomDropdown from '@/components/CustomDropdown';
 
 export default function TextsPage() {
   const [publications, setPublications] = useState<Publication[]>(mockPublications);
@@ -79,92 +80,135 @@ export default function TextsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="px-6 py-12 md:px-12 md:py-16 lg:px-24 lg:py-20">
-        <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-4 ml-8">
+      <div className="px-6 pt-12 md:px-12 md:pt-16 lg:px-24 lg:pt-20 pb-32">
+        <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-4 text-center">
           Texts & Publications
         </h1>
-        <p className="font-sans text-base md:text-lg text-[#666666] max-w-2xl ml-8">
-          Essays, catalogs, interviews, and scholarly publications documenting the artistic practice and critical discourse.
-        </p>
       </div>
 
-      {/* Filter Bar - Compact & Borderless */}
-      <div className="sticky top-0 z-10 bg-white px-6 py-6 md:px-12 lg:px-24">
-        <div className="flex flex-wrap items-center gap-3 max-w-5xl ml-8">
-          {/* Search */}
-          <input
-            type="text"
-            placeholder="Search..."
-            value={filters.search}
-            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-            className="px-4 py-2 bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors w-64"
-            aria-label="Search publications"
-          />
+      {/* Spacer */}
+      <div className="w-full bg-white" style={{ height: '20px' }} />
 
-          {/* Year Filter */}
-          <select
-            value={filters.year || ''}
-            onChange={(e) =>
-              setFilters({ ...filters, year: e.target.value ? parseInt(e.target.value) : undefined })
-            }
-            className="px-4 py-2 bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
-            aria-label="Filter by year"
-          >
-            <option value="">All Years</option>
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
+      {/* Filter Bar - Spacious & Inviting */}
+      <div className="sticky top-0 z-10 bg-white border-b border-[#E5E5E5]">
+        <div className="container mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-20">
+          {/* Two-Row Layout: Filters on top, Actions below */}
+          <div className="space-y-8">
+            {/* Top Row: Search and 3 Filters - Desktop: equal width, Mobile: 2 rows */}
+            <div className="flex items-stretch gap-6 w-full flex-wrap">
+              {/* Search Input */}
+              <input
+                type="text"
+                placeholder="Search publications..."
+                value={filters.search}
+                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                className={`outline-none transition-all duration-300 ease-in-out text-center ${
+                  filters.search && filters.search.length > 0
+                    ? 'bg-[#000000] text-[#FFFFFF] placeholder:text-[#999999]'
+                    : 'bg-[#FAFAFA] text-[#000000] placeholder:text-[#999999] hover:bg-[#000000] hover:text-[#FFFFFF]'
+                }`}
+                style={{
+                  border: 'none',
+                  padding: '16px 24px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '15px',
+                  fontWeight: 400,
+                  flex: '1',
+                  minWidth: '200px'
+                }}
+                aria-label="Search publications"
+              />
 
-          {/* Type Filter */}
-          <select
-            value={filters.type || 'all'}
-            onChange={(e) => setFilters({ ...filters, type: e.target.value as any })}
-            className="px-4 py-2 bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
-            aria-label="Filter by file type"
-          >
-            <option value="all">All Formats</option>
-            <option value="pdf">PDF</option>
-            <option value="doc">DOC</option>
-            <option value="epub">EPUB</option>
-            <option value="other">Other</option>
-          </select>
+              {/* Year Filter */}
+              <div style={{ flex: '1', minWidth: '160px' }}>
+                <CustomDropdown
+                  label="Year"
+                  options={[
+                    { value: '', label: 'Year' },
+                    ...years.map(year => ({ value: String(year), label: String(year) }))
+                  ]}
+                  value={filters.year ? String(filters.year) : ''}
+                  onChange={(value) => setFilters({ ...filters, year: value ? parseInt(value) : undefined })}
+                  placeholder="Year"
+                  activeBackgroundShift={true}
+                />
+              </div>
 
-          {/* Category Filter */}
-          <select
-            value={filters.category || 'all'}
-            onChange={(e) => setFilters({ ...filters, category: e.target.value as any })}
-            className="px-4 py-2 bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
-            aria-label="Filter by category"
-          >
-            <option value="all">All Categories</option>
-            <option value="monograph">Monographs</option>
-            <option value="catalog">Catalogs</option>
-            <option value="essay">Essays</option>
-            <option value="interview">Interviews</option>
-            <option value="press">Press</option>
-            <option value="other">Other</option>
-          </select>
+              {/* Format Filter */}
+              <div style={{ flex: '1', minWidth: '160px' }}>
+                <CustomDropdown
+                  label="Format"
+                  options={[
+                    { value: '', label: 'Format' },
+                    { value: 'pdf', label: 'PDF' },
+                    { value: 'doc', label: 'DOC' },
+                    { value: 'epub', label: 'EPUB' },
+                    { value: 'other', label: 'Other' }
+                  ]}
+                  value={filters.type || ''}
+                  onChange={(value) => setFilters({ ...filters, type: value as any })}
+                  placeholder="Format"
+                  activeBackgroundShift={true}
+                />
+              </div>
 
-          {/* Clear Filters */}
-          {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="px-4 py-2 font-sans text-sm text-[#666666] hover:text-black transition-colors"
-              aria-label="Clear all filters"
-            >
-              Clear
-            </button>
-          )}
+              {/* Category Filter */}
+              <div style={{ flex: '1', minWidth: '160px' }}>
+                <CustomDropdown
+                  label="Category"
+                  options={[
+                    { value: '', label: 'Category' },
+                    { value: 'monograph', label: 'Monographs' },
+                    { value: 'catalog', label: 'Catalogs' },
+                    { value: 'essay', label: 'Essays' },
+                    { value: 'interview', label: 'Interviews' },
+                    { value: 'press', label: 'Press' },
+                    { value: 'other', label: 'Other' }
+                  ]}
+                  value={filters.category || ''}
+                  onChange={(value) => setFilters({ ...filters, category: value as any })}
+                  placeholder="Category"
+                  activeBackgroundShift={true}
+                />
+              </div>
+            </div>
 
-          {/* Results Count */}
-          <span className="ml-auto font-sans text-sm text-[#999999]">
-            {filteredPublications.length} {filteredPublications.length === 1 ? 'publication' : 'publications'}
-          </span>
+            {/* Bottom Row: Clear and Results - Right side */}
+            <div className="flex flex-wrap items-center justify-end gap-6 w-full">
+              {/* Clear Filters */}
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="bg-[#000000] text-[#FFFFFF] hover:bg-[#FAFAFA] hover:text-[#000000] border-0 outline-none transition-all duration-300 ease-in-out"
+                  style={{
+                    border: 'none',
+                    padding: '16px 24px',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '15px',
+                    fontWeight: 400,
+                    textAlign: 'center'
+                  }}
+                  aria-label="Clear all filters"
+                >
+                  Clear Filters
+                </button>
+              )}
+
+              {/* Results Count */}
+              <span className="whitespace-nowrap" style={{
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '12.5px',
+                color: '#999999'
+              }}>
+                {filteredPublications.length} {filteredPublications.length === 1 ? 'publication' : 'publications'}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Spacer */}
+      <div className="w-full bg-white" style={{ height: '20px' }} />
 
       {/* Publications List */}
       <div className="">
@@ -184,7 +228,7 @@ export default function TextsPage() {
             <p className="font-sans text-base text-[#999999] mb-4">No publications found</p>
             <button
               onClick={clearFilters}
-              className="px-6 py-2.5 bg-black text-white font-sans text-sm font-medium hover:bg-[#333333] transition-colors"
+              className="px-24 py-10 font-body text-base font-normal bg-[#000000] text-[#FFFFFF] border-2 border-[#000000] hover:bg-[#FFFFFF] hover:text-[#000000] focus:outline-none transition-all duration-200"
             >
               Clear filters
             </button>

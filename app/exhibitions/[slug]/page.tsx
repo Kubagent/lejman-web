@@ -52,7 +52,7 @@ export async function generateMetadata({
       images: exhibition.mainImage
         ? [
             {
-              url: exhibition.mainImage.asset._ref.startsWith('http')
+              url: exhibition.mainImage.asset?._ref?.startsWith('http')
                 ? exhibition.mainImage.asset._ref
                 : '', // In production, generate proper Sanity URL
               alt: `${title} exhibition view`,

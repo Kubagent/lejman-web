@@ -11,7 +11,7 @@ interface HeaderProps {
 export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderProps) {
   return (
     <>
-      {/* Top Left - Artist Name/Logo */}
+      {/* Top Left - Artist Name/Logo - 150% larger with visibility enhancement */}
       <div
         style={{
           position: 'fixed',
@@ -22,19 +22,23 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
       >
         <Link
           href="/"
-          className="text-xl md:text-2xl font-semibold text-black hover:text-dark-gray transition-colors underline decoration-1 underline-offset-4"
+          className="font-semibold text-black"
           aria-label="Home"
           style={{
             display: 'block',
             lineHeight: '1.2',
-            fontFamily: 'Cormorant Garamond, serif'
+            fontFamily: 'Montserrat, sans-serif',
+            fontSize: 'clamp(1.47rem, 3.5vw, 2.52rem)',
+            fontWeight: 600,
+            textShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)',
+            textDecoration: 'none'
           }}
         >
-          Dominik<br />Lejman
+          Dominik Lejman
         </Link>
       </div>
 
-      {/* Top Right - Animated Menu Button (hamburger/cross) */}
+      {/* Top Right - Animated Menu Button (hamburger/cross) - 150% larger with visibility enhancement */}
       <div
         style={{
           position: 'fixed',
@@ -49,50 +53,53 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
           aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={isMenuOpen}
           style={{
-            width: '40px',
-            height: '40px',
+            width: '60px',
+            height: '60px',
             backgroundColor: 'transparent',
             border: 'none',
             padding: 0,
             transition: 'opacity 0.3s ease'
           }}
         >
-          <span style={{ position: 'relative', width: '28px', height: '18px', display: 'block' }}>
+          <span style={{ position: 'relative', width: '42px', height: '27px', display: 'block' }}>
             {/* Top line - rotates to form top part of X */}
             <span style={{
               position: 'absolute',
-              height: '2px',
-              width: '28px',
+              height: '3px',
+              width: '42px',
               backgroundColor: '#000000',
               display: 'block',
-              top: isMenuOpen ? '8px' : '0px',
+              top: isMenuOpen ? '12px' : '0px',
               left: '0',
               transform: isMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-              transition: 'all 0.5s ease'
+              transition: 'all 0.5s ease',
+              boxShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)'
             }}></span>
             {/* Middle line - fades out */}
             <span style={{
               position: 'absolute',
-              height: '2px',
-              width: '28px',
+              height: '3px',
+              width: '42px',
               backgroundColor: '#000000',
               display: 'block',
-              top: '8px',
+              top: '12px',
               left: '0',
               opacity: isMenuOpen ? 0 : 1,
-              transition: 'opacity 0.3s ease'
+              transition: 'opacity 0.3s ease',
+              boxShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)'
             }}></span>
             {/* Bottom line - rotates to form bottom part of X */}
             <span style={{
               position: 'absolute',
-              height: '2px',
-              width: '28px',
+              height: '3px',
+              width: '42px',
               backgroundColor: '#000000',
               display: 'block',
-              top: isMenuOpen ? '8px' : '16px',
+              top: isMenuOpen ? '12px' : '24px',
               left: '0',
               transform: isMenuOpen ? 'rotate(-45deg)' : 'rotate(0deg)',
-              transition: 'all 0.5s ease'
+              transition: 'all 0.5s ease',
+              boxShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)'
             }}></span>
           </span>
         </button>

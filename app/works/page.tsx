@@ -1,10 +1,5 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import ArtworkGrid from '@/components/ArtworkGrid';
-import ArtworkFilters from '@/components/ArtworkFilters';
-import { Artwork, ArtworkFilters as Filters } from '@/lib/types';
-import { mockArtworks } from '@/lib/mockData';
+import { getArtworks, getArtworkYears, getArtworkMediums } from '@/lib/sanity/artworks';
+import WorksClient from './WorksClient';
 
 /**
  * Works Page - Main archive/gallery page
@@ -17,91 +12,16 @@ import { mockArtworks } from '@/lib/mockData';
  * - Client-side filtering for instant results
  *
  * Performance:
+ * - Server component for initial data fetch
  * - Client component for interactivity
- * - Mock data during development
+ * - Real Sanity data from CMS
  * - Efficient filtering with Array methods
  */
-export default function WorksPage() {
-  const [artworks, setArtworks] = useState<Artwork[]>(mockArtworks);
-  const [filteredArtworks, setFilteredArtworks] = useState<Artwork[]>(mockArtworks);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [filters, setFilters] = useState<Filters>({});
+export default async function WorksPage() {
+  // Fetch all data from Sanity
+  const artworks = await getArtworks();
+  const years = await getArtworkYears();
+  const mediums = await getArtworkMediums();
 
-  // Extract unique years and mediums for filter dropdowns
-  const years = Array.from(new Set(artworks.map(a => a.year))).sort((a, b) => b - a);
-  const mediums = Array.from(
-    new Set(
-      artworks
-        .map(a => a.medium.en)
-        .filter((m): m is string => typeof m === 'string')
-    )
-  ).sort();
-
-  // Apply filters whenever filters change
-  useEffect(() => {
-    let result = [...artworks];
-
-    // Year filter
-    if (filters.year) {
-      result = result.filter(artwork => artwork.year === filters.year);
-    }
-
-    // Medium filter
-    if (filters.medium) {
-      result = result.filter(artwork =>
-        artwork.medium.en?.toLowerCase().includes(filters.medium!.toLowerCase()) ||
-        artwork.medium.de?.toLowerCase().includes(filters.medium!.toLowerCase()) ||
-        artwork.medium.pl?.toLowerCase().includes(filters.medium!.toLowerCase())
-      );
-    }
-
-    // Search filter (title across all languages)
-    if (filters.search && filters.search.length >= 2) {
-      const searchLower = filters.search.toLowerCase();
-      result = result.filter(artwork =>
-        artwork.title.en?.toLowerCase().includes(searchLower) ||
-        artwork.title.de?.toLowerCase().includes(searchLower) ||
-        artwork.title.pl?.toLowerCase().includes(searchLower)
-      );
-    }
-
-    setFilteredArtworks(result);
-  }, [filters, artworks]);
-
-  return (
-    <>
-      {/* Page Header */}
-      <section className="bg-white">
-        <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
-          <h1 className="font-heading text-4xl md:text-6xl font-semibold text-black mb-4 ml-8">
-            Works
-          </h1>
-          <p className="font-body text-base md:text-lg text-dark-gray max-w-2xl ml-8">
-            An archive of selected artworks spanning various mediums and years.
-          </p>
-        </div>
-      </section>
-
-      {/* Filters */}
-      <ArtworkFilters
-        years={years}
-        mediums={mediums}
-        onFilterChange={setFilters}
-        onViewModeChange={setViewMode}
-        viewMode={viewMode}
-        totalCount={filteredArtworks.length}
-      />
-
-      {/* Artwork Grid */}
-      <section className="bg-white min-h-screen">
-        <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
-          <ArtworkGrid
-            artworks={filteredArtworks}
-            locale="en"
-            viewMode={viewMode}
-          />
-        </div>
-      </section>
-    </>
-  );
+  return <WorksClient artworks={artworks} years={years} mediums={mediums} />;
 }

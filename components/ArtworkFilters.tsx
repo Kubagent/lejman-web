@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ArtworkFilters as Filters } from '@/lib/types';
+import CustomDropdown from './CustomDropdown';
 
 interface ArtworkFiltersProps {
   years: number[];
@@ -75,96 +76,145 @@ export default function ArtworkFilters({
   const hasActiveFilters = searchTerm.length >= 2 || selectedYear !== undefined || selectedMedium !== undefined;
 
   return (
-    <div className="w-full bg-white sticky top-0 z-10">
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 py-6">
-        {/* Single Row: All Filters Compact */}
-        <div className="flex flex-wrap items-center gap-3 max-w-5xl ml-8">
-          {/* Search Input */}
-          <input
-            id="artwork-search"
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors w-64"
-            aria-label="Search artworks by title"
-          />
-
-          {/* Year Filter */}
-          <select
-            id="year-filter"
-            value={selectedYear ?? ''}
-            onChange={(e) => setSelectedYear(e.target.value ? Number(e.target.value) : undefined)}
-            className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
-            aria-label="Filter by year"
-          >
-            <option value="">All Years</option>
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-
-          {/* Medium Filter */}
-          <select
-            id="medium-filter"
-            value={selectedMedium ?? ''}
-            onChange={(e) => setSelectedMedium(e.target.value || undefined)}
-            className="px-4 py-2 bg-[#FAFAFA] font-body text-sm focus:outline-none focus:bg-[#F0F0F0] transition-colors"
-            aria-label="Filter by medium"
-          >
-            <option value="">All Mediums</option>
-            {mediums.map((medium) => (
-              <option key={medium} value={medium}>
-                {medium}
-              </option>
-            ))}
-          </select>
-
-          {/* View Mode Toggle - Compact */}
-          <div role="group" aria-label="View mode" className="flex gap-1">
+    <div className="w-full bg-white sticky top-0 z-10 border-b border-[#E5E5E5]">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-20">
+        {/* Two-Row Layout: Filters on top, Actions below */}
+        <div className="space-y-8">
+          {/* Top Row: View Toggle, Search and Filters - Desktop: single row, Mobile: 3 rows */}
+          <div className="flex items-stretch gap-6 w-full flex-wrap">
+            {/* Grid View Button */}
             <button
               onClick={() => onViewModeChange('grid')}
-              className={`px-3 py-2 font-body text-sm transition-colors ${
+              className={`border-0 outline-none transition-all duration-300 ease-in-out ${
                 viewMode === 'grid'
-                  ? 'bg-black text-white'
-                  : 'bg-[#FAFAFA] text-dark-gray hover:bg-[#F0F0F0]'
+                  ? 'bg-[#000000] text-[#FFFFFF]'
+                  : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
               }`}
+              style={{
+                border: 'none',
+                padding: '16px 24px',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '15px',
+                fontWeight: 400,
+                width: '180px',
+                minWidth: '180px',
+                textAlign: 'center'
+              }}
               aria-label="Grid view"
               aria-pressed={viewMode === 'grid'}
             >
-              Grid
+              Grid View
             </button>
+
+            {/* List View Button */}
             <button
               onClick={() => onViewModeChange('list')}
-              className={`px-3 py-2 font-body text-sm transition-colors ${
+              className={`border-0 outline-none transition-all duration-300 ease-in-out ${
                 viewMode === 'list'
-                  ? 'bg-black text-white'
-                  : 'bg-[#FAFAFA] text-dark-gray hover:bg-[#F0F0F0]'
+                  ? 'bg-[#000000] text-[#FFFFFF]'
+                  : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
               }`}
+              style={{
+                border: 'none',
+                padding: '16px 24px',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '15px',
+                fontWeight: 400,
+                width: '180px',
+                minWidth: '180px',
+                textAlign: 'center'
+              }}
               aria-label="List view"
               aria-pressed={viewMode === 'list'}
             >
-              List
+              List View
             </button>
+
+            {/* Search Input */}
+            <input
+              id="artwork-search"
+              type="text"
+              placeholder="Search artworks..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`outline-none transition-all duration-300 ease-in-out text-center ${
+                searchTerm.length > 0
+                  ? 'bg-[#000000] text-[#FFFFFF] placeholder:text-[#999999]'
+                  : 'bg-[#FAFAFA] text-[#000000] placeholder:text-[#999999] hover:bg-[#000000] hover:text-[#FFFFFF]'
+              }`}
+              style={{
+                border: 'none',
+                padding: '16px 24px',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '15px',
+                fontWeight: 400,
+                flex: '1',
+                minWidth: '200px'
+              }}
+              aria-label="Search artworks by title"
+            />
+
+            {/* Year Filter */}
+            <div style={{ flex: '1', minWidth: '160px' }}>
+              <CustomDropdown
+                label="Year"
+                options={[
+                  { value: '', label: 'Year' },
+                  ...years.map(year => ({ value: String(year), label: String(year) }))
+                ]}
+                value={selectedYear ? String(selectedYear) : ''}
+                onChange={(value) => setSelectedYear(value ? Number(value) : undefined)}
+                placeholder="Year"
+                activeBackgroundShift={true}
+              />
+            </div>
+
+            {/* Medium Filter */}
+            <div style={{ flex: '1', minWidth: '160px' }}>
+              <CustomDropdown
+                label="Medium"
+                options={[
+                  { value: '', label: 'Medium' },
+                  ...mediums.map(medium => ({ value: medium, label: medium }))
+                ]}
+                value={selectedMedium ?? ''}
+                onChange={(value) => setSelectedMedium(value || undefined)}
+                placeholder="Medium"
+                activeBackgroundShift={true}
+              />
+            </div>
           </div>
 
-          {/* Clear Filters */}
-          {hasActiveFilters && (
-            <button
-              onClick={handleClearFilters}
-              className="px-4 py-2 font-body text-sm text-[#666666] hover:text-black transition-colors"
-              aria-label="Clear all filters"
-            >
-              Clear
-            </button>
-          )}
+          {/* Bottom Row: Clear and Results - Right side */}
+          <div className="flex flex-wrap items-center justify-end gap-6 w-full">
+            {/* Clear Filters */}
+            {hasActiveFilters && (
+              <button
+                onClick={handleClearFilters}
+                className="bg-[#000000] text-[#FFFFFF] hover:bg-[#FAFAFA] hover:text-[#000000] border-0 outline-none transition-all duration-300 ease-in-out"
+                style={{
+                  border: 'none',
+                  padding: '16px 24px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '15px',
+                  fontWeight: 400,
+                  textAlign: 'center'
+                }}
+                aria-label="Clear all filters"
+              >
+                Clear Filters
+              </button>
+            )}
 
-          {/* Results Count */}
-          <span className="ml-auto font-body text-sm text-mid-gray">
-            {totalCount} {totalCount === 1 ? 'artwork' : 'artworks'}
-          </span>
+            {/* Results Count */}
+            <span className="whitespace-nowrap" style={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '12.5px',
+              color: '#999999'
+            }}>
+              {totalCount} {totalCount === 1 ? 'artwork' : 'artworks'}
+            </span>
+          </div>
         </div>
       </div>
     </div>

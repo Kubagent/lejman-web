@@ -41,7 +41,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
 }
 
@@ -59,4 +59,63 @@ h1, h2, h3, h4, h5, h6 {
 *:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
+}
+
+/* Remove default focus outline for custom-styled inputs/selects */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="search"]:focus,
+select:focus {
+  outline: none;
+}
+
+/* Custom dropdown styling - Whitecube inspired */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Style dropdown options */
+select option {
+  background-color: var(--white);
+  color: var(--black);
+  padding: 12px 16px;
+  font-size: 18px;
+  font-weight: 400;
+  transition: background-color 0.2s ease;
+}
+
+select option:hover {
+  background-color: var(--near-white);
+}
+
+select option:checked {
+  background-color: var(--black);
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* Force cache refresh - White Cube buttons active */
+button {
+  font-family: inherit;
+}
+
+/* Global link styles - always black, no color change */
+a {
+  color: var(--black);
+  text-decoration: underline;
+  text-decoration-color: var(--black);
+}
+
+a:visited {
+  color: var(--black);
+}
+
+a:hover {
+  color: var(--black);
+}
+
+a:active {
+  color: var(--black);
 }

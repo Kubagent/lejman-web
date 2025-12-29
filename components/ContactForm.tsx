@@ -159,14 +159,59 @@ export default function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-2" noValidate>
+      <style jsx>{`
+        @keyframes requiredAppear {
+          0% {
+            opacity: 0;
+            transform: translateX(-5px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes thankYouAppear {
+          0% {
+            opacity: 0;
+            transform: scale(0.8) translateY(5px);
+          }
+          40% {
+            opacity: 1;
+            transform: scale(1.05) translateY(0);
+          }
+          60% {
+            transform: scale(0.98) translateY(0);
+          }
+          80% {
+            transform: scale(1.02) translateY(0);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+      `}</style>
+
       {/* Name Field */}
       <div>
         <label
           htmlFor="name"
-          className="block font-body text-sm uppercase tracking-wide text-mid-gray mb-2"
+          className="block font-body text-xs uppercase tracking-wide text-mid-gray mb-1"
         >
-          Name <span className="text-error" aria-label="required">*</span>
+          Name
+          {errors.name && (
+            <span
+              style={{
+                animation: 'requiredAppear 0.3s ease-out forwards',
+                marginLeft: '4px',
+                color: '#999999'
+              }}
+              role="alert"
+            >
+              - required
+            </span>
+          )}
         </label>
         <input
           type="text"
@@ -178,26 +223,41 @@ export default function ContactForm() {
           aria-required="true"
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? 'name-error' : undefined}
-          className={`w-full px-4 py-3 font-body text-base text-black border-0 ${
-            errors.name ? 'bg-red-50' : 'bg-[#FAFAFA]'
-          } focus:outline-none focus:bg-[#F0F0F0] transition-colors`}
+          className={`w-full outline-none border-0 transition-all duration-300 ease-in-out ${
+            errors.name ? 'bg-red-50 text-black' :
+            formData.name.length > 0 ? 'bg-[#000000] text-[#FFFFFF] placeholder:text-[#999999]' :
+            'bg-[#FAFAFA] text-[#000000] placeholder:text-[#999999] hover:bg-[#000000] hover:text-[#FFFFFF]'
+          }`}
+          style={{
+            padding: '16px 24px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '15px',
+            fontWeight: 400
+          }}
           placeholder="Your full name"
           disabled={status === 'submitting'}
         />
-        {errors.name && (
-          <p id="name-error" className="mt-2 text-sm text-error" role="alert">
-            {errors.name}
-          </p>
-        )}
       </div>
 
       {/* Email Field */}
       <div>
         <label
           htmlFor="email"
-          className="block font-body text-sm uppercase tracking-wide text-mid-gray mb-2"
+          className="block font-body text-xs uppercase tracking-wide text-mid-gray mb-1"
         >
-          Email <span className="text-error" aria-label="required">*</span>
+          Email
+          {errors.email && (
+            <span
+              style={{
+                animation: 'requiredAppear 0.3s ease-out forwards',
+                marginLeft: '4px',
+                color: '#999999'
+              }}
+              role="alert"
+            >
+              - required
+            </span>
+          )}
         </label>
         <input
           type="email"
@@ -209,26 +269,41 @@ export default function ContactForm() {
           aria-required="true"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'email-error' : undefined}
-          className={`w-full px-4 py-3 font-body text-base text-black border-0 ${
-            errors.email ? 'bg-red-50' : 'bg-[#FAFAFA]'
-          } focus:outline-none focus:bg-[#F0F0F0] transition-colors`}
+          className={`w-full outline-none border-0 transition-all duration-300 ease-in-out ${
+            errors.email ? 'bg-red-50 text-black' :
+            formData.email.length > 0 ? 'bg-[#000000] text-[#FFFFFF] placeholder:text-[#999999]' :
+            'bg-[#FAFAFA] text-[#000000] placeholder:text-[#999999] hover:bg-[#000000] hover:text-[#FFFFFF]'
+          }`}
+          style={{
+            padding: '16px 24px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '15px',
+            fontWeight: 400
+          }}
           placeholder="your.email@example.com"
           disabled={status === 'submitting'}
         />
-        {errors.email && (
-          <p id="email-error" className="mt-2 text-sm text-error" role="alert">
-            {errors.email}
-          </p>
-        )}
       </div>
 
       {/* Message Field */}
       <div>
         <label
           htmlFor="message"
-          className="block font-body text-sm uppercase tracking-wide text-mid-gray mb-2"
+          className="block font-body text-xs uppercase tracking-wide text-mid-gray mb-1"
         >
-          Message <span className="text-error" aria-label="required">*</span>
+          Message
+          {errors.message && (
+            <span
+              style={{
+                animation: 'requiredAppear 0.3s ease-out forwards',
+                marginLeft: '4px',
+                color: '#999999'
+              }}
+              role="alert"
+            >
+              - required
+            </span>
+          )}
         </label>
         <textarea
           id="message"
@@ -239,35 +314,46 @@ export default function ContactForm() {
           aria-required="true"
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? 'message-error' : undefined}
-          rows={8}
-          className={`w-full px-4 py-3 font-body text-base text-black border-0 ${
-            errors.message ? 'bg-red-50' : 'bg-[#FAFAFA]'
-          } focus:outline-none focus:bg-[#F0F0F0] transition-colors resize-y`}
+          rows={6}
+          className={`w-full outline-none border-0 transition-all duration-300 ease-in-out resize-y ${
+            errors.message ? 'bg-red-50 text-black' :
+            formData.message.length > 0 ? 'bg-[#000000] text-[#FFFFFF] placeholder:text-[#999999]' :
+            'bg-[#FAFAFA] text-[#000000] placeholder:text-[#999999] hover:bg-[#000000] hover:text-[#FFFFFF]'
+          }`}
+          style={{
+            padding: '16px 24px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '15px',
+            fontWeight: 400
+          }}
           placeholder="Your message..."
           disabled={status === 'submitting'}
         />
-        {errors.message && (
-          <p id="message-error" className="mt-2 text-sm text-error" role="alert">
-            {errors.message}
-          </p>
-        )}
       </div>
 
       {/* Cloudflare Turnstile Placeholder */}
       {/* TODO: Add Cloudflare Turnstile widget once credentials are available */}
       {/* <div className="cf-turnstile" data-sitekey="YOUR_SITE_KEY"></div> */}
 
-      {/* Submit Button */}
-      <div>
+      {/* Submit Button - Matches filter button style */}
+      <div className="text-center mb-2 mt-16 relative">
         <button
           type="submit"
           disabled={status === 'submitting' || status === 'success'}
-          className="inline-flex items-center justify-center px-8 py-4 font-body text-base font-medium text-white bg-black hover:bg-[#333333] focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-block bg-[#000000] text-[#FFFFFF] hover:bg-[#FAFAFA] hover:text-[#000000] border-0 outline-none transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            border: 'none',
+            padding: '16px 24px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '15px',
+            fontWeight: 400,
+            textAlign: 'center'
+          }}
           aria-label={status === 'submitting' ? 'Sending message' : 'Send message'}
         >
           {status === 'submitting' && (
             <svg
-              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+              className="animate-spin -ml-1 mr-3 h-5 w-5 inline-block"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -288,22 +374,27 @@ export default function ContactForm() {
               ></path>
             </svg>
           )}
-          {status === 'submitting' ? 'Sending...' : status === 'success' ? 'Message Sent!' : 'Send Message'}
+          {status === 'submitting' ? 'Sending...' : 'Send Message'}
         </button>
-      </div>
 
-      {/* Success Message */}
-      {status === 'success' && (
-        <div
-          className="p-4 bg-green-50"
-          role="alert"
-          aria-live="polite"
-        >
-          <p className="font-body text-sm text-green-800">
-            Thank you for your message. I will get back to you within 2-3 business days.
-          </p>
-        </div>
-      )}
+        {/* Animated Thank You Message */}
+        {status === 'success' && (
+          <span
+            style={{
+              marginLeft: '16px',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '15px',
+              fontWeight: 400,
+              color: '#000000',
+              animation: 'thankYouAppear 0.8s ease-out forwards'
+            }}
+            role="status"
+            aria-live="polite"
+          >
+            Thank you.
+          </span>
+        )}
+      </div>
 
       {/* Error Message */}
       {errors.submit && (
@@ -317,11 +408,6 @@ export default function ContactForm() {
           </p>
         </div>
       )}
-
-      {/* Form Info */}
-      <p className="text-sm text-mid-gray font-body">
-        All fields are required. Your information will be used solely to respond to your inquiry and will not be shared with third parties.
-      </p>
     </form>
   );
 }

@@ -15,17 +15,6 @@ export default function Footer() {
       >
         <div className="text-xs md:text-sm text-mid-gray">
           <div>© Dominik Lejman</div>
-          <div className="mt-1">
-            represented by{' '}
-            <a
-              href="https://www.molskigallery.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black underline decoration-1 underline-offset-2 hover:text-[#666666] transition-colors"
-            >
-              Molski Gallery
-            </a>
-          </div>
         </div>
       </div>
 

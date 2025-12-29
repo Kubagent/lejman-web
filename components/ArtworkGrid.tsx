@@ -48,8 +48,8 @@ export default function ArtworkGrid({
       aria-label={`Artwork ${viewMode} view with ${artworks.length} ${artworks.length === 1 ? 'artwork' : 'artworks'}`}
     >
       {viewMode === 'list' ? (
-        // List View - Single column with horizontal cards
-        <div className="flex flex-col">
+        // List View - Single column with 50px gaps and smaller artwork size
+        <div className="flex flex-col gap-[50px] max-w-[60vw] mx-auto">
           {artworks.map((artwork, index) => (
             <ArtworkCard
               key={artwork._id}
@@ -61,9 +61,9 @@ export default function ArtworkGrid({
           ))}
         </div>
       ) : (
-        // Grid View - Responsive multi-column layout
+        // Grid View - Responsive multi-column layout with 25px gaps
         <div
-          className="grid grid-cols-3 gap-6"
+          className="grid grid-cols-3 gap-[25px]"
           role="list"
         >
           {artworks.map((artwork) => (

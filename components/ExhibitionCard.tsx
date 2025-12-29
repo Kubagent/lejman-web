@@ -81,7 +81,7 @@ export default function ExhibitionCard({
 
   // Generate optimized image URL
   const imageUrl = exhibition.mainImage
-    ? (exhibition.mainImage.asset._ref.startsWith('http://') || exhibition.mainImage.asset._ref.startsWith('https://'))
+    ? (exhibition.mainImage.asset?._ref?.startsWith('http://') || exhibition.mainImage.asset?._ref?.startsWith('https://'))
       ? exhibition.mainImage.asset._ref  // Mock URL
       : urlFor(exhibition.mainImage)
           .width(viewMode === 'detailed' ? 400 : 200)
@@ -103,7 +103,7 @@ export default function ExhibitionCard({
       <article className={`group ${bgClass}`}>
         <Link
           href={`/exhibitions/${exhibition.slug.current}`}
-          className="block py-6 px-6 md:px-8 hover:opacity-80 transition-opacity duration-200"
+          className="block py-6 px-6 md:px-8 no-underline"
           aria-label={ariaLabel}
         >
           <div className="flex items-baseline gap-6">
@@ -114,7 +114,7 @@ export default function ExhibitionCard({
 
             {/* Title & Venue */}
             <div className="flex-1 flex flex-col md:flex-row md:items-baseline md:gap-2">
-              <h3 className="font-heading text-lg md:text-xl font-semibold text-black group-hover:text-dark-gray transition-colors">
+              <h3 className="font-heading text-lg md:text-xl font-semibold text-black group-hover:underline transition-all inline-block">
                 {title}
               </h3>
               <span className="font-body text-sm md:text-base text-mid-gray">
@@ -137,10 +137,10 @@ export default function ExhibitionCard({
     <article className={`group ${bgClass}`}>
       <Link
         href={`/exhibitions/${exhibition.slug.current}`}
-        className="block"
+        className="block no-underline"
         aria-label={ariaLabel}
       >
-        <div className="flex flex-col md:flex-row gap-6 py-10 px-6 md:px-8 hover:opacity-80 transition-opacity duration-200">
+        <div className="flex flex-col md:flex-row gap-6 py-10 px-6 md:px-8">
         {/* Image thumbnail (if available) */}
         {imageUrl && (
           <div className="relative w-full md:w-80 h-56 md:h-60 flex-shrink-0 bg-near-white overflow-hidden">
@@ -166,7 +166,7 @@ export default function ExhibitionCard({
           </div>
 
           {/* Title */}
-          <h3 className="font-heading text-2xl md:text-3xl lg:text-4xl font-semibold text-black group-hover:text-dark-gray transition-colors">
+          <h3 className="font-heading text-2xl md:text-3xl lg:text-4xl font-semibold text-black group-hover:underline transition-all inline-block">
             {title}
           </h3>
 

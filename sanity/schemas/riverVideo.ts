@@ -55,6 +55,13 @@ export default defineType({
       type: 'number',
       validation: (Rule) => Rule.min(1900).max(new Date().getFullYear() + 1),
     }),
+    defineField({
+      name: 'linkedArtwork',
+      title: 'Linked Artwork',
+      type: 'reference',
+      to: [{ type: 'artwork' }],
+      description: 'Optional: Link this video to an artwork. Double-clicking the video will navigate to the artwork page.',
+    }),
   ],
   preview: {
     select: {

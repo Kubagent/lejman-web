@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface NavigationProps {
@@ -10,8 +11,8 @@ interface NavigationProps {
 
 const menuItems = [
   { href: '/works', label: 'Works' },
-  { href: '/exhibitions', label: 'Exhibitions' },
-  { href: '/biography', label: 'Biography' },
+  { href: '/exhibitions', label: 'Projects' },
+  { href: '/about', label: 'About' },
   { href: '/texts', label: 'Texts' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -67,7 +68,7 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
         overflow: 'hidden'
       }}
     >
-      {/* Top Left - Artist Name */}
+      {/* Top Left - Logo */}
       <div
         style={{
           position: 'fixed',
@@ -79,10 +80,21 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
         <Link
           href="/"
           onClick={onClose}
-          className="font-heading text-xl md:text-2xl font-semibold text-black hover:text-dark-gray transition-colors"
           aria-label="Home"
+          style={{
+            display: 'block',
+            transition: 'opacity 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
         >
-          Dominik Lejman
+          <Image
+            src="/images/DL–favicon-circ.png"
+            alt="Dominik Lejman"
+            width={48}
+            height={48}
+            priority
+          />
         </Link>
       </div>
 
@@ -121,8 +133,8 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
                 href={item.href}
                 onClick={onClose}
                 style={{
-                  fontFamily: 'Cormorant Garamond, serif',
-                  fontWeight: 400,
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontWeight: 600,
                   color: '#000000',
                   textDecoration: 'none',
                   transition: 'opacity 0.2s ease',

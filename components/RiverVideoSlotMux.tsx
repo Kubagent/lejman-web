@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import MuxPlayer from '@mux/mux-player-react';
 import { urlFor } from '@/lib/sanity/image';
 
@@ -23,11 +24,13 @@ export default function RiverVideoSlotMux({
   locale = 'en',
 }: RiverVideoSlotMuxProps) {
   const playerRef = useRef<any>(null);
+  const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const clickCountRef = useRef(0);
 
   // Get localized title
   const title = video.title[locale] ?? video.title.en ?? 'Untitled';
-  const description = video.description?.[locale] ?? video.description?.en;
 
   // Get Mux playback ID
   const playbackId = video.video?.asset?.playbackId;
@@ -37,16 +40,45 @@ export default function RiverVideoSlotMux({
     ? urlFor(video.posterImage).width(1920).height(1080).quality(85).url()
     : undefined;
 
-  // Handle player interaction
-  const handlePlayerClick = useCallback(() => {
-    if (!playerRef.current) return;
+  // Handle player interaction with double-click detection
+  // Single click: play/pause after 300ms delay
+  // Double click: navigate to artwork immediately
+  const handlePlayerClick = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault();
+      clickCountRef.current += 1;
 
-    if (isPlaying) {
-      playerRef.current.pause();
-    } else {
-      playerRef.current.play();
-    }
-  }, [isPlaying]);
+      // Clear any existing timeout
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+      }
+
+      // If this is a potential double-click (second click within delay period)
+      if (clickCountRef.current === 2) {
+        clickCountRef.current = 0;
+
+        // Navigate to artwork if linked
+        if (video.linkedArtwork?.slug?.current) {
+          router.push(`/works/${video.linkedArtwork.slug.current}`);
+          return;
+        }
+      }
+
+      // Wait 300ms to see if another click comes (double-click)
+      clickTimeoutRef.current = setTimeout(() => {
+        // Single click confirmed - toggle play/pause
+        if (clickCountRef.current === 1 && playerRef.current) {
+          if (isPlaying) {
+            playerRef.current.pause();
+          } else {
+            playerRef.current.play();
+          }
+        }
+        clickCountRef.current = 0;
+      }, 300);
+    },
+    [isPlaying, video.linkedArtwork, router]
+  );
 
   if (!playbackId) {
     return (
@@ -95,39 +127,34 @@ export default function RiverVideoSlotMux({
           }}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
-          // Remove default controls for cleaner look
-          controls={false}
         />
       </div>
 
-      {/* Video Metadata Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 md:p-8 pointer-events-none">
-        <div className="max-w-screen-xl mx-auto">
-          <h2 className="font-heading text-2xl md:text-3xl lg:text-4xl text-white mb-2">
-            {title}
-          </h2>
-
-          {video.year && (
-            <p className="font-body text-base md:text-lg text-white/90">
-              {video.year}
-            </p>
-          )}
-
-          {description && (
-            <p className="font-body text-sm md:text-base text-white/80 mt-2 line-clamp-2">
-              {description}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Playback Status Indicator */}
-      <div
-        className="absolute top-4 right-4 bg-black/70 text-white text-xs font-mono px-2 py-1 rounded pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-        aria-hidden="true"
-      >
-        {isPlaying ? 'Playing' : 'Paused'}
-      </div>
+      {/* More Button - Only show if artwork is linked */}
+      {video.linkedArtwork?.slug?.current && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(`/works/${video.linkedArtwork.slug.current}`);
+          }}
+          className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '12px',
+            fontWeight: 400,
+            color: '#FFFFFF',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(8px)',
+            padding: '8px 16px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            cursor: 'pointer',
+            zIndex: 10
+          }}
+          aria-label={`View more about ${title}`}
+        >
+          More
+        </button>
+      )}
     </article>
   );
 }

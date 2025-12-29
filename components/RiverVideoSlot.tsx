@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { RiverVideoSlotProps } from '@/lib/types';
 import { urlFor } from '@/lib/sanity/image';
 import { getFileAssetUrl } from '@/lib/sanity/file';
@@ -67,11 +68,13 @@ export default function RiverVideoSlot({
 }: RiverVideoSlotProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Mobile interaction state
   const [showPlayPauseOverlay, setShowPlayPauseOverlay] = useState(false);
   const [overlayIcon, setOverlayIcon] = useState<'play' | 'pause'>('play');
   const lastTapTimeRef = useRef<number>(0);
+  const lastClickTimeRef = useRef<number>(0);
   const overlayTimeoutRef = useRef<number | null>(null);
 
   // Playback status for screen readers
@@ -96,7 +99,7 @@ export default function RiverVideoSlot({
 
   // Generate Sanity asset URLs (or use mock URLs in development)
   const posterUrl = video.posterImage
-    ? (video.posterImage.asset._ref.startsWith('http://') || video.posterImage.asset._ref.startsWith('https://'))
+    ? (video.posterImage.asset?._ref?.startsWith('http://') || video.posterImage.asset?._ref?.startsWith('https://'))
       ? video.posterImage.asset._ref  // Mock URL - use directly
       : urlFor(video.posterImage).width(1920).height(1080).quality(85).url()  // Sanity asset
     : undefined;
@@ -188,27 +191,36 @@ export default function RiverVideoSlot({
 
   /**
    * Handle click events for desktop
-   * Separate from touch to avoid double-firing on mobile
+   * Detects double-click for artwork navigation, single click for play/pause
    */
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
       // Only handle click if not from a touch event
       const nativeEvent = event.nativeEvent;
 
-      // Type guard for PointerEvent support
-      if ('pointerType' in nativeEvent) {
-        const pointerEvent = nativeEvent as PointerEvent;
-        if (pointerEvent.pointerType === 'mouse' || event.detail === 0) {
-          handleVideoTap(event);
-        }
-      } else {
-        // Fallback for browsers without PointerEvent
-        if (event.detail !== 0) {
-          handleVideoTap(event);
-        }
+      // Check if this is a mouse event (not touch)
+      const isMouseEvent = ('pointerType' in nativeEvent && (nativeEvent as PointerEvent).pointerType === 'mouse') ||
+                           event.detail !== 0;
+
+      if (!isMouseEvent) return;
+
+      const now = Date.now();
+      const timeSinceLastClick = now - lastClickTimeRef.current;
+
+      // Double-click detected (within 400ms)
+      if (timeSinceLastClick < 400 && video.linkedArtwork?.slug?.current) {
+        event.preventDefault();
+        event.stopPropagation();
+        // Navigate to artwork page
+        router.push(`/works/${video.linkedArtwork.slug.current}`);
+        return;
       }
+
+      // Single click - play/pause
+      lastClickTimeRef.current = now;
+      handleVideoTap(event);
     },
-    [handleVideoTap]
+    [handleVideoTap, video.linkedArtwork, router]
   );
 
   /**
@@ -308,9 +320,8 @@ export default function RiverVideoSlot({
           onTouchEnd={handleTouchEnd}
           onClick={handleClick}
           role="button"
-          aria-label={`${title}, ${playbackStatus}. Press Space or Enter to toggle playback, Arrow keys to navigate, Escape to stop.`}
+          aria-label={`${title}, ${playbackStatus}. ${video.linkedArtwork ? 'Double-click to view artwork details. ' : ''}Press Space or Enter to toggle playback, Arrow keys to navigate, Escape to stop.`}
           aria-live="polite"
-          aria-describedby={`video-metadata-${video._id}`}
           tabIndex={0}
           onKeyDown={handleKeyDown}
         >
@@ -351,30 +362,6 @@ export default function RiverVideoSlot({
       >
         <div className="bg-black/70 rounded-full p-4 md:p-6 backdrop-blur-sm">
           <PlayPauseIcon isPlaying={overlayIcon === 'pause'} />
-        </div>
-      </div>
-
-      {/* Video Metadata Overlay */}
-      <div
-        id={`video-metadata-${video._id}`}
-        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 md:p-8"
-      >
-        <div className="max-w-screen-xl mx-auto">
-          <h2 className="font-heading text-2xl md:text-3xl lg:text-4xl text-white mb-2">
-            {title}
-          </h2>
-
-          {video.year && (
-            <p className="font-body text-base md:text-lg text-white/90">
-              {video.year}
-            </p>
-          )}
-
-          {description && (
-            <p className="font-body text-sm md:text-base text-white/80 mt-2 line-clamp-2">
-              {description}
-            </p>
-          )}
         </div>
       </div>
 

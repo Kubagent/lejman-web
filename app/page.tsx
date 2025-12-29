@@ -1,6 +1,5 @@
 import River from '@/components/River';
 import { getRiverVideos } from '@/lib/sanity/riverVideos';
-import { mockRiverVideos } from '@/lib/mockData';
 
 /**
  * Home Page - Features the River video component
@@ -15,12 +14,7 @@ import { mockRiverVideos } from '@/lib/mockData';
  */
 export default async function Home() {
   // Fetch river videos from Sanity CMS
-  let riverVideos = await getRiverVideos();
-
-  // DEVELOPMENT MODE: Use mock data if no Sanity content available
-  if (!riverVideos || riverVideos.length === 0) {
-    riverVideos = mockRiverVideos;
-  }
+  const riverVideos = await getRiverVideos();
 
   return (
     <>

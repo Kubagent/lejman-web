@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { mockArtworks } from '@/lib/mockData';
+import { getArtworkBySlug, getArtworks } from '@/lib/sanity/artworks';
 import ArtworkDetail from '@/components/ArtworkDetail';
 
 interface ArtworkPageProps {
@@ -14,7 +14,8 @@ interface ArtworkPageProps {
  * This enables static generation at build time
  */
 export async function generateStaticParams() {
-  return mockArtworks.map((artwork) => ({
+  const artworks = await getArtworks();
+  return artworks.map((artwork) => ({
     slug: artwork.slug.current,
   }));
 }
@@ -26,9 +27,7 @@ export async function generateMetadata({
   params,
 }: ArtworkPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const artwork = mockArtworks.find(
-    (work) => work.slug.current === slug
-  );
+  const artwork = await getArtworkBySlug(slug);
 
   if (!artwork) {
     return {
@@ -47,20 +46,11 @@ export async function generateMetadata({
       title: `${title} (${artwork.year})`,
       description: description,
       type: 'website',
-      images: [
-        {
-          url: artwork.mainImage.asset._ref,
-          width: 1200,
-          height: 1200,
-          alt: `${title} by Dominik L.`,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} (${artwork.year})`,
       description: description,
-      images: [artwork.mainImage.asset._ref],
     },
   };
 }
@@ -78,15 +68,12 @@ export async function generateMetadata({
  * - SEO optimized with metadata
  * - 404 handling for invalid slugs
  * - Static generation at build time
- *
- * TODO: Replace mockArtworks with real Sanity query when CMS is populated
+ * - Real Sanity CMS data
  */
 export default async function ArtworkPage({ params }: ArtworkPageProps) {
-  // Fetch artwork by slug
+  // Fetch artwork by slug from Sanity
   const { slug } = await params;
-  const artwork = mockArtworks.find(
-    (work) => work.slug.current === slug
-  );
+  const artwork = await getArtworkBySlug(slug);
 
   // Return 404 if artwork not found
   if (!artwork) {

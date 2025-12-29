@@ -69,7 +69,7 @@ export default function River({ videos, locale = 'en' }: RiverProps) {
       </a>
 
       {/* River Video Stack */}
-      <div className="flex flex-col" role="list" aria-label="Video gallery with 5 videos">
+      <div className="flex flex-col gap-[25px]" role="list" aria-label="Video gallery with 5 videos">
         {sortedVideos.map((video, index) => (
           <div
             key={video._id}

@@ -32,24 +32,35 @@ export const metadata: Metadata = {
  */
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Page Header */}
-      <div className="py-12 md:py-16 lg:py-20">
-        {/* Title - Left aligned with margin */}
-        <div className="px-6 md:px-12 lg:px-24">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-6 ml-8">
+    <div className="bg-white" style={{
+      paddingLeft: '50px',
+      paddingRight: '50px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: '1'
+    }}>
+      {/* Page Header and Form - Compact layout */}
+      <div className="w-full" style={{ maxWidth: '1200px' }}>
+        {/* Title - Center aligned */}
+        <div className="text-center">
+          <h1 className="font-serif text-3xl md:text-4xl font-semibold text-black mb-2">
             Contact
           </h1>
 
-          {/* Subtitle / Description - Left aligned with margin */}
-          <p className="font-body text-lg md:text-xl text-dark-gray leading-relaxed mb-12 md:mb-16 max-w-2xl ml-8">
-            For inquiries about artworks, exhibitions, or press materials, please use the form below.
-            I aim to respond within 2-3 business days.
+          {/* Subtitle / Description - Center aligned */}
+          <p className="font-body leading-snug max-w-2xl mx-auto" style={{ color: 'rgba(0, 0, 0, 0.8)', fontSize: '0.9rem' }}>
+            We appreciate all inquiries concerning artworks, projects, and cooperation, or press materials.<br />
+            Please use all fields of the form below for communication.<br />
+            Your information will be used solely to respond to your inquiry and will not be shared with third parties.
           </p>
         </div>
 
-        {/* Centered Form - Narrow width with large margins on both sides */}
-        <div className="max-w-lg mx-auto px-6">
+        {/* Spacer */}
+        <div className="w-full bg-white" style={{ height: '20px' }} />
+
+        {/* Centered Form - 3x wider than before */}
+        <div className="w-full max-w-[840px] md:max-w-[960px] mx-auto">
           <ContactForm />
         </div>
       </div>

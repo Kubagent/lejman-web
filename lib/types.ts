@@ -37,6 +37,11 @@ export interface RiverVideo {
   posterImage: SanityImageAsset;
   description?: LocalizedText;
   year?: number;
+  linkedArtwork?: {
+    slug: {
+      current: string;
+    };
+  };
 }
 
 // Props for River Components
