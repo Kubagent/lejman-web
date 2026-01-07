@@ -586,14 +586,14 @@ export const mockProjects: Project[] = [
       pl: 'Kompleksowa wystawa indywidualna badająca percepcję czasu poprzez instalacje multimedialne i sztukę wideo.'
     },
     featuredArtworks: ['artwork-1', 'artwork-3', 'artwork-7'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh1/1200/800',
-        _type: 'reference'
-      }
-    },
     images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh1/1200/800',
+          _type: 'reference'
+        }
+      },
       {
         _type: 'image',
         asset: {
@@ -651,14 +651,14 @@ export const mockProjects: Project[] = [
       pl: 'Wystawa zbiorowa prezentująca współczesne podejścia do malarstwa pól barwnych.'
     },
     featuredArtworks: ['artwork-7'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh2/1200/800',
-        _type: 'reference'
-      }
-    },
     images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh2/1200/800',
+          _type: 'reference'
+        }
+      },
       {
         _type: 'image',
         asset: {
@@ -709,14 +709,14 @@ export const mockProjects: Project[] = [
       pl: 'Główna wystawa instytucjonalna badająca przecięcie technologii cyfrowej i współczesnej praktyki artystycznej.'
     },
     featuredArtworks: ['artwork-3', 'artwork-11'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh3/1200/800',
-        _type: 'reference'
-      }
-    },
     images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh3/1200/800',
+          _type: 'reference'
+        }
+      },
       {
         _type: 'image',
         asset: {
@@ -781,14 +781,14 @@ export const mockProjects: Project[] = [
       pl: 'Wystawa indywidualna koncentrująca się na abstrakcji geometrycznej i kompozycji przestrzennej.'
     },
     featuredArtworks: ['artwork-4', 'artwork-8', 'artwork-11'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh4/1200/800',
-        _type: 'reference'
-      }
-    },
     images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh4/1200/800',
+          _type: 'reference'
+        }
+      },
       {
         _type: 'image',
         asset: {
@@ -839,14 +839,14 @@ export const mockProjects: Project[] = [
       pl: 'Wystawa zbiorowa badająca środowiska miejskie poprzez współczesne praktyki artystyczne.'
     },
     featuredArtworks: ['artwork-6'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh5/1200/800',
-        _type: 'reference'
-      }
-    },
     images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh5/1200/800',
+          _type: 'reference'
+        }
+      },
       {
         _type: 'image',
         asset: {
@@ -890,14 +890,14 @@ export const mockProjects: Project[] = [
       pl: 'Kameralna wystawa indywidualna prezentująca najnowsze prace na papierze i płótnie badające palety monochromatyczne.'
     },
     featuredArtworks: ['artwork-5', 'artwork-12'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh6/1200/800',
-        _type: 'reference'
-      }
-    },
     images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh6/1200/800',
+          _type: 'reference'
+        }
+      },
       {
         _type: 'image',
         asset: {
@@ -948,13 +948,15 @@ export const mockProjects: Project[] = [
       pl: 'Międzynarodowa wystawa zbiorowa prezentująca wschodzących europejskich artystów.'
     },
     featuredArtworks: ['artwork-9', 'artwork-10'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh7/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh7/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   },
   {
     _id: 'exhibition-8',
@@ -983,13 +985,15 @@ export const mockProjects: Project[] = [
       pl: 'Wystawa indywidualna badająca tematy pamięci, miejsca i krajobrazu poprzez prace w technice mieszanej.'
     },
     featuredArtworks: ['artwork-9', 'artwork-10'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh8/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh8/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   },
   {
     _id: 'exhibition-9',
@@ -1018,13 +1022,15 @@ export const mockProjects: Project[] = [
       pl: 'Główna wystawa zbiorowa badająca wymiary czasowe w sztuce współczesnej.'
     },
     featuredArtworks: ['artwork-4', 'artwork-12'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh9/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh9/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   },
   {
     _id: 'exhibition-10',
@@ -1053,13 +1059,15 @@ export const mockProjects: Project[] = [
       pl: 'Retrospektywa kariery artysty prezentująca prace z lat 2015-2019.'
     },
     featuredArtworks: ['artwork-6', 'artwork-7', 'artwork-8'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh10/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh10/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   },
   {
     _id: 'exhibition-11',
@@ -1088,13 +1096,15 @@ export const mockProjects: Project[] = [
       pl: 'Wystawa zbiorowa badająca relacje między teorią koloru a percepcją przestrzeni.'
     },
     featuredArtworks: ['artwork-7'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh11/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh11/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   },
   {
     _id: 'exhibition-12',
@@ -1123,13 +1133,15 @@ export const mockProjects: Project[] = [
       pl: 'Współczesne ujęcia abstrakcji geometrycznej od wschodzących europejskich artystów.'
     },
     featuredArtworks: ['artwork-8', 'artwork-11'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh12/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh12/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   },
   {
     _id: 'exhibition-13',
@@ -1158,13 +1170,15 @@ export const mockProjects: Project[] = [
       pl: 'Pierwsza duża wystawa indywidualna prezentująca fundamentalne prace i wczesne eksperymenty.'
     },
     featuredArtworks: ['artwork-10', 'artwork-12'],
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh13/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh13/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   },
   {
     _id: 'exhibition-14',
@@ -1192,13 +1206,15 @@ export const mockProjects: Project[] = [
       de: 'Gruppenausstellung mit aktuellen Absolventen polnischer Kunstakademien.',
       pl: 'Wystawa zbiorowa prezentująca świeżych absolwentów polskich akademii sztuk pięknych.'
     },
-    mainImage: {
-      _type: 'image',
-      asset: {
-        _ref: 'https://picsum.photos/seed/exh14/1200/800',
-        _type: 'reference'
+    images: [
+      {
+        _type: 'image',
+        asset: {
+          _ref: 'https://picsum.photos/seed/exh14/1200/800',
+          _type: 'reference'
+        }
       }
-    }
+    ]
   }
 ];
 
