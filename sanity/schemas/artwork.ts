@@ -52,6 +52,44 @@ export default defineType({
         { name: 'height', title: 'Height', type: 'number' },
         { name: 'depth', title: 'Depth (optional)', type: 'number' },
       ],
+      description: 'Standard dimensions for regular artworks',
+    }),
+    defineField({
+      name: 'customDimensions',
+      title: 'Custom Dimensions (for irregular formats)',
+      type: 'array',
+      description: 'Use this for artworks with non-standard measurements (e.g., 150cm left vertical x 120cm horizontal x 170cm right vertical)',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'value',
+              title: 'Measurement (cm)',
+              type: 'number',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              placeholder: 'e.g., left vertical, horizontal, right vertical',
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          preview: {
+            select: {
+              value: 'value',
+              label: 'label',
+            },
+            prepare({ value, label }) {
+              return {
+                title: `${value}cm (${label})`,
+              };
+            },
+          },
+        },
+      ],
     }),
     defineField({
       name: 'mainImage',
@@ -86,10 +124,10 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'exhibitions',
-      title: 'Exhibitions',
+      name: 'projects',
+      title: 'Projects',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'exhibition' }] }],
+      of: [{ type: 'reference', to: [{ type: 'project' }] }],
     }),
   ],
   preview: {

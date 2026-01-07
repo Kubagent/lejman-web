@@ -1,4 +1,4 @@
-import { RiverVideo, Artwork, Exhibition, Publication } from './types';
+import { RiverVideo, Artwork, Project, Publication } from './types';
 
 /**
  * Mock River Videos for Development/Preview
@@ -553,12 +553,12 @@ export const mockArtworks: Artwork[] = [
 ];
 
 /**
- * Mock Exhibitions for Development/Preview
+ * Mock Projects for Development/Preview
  *
- * Comprehensive exhibition history (2015-2024) with varied types and venues.
+ * Comprehensive project history (2015-2024) with varied types and venues.
  * Replace these with real Sanity content once CMS is populated.
  */
-export const mockExhibitions: Exhibition[] = [
+export const mockProjects: Project[] = [
   {
     _id: 'exhibition-1',
     slug: {

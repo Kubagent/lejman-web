@@ -1,12 +1,12 @@
 import artwork from './artwork';
-import exhibition from './exhibition';
+import project from './project';
 import riverVideo from './riverVideo';
 import siteSettings from './siteSettings';
 import text from './text';
 
 export const schemaTypes = [
   artwork,
-  exhibition,
+  project,
   riverVideo,
   siteSettings,
   text,

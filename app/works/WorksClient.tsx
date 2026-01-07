@@ -61,7 +61,7 @@ export default function WorksClient({ artworks, years, mediums }: WorksClientPro
       <section className="bg-white">
         <div className="container mx-auto px-6 md:px-12 lg:px-24 pt-12 md:pt-16 pb-32">
           <h1 className="font-heading text-4xl md:text-6xl font-semibold text-black mb-4 text-center">
-            Selected Work
+            Selected Works
           </h1>
         </div>
       </section>

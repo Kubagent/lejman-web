@@ -37,6 +37,7 @@ export const artworksQuery = groq`
     year,
     medium,
     dimensions,
+    customDimensions,
     images,
     description
   }
@@ -51,9 +52,10 @@ export const artworkBySlugQuery = groq`
     year,
     medium,
     dimensions,
+    customDimensions,
     images,
     description,
-    exhibitions[]-> {
+    projects[]-> {
       _id,
       title,
       venue,
@@ -64,9 +66,9 @@ export const artworkBySlugQuery = groq`
   }
 `;
 
-// All Exhibitions - ordered by startDate desc
-export const exhibitionsQuery = groq`
-  *[_type == "exhibition"] | order(startDate desc) {
+// All Projects - ordered by startDate desc
+export const projectsQuery = groq`
+  *[_type == "project"] | order(startDate desc) {
     _id,
     title,
     slug,
@@ -79,9 +81,9 @@ export const exhibitionsQuery = groq`
   }
 `;
 
-// Single Exhibition by slug
-export const exhibitionBySlugQuery = groq`
-  *[_type == "exhibition" && slug.current == $slug][0] {
+// Single Project by slug
+export const projectBySlugQuery = groq`
+  *[_type == "project" && slug.current == $slug][0] {
     _id,
     title,
     slug,

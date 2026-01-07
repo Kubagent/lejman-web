@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { ExhibitionCardProps } from '@/lib/types';
+import { ProjectCardProps } from '@/lib/types';
 import { urlFor } from '@/lib/sanity/image';
 
 /**
- * ExhibitionCard - Individual exhibition display
+ * ProjectCard - Individual project display
  *
  * Features:
  * - Two view modes: detailed (default) and compact (timeline-style)
@@ -23,30 +23,30 @@ import { urlFor } from '@/lib/sanity/image';
  * - 8px grid system for spacing
  *
  * Usage:
- * <ExhibitionCard exhibition={exhibition} locale="en" viewMode="detailed" />
+ * <ProjectCard project={project} locale="en" viewMode="detailed" />
  */
-interface ExhibitionCardInternalProps extends ExhibitionCardProps {
+interface ProjectCardInternalProps extends ProjectCardProps {
   index?: number;
 }
 
-export default function ExhibitionCard({
-  exhibition,
+export default function ProjectCard({
+  project,
   locale = 'en',
   viewMode = 'detailed',
   index = 0
-}: ExhibitionCardInternalProps) {
+}: ProjectCardInternalProps) {
   // Get localized text
-  const title = exhibition.title[locale] ?? exhibition.title.en ?? 'Untitled Exhibition';
-  const venueName = exhibition.venue.name[locale] ?? exhibition.venue.name.en ?? '';
-  const description = exhibition.description?.[locale] ?? exhibition.description?.en ?? '';
+  const title = project.title[locale] ?? project.title.en ?? 'Untitled Project';
+  const venueName = project.venue[locale] ?? project.venue.en ?? '';
+  const description = project.description?.[locale] ?? project.description?.en ?? '';
 
-  // Format location (City, Country)
-  const location = `${exhibition.venue.city}, ${exhibition.venue.country}`;
+  // Location (City, Country)
+  const location = project.location;
 
   // Format date range
   const formatDateRange = () => {
-    if (!exhibition.startDate && !exhibition.endDate) {
-      return exhibition.year.toString();
+    if (!project.startDate && !project.endDate) {
+      return project.year.toString();
     }
 
     const formatDate = (dateString: string) => {
@@ -54,45 +54,46 @@ export default function ExhibitionCard({
       return date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
-    if (exhibition.startDate && exhibition.endDate) {
-      const start = new Date(exhibition.startDate);
-      const end = new Date(exhibition.endDate);
+    if (project.startDate && project.endDate) {
+      const start = new Date(project.startDate);
+      const end = new Date(project.endDate);
 
       // Same year: "Mar 15 - May 20, 2024"
       if (start.getFullYear() === end.getFullYear()) {
         const startMonth = start.toLocaleDateString(locale, { month: 'short', day: 'numeric' });
-        const endFull = formatDate(exhibition.endDate);
+        const endFull = formatDate(project.endDate);
         return `${startMonth} - ${endFull}`;
       }
 
       // Different years: "Dec 15, 2023 - Feb 10, 2024"
-      return `${formatDate(exhibition.startDate)} - ${formatDate(exhibition.endDate)}`;
+      return `${formatDate(project.startDate)} - ${formatDate(project.endDate)}`;
     }
 
-    return exhibition.startDate ? formatDate(exhibition.startDate) : exhibition.year.toString();
+    return project.startDate ? formatDate(project.startDate) : project.year.toString();
   };
 
   // Type label with proper capitalization
   const typeLabel = {
-    solo: 'Solo Exhibition',
-    group: 'Group Exhibition',
-    institutional: 'Institutional Exhibition'
-  }[exhibition.type];
+    solo: 'Solo Project',
+    group: 'Group Project',
+    institutional: 'Institutional Project'
+  }[project.type];
 
-  // Generate optimized image URL
-  const imageUrl = exhibition.mainImage
-    ? (exhibition.mainImage.asset?._ref?.startsWith('http://') || exhibition.mainImage.asset?._ref?.startsWith('https://'))
-      ? exhibition.mainImage.asset._ref  // Mock URL
-      : urlFor(exhibition.mainImage)
-          .width(viewMode === 'detailed' ? 400 : 200)
-          .height(viewMode === 'detailed' ? 300 : 150)
-          .quality(85)
+  // Generate optimized image URL - use first photo as thumbnail
+  const thumbnailImage = project.images && project.images.length > 0 ? project.images[0] : null;
+  const imageUrl = thumbnailImage
+    ? (thumbnailImage.asset?._ref?.startsWith('http://') || thumbnailImage.asset?._ref?.startsWith('https://'))
+      ? thumbnailImage.asset._ref  // Mock URL
+      : urlFor(thumbnailImage)
+          .width(viewMode === 'detailed' ? 2400 : 300)
+          .height(viewMode === 'detailed' ? 1800 : 225)
+          .quality(100)
           .auto('format')
           .url()
     : null;
 
   // ARIA label for accessibility
-  const ariaLabel = `${title}, ${exhibition.year}, ${typeLabel} at ${venueName}, ${location}`;
+  const ariaLabel = `${title}, ${project.year}, ${typeLabel} at ${venueName}, ${location}`;
 
   // Alternating background
   const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]';
@@ -102,14 +103,14 @@ export default function ExhibitionCard({
     return (
       <article className={`group ${bgClass}`}>
         <Link
-          href={`/exhibitions/${exhibition.slug.current}`}
+          href={`/projects/${project.slug.current}`}
           className="block py-6 px-6 md:px-8 no-underline"
           aria-label={ariaLabel}
         >
           <div className="flex items-baseline gap-6">
             {/* Year - Fixed width for alignment */}
             <span className="font-body text-lg md:text-xl font-semibold text-black w-16 flex-shrink-0">
-              {exhibition.year}
+              {project.year}
             </span>
 
             {/* Title & Venue */}
@@ -136,19 +137,20 @@ export default function ExhibitionCard({
   return (
     <article className={`group ${bgClass}`}>
       <Link
-        href={`/exhibitions/${exhibition.slug.current}`}
+        href={`/projects/${project.slug.current}`}
         className="block no-underline"
         aria-label={ariaLabel}
       >
-        <div className="flex flex-col md:flex-row gap-6 py-10 px-6 md:px-8">
+        <div className="flex flex-col md:flex-row gap-8 py-8 px-6 md:px-12 lg:px-24">
         {/* Image thumbnail (if available) */}
         {imageUrl && (
-          <div className="relative w-full md:w-80 h-56 md:h-60 flex-shrink-0 bg-near-white overflow-hidden">
+          <div className="relative flex-shrink-0 bg-near-white overflow-hidden" style={{ maxHeight: '70vh', width: 'auto', aspectRatio: '4/3', marginLeft: '200px', marginRight: '200px' }}>
             <img
               src={imageUrl}
-              alt={`${title} exhibition view`}
+              alt={`${title} project view`}
               loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-contain"
+              style={{ maxHeight: '70vh' }}
             />
           </div>
         )}
@@ -158,7 +160,7 @@ export default function ExhibitionCard({
           {/* Year badge - prominent display */}
           <div className="flex items-center gap-3">
             <span className="inline-block px-3 py-1 bg-black text-white font-body text-sm font-semibold">
-              {exhibition.year}
+              {project.year}
             </span>
             <span className="font-body text-sm text-mid-gray uppercase tracking-wide">
               {typeLabel}
@@ -189,15 +191,15 @@ export default function ExhibitionCard({
           )}
 
           {/* Featured artworks count */}
-          {exhibition.featuredArtworks && exhibition.featuredArtworks.length > 0 && (
+          {project.featuredArtworks && project.featuredArtworks.length > 0 && (
             <p className="font-body text-sm text-mid-gray">
-              {exhibition.featuredArtworks.length} {exhibition.featuredArtworks.length === 1 ? 'artwork' : 'artworks'} featured
+              {project.featuredArtworks.length} {project.featuredArtworks.length === 1 ? 'artwork' : 'artworks'} featured
             </p>
           )}
 
           {/* CTA Link */}
           <div className="font-body text-sm md:text-base text-black group-hover:text-dark-gray transition-colors mt-2">
-            View Exhibition →
+            View Project →
           </div>
         </div>
         </div>

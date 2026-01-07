@@ -1,85 +1,63 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import ExhibitionCard from '@/components/ExhibitionCard';
-import { Exhibition, ExhibitionFilters } from '@/lib/types';
-import { mockExhibitions } from '@/lib/mockData';
+import ProjectCard from '@/components/ProjectCard';
+import { Project, ProjectFilters } from '@/lib/types';
 import CustomDropdown from '@/components/CustomDropdown';
 
-/**
- * Exhibitions Page - Comprehensive chronological exhibition history
- *
- * Features:
- * - Chronological listing (most recent first)
- * - Filter by year and type (Solo/Group/Institutional)
- * - Search by title or venue
- * - View mode toggle (Detailed/Compact)
- * - Responsive layout
- * - Total count indicator
- *
- * Design Principles:
- * - Digital White Cube aesthetic
- * - Hierarchy through scale and spacing
- * - Progressive disclosure
- * - 8px grid system
- *
- * Performance:
- * - Client component for interactivity
- * - Efficient filtering with Array methods
- * - Lazy loading images
- *
- * Accessibility:
- * - Semantic HTML structure
- * - WCAG 2.1 AA compliant
- * - Keyboard navigation
- * - Screen reader friendly
- */
-export default function ExhibitionsPage() {
-  const [exhibitions, setExhibitions] = useState<Exhibition[]>(mockExhibitions);
-  const [filteredExhibitions, setFilteredExhibitions] = useState<Exhibition[]>(mockExhibitions);
-  const [viewMode, setViewMode] = useState<'detailed' | 'compact'>('detailed');
-  const [filters, setFilters] = useState<ExhibitionFilters>({});
+interface ProjectsClientProps {
+  projects: Project[];
+  years: number[];
+}
 
-  // Extract unique years for filter dropdown (sorted descending)
-  const years = Array.from(new Set(exhibitions.map(e => e.year))).sort((a, b) => b - a);
+/**
+ * Projects Client Component
+ *
+ * Handles all client-side interactivity for the projects page:
+ * - View mode toggle (detailed/compact)
+ * - Real-time filtering (year, type, search)
+ * - Filter state management
+ */
+export default function ProjectsClient({ projects, years }: ProjectsClientProps) {
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
+  const [viewMode, setViewMode] = useState<'detailed' | 'compact'>('detailed');
+  const [filters, setFilters] = useState<ProjectFilters>({});
 
   // Apply filters whenever filters change
   useEffect(() => {
-    let result = [...exhibitions];
+    let result = [...projects];
 
     // Sort by year (most recent first)
     result.sort((a, b) => b.year - a.year);
 
     // Year filter
     if (filters.year) {
-      result = result.filter(exhibition => exhibition.year === filters.year);
+      result = result.filter(project => project.year === filters.year);
     }
 
     // Type filter
     if (filters.type && filters.type !== 'all') {
-      result = result.filter(exhibition => exhibition.type === filters.type);
+      result = result.filter(project => project.type === filters.type);
     }
 
     // Search filter (title and venue across all languages)
     if (filters.search && filters.search.length >= 2) {
       const searchLower = filters.search.toLowerCase();
-      result = result.filter(exhibition =>
-        exhibition.title.en?.toLowerCase().includes(searchLower) ||
-        exhibition.title.de?.toLowerCase().includes(searchLower) ||
-        exhibition.title.pl?.toLowerCase().includes(searchLower) ||
-        exhibition.venue.name.en?.toLowerCase().includes(searchLower) ||
-        exhibition.venue.name.de?.toLowerCase().includes(searchLower) ||
-        exhibition.venue.name.pl?.toLowerCase().includes(searchLower) ||
-        exhibition.venue.city.toLowerCase().includes(searchLower) ||
-        exhibition.venue.country.toLowerCase().includes(searchLower)
+      result = result.filter(project =>
+        project.title.en?.toLowerCase().includes(searchLower) ||
+        project.title.de?.toLowerCase().includes(searchLower) ||
+        project.title.pl?.toLowerCase().includes(searchLower) ||
+        project.venue.en?.toLowerCase().includes(searchLower) ||
+        project.venue.de?.toLowerCase().includes(searchLower) ||
+        project.venue.pl?.toLowerCase().includes(searchLower) ||
+        project.location?.toLowerCase().includes(searchLower)
       );
     }
 
-    setFilteredExhibitions(result);
-  }, [filters, exhibitions]);
+    setFilteredProjects(result);
+  }, [filters, projects]);
 
-  const handleFilterChange = (key: keyof ExhibitionFilters, value: any) => {
+  const handleFilterChange = (key: keyof ProjectFilters, value: any) => {
     setFilters(prev => ({
       ...prev,
       [key]: value
@@ -111,7 +89,7 @@ export default function ExhibitionsPage() {
         <div className="container mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-20">
           {/* Two-Row Layout: Filters on top, Actions below */}
           <div className="space-y-8">
-            {/* Top Row: View Toggle, Search and Filters - Desktop: single row, Mobile: 3 rows */}
+            {/* Top Row: View Toggle, Search and Filters */}
             <div className="flex items-stretch gap-6 w-full flex-wrap">
               {/* Detailed View Button */}
               <button
@@ -165,7 +143,7 @@ export default function ExhibitionsPage() {
               <input
                 id="search"
                 type="text"
-                placeholder="Search exhibitions..."
+                placeholder="Search projects..."
                 value={filters.search ?? ''}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
                 className={`outline-none transition-all duration-300 ease-in-out text-center ${
@@ -182,7 +160,7 @@ export default function ExhibitionsPage() {
                   flex: '1',
                   minWidth: '200px'
                 }}
-                aria-label="Search exhibitions by title or venue"
+                aria-label="Search projects by title or venue"
               />
 
               {/* Year Filter */}
@@ -218,7 +196,7 @@ export default function ExhibitionsPage() {
               </div>
             </div>
 
-            {/* Bottom Row: Clear and Results - Right side */}
+            {/* Bottom Row: Clear and Results */}
             <div className="flex flex-wrap items-center justify-end gap-6 w-full">
               {/* Clear Filters */}
               {hasActiveFilters && (
@@ -245,7 +223,7 @@ export default function ExhibitionsPage() {
                 fontSize: '12.5px',
                 color: '#999999'
               }}>
-                {filteredExhibitions.length} {filteredExhibitions.length === 1 ? 'exhibition' : 'exhibitions'}
+                {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
               </span>
             </div>
           </div>
@@ -255,15 +233,15 @@ export default function ExhibitionsPage() {
       {/* Spacer */}
       <div className="w-full bg-white" style={{ height: '20px' }} />
 
-      {/* Exhibitions List */}
+      {/* Projects List */}
       <section className="bg-white min-h-screen">
-        <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
-          {filteredExhibitions.length > 0 ? (
-            <div className={viewMode === 'detailed' ? 'space-y-0' : 'space-y-0'}>
-              {filteredExhibitions.map((exhibition, index) => (
-                <ExhibitionCard
-                  key={exhibition._id}
-                  exhibition={exhibition}
+        <div className="py-12 md:py-16">
+          {filteredProjects.length > 0 ? (
+            <div className="flex flex-col gap-[50px] max-w-[60vw] mx-auto">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project._id}
+                  project={project}
                   locale="en"
                   viewMode={viewMode}
                   index={index}
@@ -274,7 +252,7 @@ export default function ExhibitionsPage() {
             // Empty state
             <div className="text-center py-16 md:py-24">
               <p className="font-body text-lg text-mid-gray mb-4">
-                No exhibitions found matching your criteria.
+                No projects found matching your criteria.
               </p>
               {hasActiveFilters && (
                 <button

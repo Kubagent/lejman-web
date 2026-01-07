@@ -41,11 +41,12 @@ function buildArtworkQuery(filters?: ArtworkFilters): string {
     year,
     medium,
     dimensions,
+    customDimensions,
     mainImage,
     images,
     description,
     featured,
-    exhibitions[]->{ _id, title }
+    projects[]->{ _id, title }
   }`;
 }
 
@@ -81,11 +82,12 @@ export async function getArtworkBySlug(slug: string): Promise<Artwork | null> {
       year,
       medium,
       dimensions,
+      customDimensions,
       mainImage,
       images,
       description,
       featured,
-      exhibitions[]->{ _id, title, year, venue }
+      projects[]->{ _id, title, year, venue }
     }`;
 
     const artwork = await client.fetch<Artwork | null>(query, { slug });

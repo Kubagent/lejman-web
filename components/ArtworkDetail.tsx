@@ -56,7 +56,11 @@ export default function ArtworkDetail({
   const description = artwork.description?.[locale] ?? artwork.description?.en;
 
   // Format dimensions
-  const dimensions = artwork.dimensions
+  const dimensions = artwork.customDimensions && artwork.customDimensions.length > 0
+    ? artwork.customDimensions
+        .map(d => `${d.value}cm (${d.label})`)
+        .join(' × ')
+    : artwork.dimensions
     ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${
         artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''
       } ${artwork.dimensions.unit ?? 'cm'}`
@@ -99,11 +103,11 @@ export default function ArtworkDetail({
     <>
       <article className="min-h-screen bg-white">
         {/* Back button */}
-        <div className="px-6 md:px-12 lg:px-24 py-4">
+        <div className="py-4" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
           <Link
             href="/works"
             className="inline-flex items-center gap-1 font-body text-xs text-dark-gray hover:text-black transition-colors whitespace-nowrap"
-            aria-label="Back to archive"
+            aria-label="Back to works"
           >
             <svg
               className="w-3 h-3"
@@ -118,12 +122,12 @@ export default function ArtworkDetail({
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back to Archive
+            Back to Works
           </Link>
         </div>
 
         {/* Main image - Full screen size */}
-        <div className="w-full h-[80vh] flex items-center justify-center px-6 md:px-12 lg:px-24">
+        <div className="w-full h-[80vh] flex items-center justify-center" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
           <img
             src={mainImageUrl}
             alt={`${title} by Dominik L., ${artwork.year}`}
@@ -132,7 +136,7 @@ export default function ArtworkDetail({
         </div>
 
         {/* Metadata section */}
-        <div className="w-full md:max-w-4xl md:mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
+        <div className="w-full md:max-w-4xl md:mx-auto py-12 md:py-16" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
           {/* Title */}
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-8">
             {title}

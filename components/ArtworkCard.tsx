@@ -40,7 +40,11 @@ export default function ArtworkCard({
   const description = artwork.description?.[locale] ?? artwork.description?.en ?? '';
 
   // Format dimensions
-  const dimensions = artwork.dimensions
+  const dimensions = artwork.customDimensions && artwork.customDimensions.length > 0
+    ? artwork.customDimensions
+        .map(d => `${d.value}cm (${d.label})`)
+        .join(' × ')
+    : artwork.dimensions
     ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${
         artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''
       } cm`

@@ -70,6 +70,11 @@ export interface ArtworkDimensions {
   unit?: 'cm' | 'in' | 'm';
 }
 
+export interface CustomDimension {
+  value: number;
+  label: string;
+}
+
 export interface Artwork {
   _id: string;
   title: LocalizedText;
@@ -80,11 +85,12 @@ export interface Artwork {
   year: number;
   medium: LocalizedText;
   dimensions?: ArtworkDimensions;
+  customDimensions?: CustomDimension[];
   images: SanityImageAsset[];
   description?: LocalizedText;
   mainImage: SanityImageAsset;
   featured?: boolean;
-  exhibitions?: string[]; // Array of exhibition _id references
+  projects?: string[]; // Array of project _id references
 }
 
 // Props for Artwork Components
@@ -107,8 +113,8 @@ export interface ArtworkFilters {
   search?: string;
 }
 
-// Exhibition Types
-export interface Exhibition {
+// Project Types
+export interface Project {
   _id: string;
   slug: {
     _type: 'slug';
@@ -119,27 +125,25 @@ export interface Exhibition {
   startDate?: string; // ISO format: '2024-03-15'
   endDate?: string;
   type: 'solo' | 'group' | 'institutional';
-  venue: {
-    name: LocalizedText;
-    city: string;
-    country: string;
-  };
+  venue: LocalizedText;
+  location: string; // City, Country
   description?: LocalizedText;
   featuredArtworks?: string[]; // Array of artwork IDs
-  images?: SanityImageAsset[];
+  images?: SanityImageAsset[]; // First image used as thumbnail
+  videos?: any[]; // Array of video assets (Mux or file)
   pressRelease?: SanityFileAsset;
-  mainImage?: SanityImageAsset;
+  artworks?: Artwork[]; // Populated artworks for detail page
 }
 
-// Props for Exhibition Components
-export interface ExhibitionCardProps {
-  exhibition: Exhibition;
+// Props for Project Components
+export interface ProjectCardProps {
+  project: Project;
   locale?: 'en' | 'de' | 'pl';
   viewMode?: 'detailed' | 'compact';
 }
 
-// Filter types for exhibitions
-export interface ExhibitionFilters {
+// Filter types for projects
+export interface ProjectFilters {
   year?: number;
   type?: 'solo' | 'group' | 'institutional' | 'all';
   search?: string;
