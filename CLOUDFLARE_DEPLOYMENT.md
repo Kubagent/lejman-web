@@ -29,18 +29,28 @@ Use the following build configuration:
 - **Root directory**: `/` (leave empty)
 - **Node version**: `18` or higher
 
-### Step 3: Configure Environment Variables
+### Step 3: Configure Environment Variables ⚠️ CRITICAL - DO THIS BEFORE DEPLOYING
 
-Add the following environment variables in the Cloudflare Pages dashboard:
+**IMPORTANT**: You MUST add environment variables BEFORE clicking "Save and Deploy". Without these, the build will fail.
 
-**Required Variables:**
+1. Scroll down to **Environment variables** section
+2. Add the following **Required Variables**:
+
 ```
 NEXT_PUBLIC_SANITY_PROJECT_ID=xcwag9wn
 NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SITE_URL=https://your-site.pages.dev
+NEXT_PUBLIC_SITE_URL=https://your-project-name.pages.dev
 ```
 
-**Optional Variables (add when ready):**
+**How to add each variable:**
+- Click **+ Add variable**
+- Enter **Variable name** (e.g., `NEXT_PUBLIC_SANITY_PROJECT_ID`)
+- Enter **Value** (e.g., `xcwag9wn`)
+- Select **Production** environment
+- Click **Save**
+- Repeat for each variable
+
+**Optional Variables (add later when needed):**
 ```
 SANITY_API_READ_TOKEN=your_token_here
 CLOUDFLARE_TURNSTILE_SECRET=your_secret_here
