@@ -11,15 +11,30 @@ export default function BiographyPage() {
 
   useEffect(() => {
     async function loadSettings() {
-      const settings = await getSiteSettings();
-      setSiteSettings(settings);
+      try {
+        console.log('Fetching site settings...');
+        const settings = await getSiteSettings();
+        console.log('Site settings loaded:', settings);
+        setSiteSettings(settings);
+      } catch (error) {
+        console.error('Failed to load site settings:', error);
+      }
     }
     loadSettings();
   }, []);
 
   if (!siteSettings) {
-    return null;
+    return (
+      <div className="bg-white flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <p className="font-body text-sm text-mid-gray">Loading biography...</p>
+        </div>
+      </div>
+    );
   }
+
+  const biographyText = siteSettings.biography?.[locale] || '';
+  const hasBiography = biographyText.trim().length > 0;
 
   return (
     <div className="bg-white">
@@ -67,11 +82,17 @@ export default function BiographyPage() {
                 paddingRight: '20px'
               }}
             >
-              {siteSettings.biography[locale]?.split('\n').map((paragraph, index) => (
-                <p key={index} style={{ marginBottom: '0.8rem' }}>
-                  {paragraph}
+              {hasBiography ? (
+                biographyText.split('\n').map((paragraph, index) => (
+                  <p key={index} style={{ marginBottom: '0.8rem' }}>
+                    {paragraph}
+                  </p>
+                ))
+              ) : (
+                <p style={{ color: '#999999', fontStyle: 'italic' }}>
+                  Biography content not available. Please add biography text in Sanity Studio.
                 </p>
-              ))}
+              )}
             </div>
           </div>
 

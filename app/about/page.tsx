@@ -14,8 +14,14 @@ export default function AboutPage() {
 
   useEffect(() => {
     async function loadSettings() {
-      const settings = await getSiteSettings();
-      setSiteSettings(settings);
+      try {
+        console.log('Fetching site settings...');
+        const settings = await getSiteSettings();
+        console.log('Site settings loaded:', settings);
+        setSiteSettings(settings);
+      } catch (error) {
+        console.error('Failed to load site settings:', error);
+      }
     }
     loadSettings();
   }, []);
@@ -141,6 +147,11 @@ export default function AboutPage() {
       {/* Content Sections */}
       <div>
         {/* Biography Section */}
+        {activeSection === 'biography' && !siteSettings && (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <p className="font-body text-sm text-mid-gray">Loading biography...</p>
+          </div>
+        )}
         {activeSection === 'biography' && siteSettings && (
           <div
             style={{
@@ -182,11 +193,17 @@ export default function AboutPage() {
                     paddingRight: '20px'
                   }}
                 >
-                  {siteSettings.biography[locale]?.split('\n').map((paragraph, index) => (
-                    <p key={index} style={{ marginBottom: '0.8rem' }}>
-                      {paragraph}
+                  {siteSettings.biography?.[locale] && siteSettings.biography[locale].trim() ? (
+                    siteSettings.biography[locale].split('\n').map((paragraph, index) => (
+                      <p key={index} style={{ marginBottom: '0.8rem' }}>
+                        {paragraph}
+                      </p>
+                    ))
+                  ) : (
+                    <p style={{ color: '#999999', fontStyle: 'italic' }}>
+                      Biography content not available. Please add biography text in Sanity Studio at <a href="/studio" style={{textDecoration: 'underline'}}>dlejman.com/studio</a>
                     </p>
-                  ))}
+                  )}
                 </div>
               </div>
 
