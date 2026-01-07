@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Configure for Edge Runtime (required for Cloudflare Pages)
+export const runtime = 'edge';
+
 /**
  * Rate limiting storage (in-memory, replace with Redis/KV for production)
  * Format: { ip: { count: number, resetTime: number } }

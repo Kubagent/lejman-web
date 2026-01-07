@@ -2,6 +2,9 @@
 
 import dynamic from 'next/dynamic';
 
+// Configure for Edge Runtime (required for Cloudflare Pages)
+export const runtime = 'edge';
+
 const StudioWrapper = dynamic(() => import('./StudioWrapper'), {
   ssr: false,
   loading: () => (
