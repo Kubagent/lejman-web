@@ -14,7 +14,7 @@ export default function Footer() {
         }}
       >
         <div className="text-xs md:text-sm text-mid-gray">
-          <div>© Dominik Lejman</div>
+          <div>© 2026 Dominik Lejman</div>
         </div>
       </div>
 
