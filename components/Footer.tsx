@@ -1,6 +1,10 @@
 'use client';
 
+import { useState } from 'react';
+
 export default function Footer() {
+  const [showOusiaText, setShowOusiaText] = useState(false);
+
   return (
     <footer className="relative w-full" style={{ height: '150px' }}>
       {/* Bottom Left - Copyright */}
@@ -18,7 +22,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Right - Created By */}
+      {/* Bottom Right - Created With */}
       <div
         style={{
           position: 'absolute',
@@ -29,14 +33,23 @@ export default function Footer() {
         }}
       >
         <span className="text-xs md:text-sm text-mid-gray">
-          created by{' '}
+          created with{' '}
           <a
             href="https://0usia.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-black underline decoration-1 underline-offset-2 hover:text-[#666666] transition-colors"
+            onMouseEnter={() => setShowOusiaText(true)}
+            onMouseLeave={() => setShowOusiaText(false)}
+            style={{
+              color: '#000000',
+              textDecoration: 'none',
+              transition: 'opacity 0.2s ease',
+              cursor: 'pointer',
+              display: 'inline-block'
+            }}
+            className="hover:opacity-70"
           >
-            0usia
+            {showOusiaText ? '0usia' : '⊙'}
           </a>
         </span>
       </div>
