@@ -89,7 +89,7 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
           onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
         >
           <Image
-            src="/images/DL–favicon-circ.png"
+            src="/images/DL-favicon-circ.png"
             alt="Dominik Lejman"
             width={48}
             height={48}

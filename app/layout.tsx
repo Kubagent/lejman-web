@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   title: "Dominik L. - Artist Portfolio",
   description: "Professional digital portfolio for visual artist Dominik L., showcasing painting, digital media, and motion-based work.",
   icons: {
-    icon: '/images/DL–favicon-circ.png',
-    apple: '/images/DL–favicon-circ.png',
+    icon: '/images/DL-favicon-circ.png',
+    apple: '/images/DL-favicon-circ.png',
   },
 };
 
