@@ -575,14 +575,11 @@ export const mockProjects: Project[] = [
     endDate: '2024-11-30',
     type: 'solo',
     venue: {
-      name: {
-        en: 'Contemporary Art Museum',
-        de: 'Museum für Zeitgenössische Kunst',
-        pl: 'Muzeum Sztuki Współczesnej'
-      },
-      city: 'Berlin',
-      country: 'Germany'
+      en: 'Contemporary Art Museum',
+      de: 'Museum für Zeitgenössische Kunst',
+      pl: 'Muzeum Sztuki Współczesnej'
     },
+    location: 'Berlin, Germany',
     description: {
       en: 'A comprehensive solo exhibition exploring temporal perception through multimedia installations and video art.',
       de: 'Eine umfassende Einzelausstellung zur zeitlichen Wahrnehmung durch multimediale Installationen und Videokunst.',
@@ -643,14 +640,11 @@ export const mockProjects: Project[] = [
     endDate: '2024-07-20',
     type: 'group',
     venue: {
-      name: {
-        en: 'Galerie Moderne',
-        de: 'Galerie Moderne',
-        pl: 'Galerie Moderne'
-      },
-      city: 'Paris',
-      country: 'France'
+      en: 'Galerie Moderne',
+      de: 'Galerie Moderne',
+      pl: 'Galerie Moderne'
     },
+    location: 'Paris, France',
     description: {
       en: 'Group exhibition featuring contemporary approaches to color field painting.',
       de: 'Gruppenausstellung mit zeitgenössischen Ansätzen zur Farbfeldmalerei.',
@@ -704,14 +698,11 @@ export const mockProjects: Project[] = [
     endDate: '2024-01-15',
     type: 'institutional',
     venue: {
-      name: {
-        en: 'Tate Modern',
-        de: 'Tate Modern',
-        pl: 'Tate Modern'
-      },
-      city: 'London',
-      country: 'United Kingdom'
+      en: 'Tate Modern',
+      de: 'Tate Modern',
+      pl: 'Tate Modern'
     },
+    location: 'London, United Kingdom',
     description: {
       en: 'Major institutional exhibition examining the intersection of digital technology and contemporary art practice.',
       de: 'Große institutionelle Ausstellung zur Schnittstelle von digitaler Technologie und zeitgenössischer Kunstpraxis.',
@@ -779,14 +770,11 @@ export const mockProjects: Project[] = [
     endDate: '2023-08-31',
     type: 'solo',
     venue: {
-      name: {
-        en: 'Kunsthalle Basel',
-        de: 'Kunsthalle Basel',
-        pl: 'Kunsthalle Basel'
-      },
-      city: 'Basel',
-      country: 'Switzerland'
+      en: 'Kunsthalle Basel',
+      de: 'Kunsthalle Basel',
+      pl: 'Kunsthalle Basel'
     },
+    location: 'Basel, Switzerland',
     description: {
       en: 'Solo exhibition focusing on geometric abstraction and spatial composition.',
       de: 'Einzelausstellung mit Schwerpunkt auf geometrischer Abstraktion und räumlicher Komposition.',
@@ -840,14 +828,11 @@ export const mockProjects: Project[] = [
     endDate: '2023-02-05',
     type: 'group',
     venue: {
-      name: {
-        en: 'Museum of Modern Art',
-        de: 'Museum für Moderne Kunst',
-        pl: 'Muzeum Sztuki Nowoczesnej'
-      },
-      city: 'Warsaw',
-      country: 'Poland'
+      en: 'Museum of Modern Art',
+      de: 'Museum für Moderne Kunst',
+      pl: 'Muzeum Sztuki Nowoczesnej'
     },
+    location: 'Warsaw, Poland',
     description: {
       en: 'Group exhibition exploring urban environments through contemporary artistic practices.',
       de: 'Gruppenausstellung zur Erkundung urbaner Umgebungen durch zeitgenössische künstlerische Praktiken.',
@@ -894,14 +879,11 @@ export const mockProjects: Project[] = [
     endDate: '2022-07-15',
     type: 'solo',
     venue: {
-      name: {
-        en: 'Galeria Stereo',
-        de: 'Galeria Stereo',
-        pl: 'Galeria Stereo'
-      },
-      city: 'Poznan',
-      country: 'Poland'
+      en: 'Galeria Stereo',
+      de: 'Galeria Stereo',
+      pl: 'Galeria Stereo'
     },
+    location: 'Poznan, Poland',
     description: {
       en: 'Intimate solo exhibition featuring recent works on paper and canvas exploring monochromatic palettes.',
       de: 'Intime Einzelausstellung mit aktuellen Arbeiten auf Papier und Leinwand zur Erkundung monochromatischer Paletten.',
@@ -955,14 +937,11 @@ export const mockProjects: Project[] = [
     endDate: '2021-12-20',
     type: 'group',
     venue: {
-      name: {
-        en: 'Stedelijk Museum',
-        de: 'Stedelijk Museum',
-        pl: 'Stedelijk Museum'
-      },
-      city: 'Amsterdam',
-      country: 'Netherlands'
+      en: 'Stedelijk Museum',
+      de: 'Stedelijk Museum',
+      pl: 'Stedelijk Museum'
     },
+    location: 'Amsterdam, Netherlands',
     description: {
       en: 'International group exhibition showcasing emerging European artists.',
       de: 'Internationale Gruppenausstellung mit aufstrebenden europäischen Künstlern.',
@@ -993,14 +972,11 @@ export const mockProjects: Project[] = [
     endDate: '2021-06-05',
     type: 'solo',
     venue: {
-      name: {
-        en: 'Galerie Thomas Schulte',
-        de: 'Galerie Thomas Schulte',
-        pl: 'Galerie Thomas Schulte'
-      },
-      city: 'Berlin',
-      country: 'Germany'
+      en: 'Galerie Thomas Schulte',
+      de: 'Galerie Thomas Schulte',
+      pl: 'Galerie Thomas Schulte'
     },
+    location: 'Berlin, Germany',
     description: {
       en: 'Solo exhibition exploring themes of memory, place, and landscape through mixed media works.',
       de: 'Einzelausstellung zur Erkundung von Themen wie Erinnerung, Ort und Landschaft durch Mixed-Media-Arbeiten.',
@@ -1031,14 +1007,11 @@ export const mockProjects: Project[] = [
     endDate: '2021-01-10',
     type: 'group',
     venue: {
-      name: {
-        en: 'Centre Pompidou',
-        de: 'Centre Pompidou',
-        pl: 'Centre Pompidou'
-      },
-      city: 'Paris',
-      country: 'France'
+      en: 'Centre Pompidou',
+      de: 'Centre Pompidou',
+      pl: 'Centre Pompidou'
     },
+    location: 'Paris, France',
     description: {
       en: 'Major group exhibition examining temporal dimensions in contemporary art.',
       de: 'Große Gruppenausstellung zur Untersuchung zeitlicher Dimensionen in der zeitgenössischen Kunst.',
@@ -1069,14 +1042,11 @@ export const mockProjects: Project[] = [
     endDate: '2019-08-30',
     type: 'solo',
     venue: {
-      name: {
-        en: 'Zacheta National Gallery',
-        de: 'Zacheta Nationalgalerie',
-        pl: 'Zachęta Narodowa Galeria Sztuki'
-      },
-      city: 'Warsaw',
-      country: 'Poland'
+      en: 'Zacheta National Gallery',
+      de: 'Zacheta Nationalgalerie',
+      pl: 'Zachęta Narodowa Galeria Sztuki'
     },
+    location: 'Warsaw, Poland',
     description: {
       en: 'Mid-career retrospective featuring works from 2015-2019.',
       de: 'Retrospektive der mittleren Karriere mit Werken von 2015-2019.',
@@ -1107,14 +1077,11 @@ export const mockProjects: Project[] = [
     endDate: '2019-02-15',
     type: 'group',
     venue: {
-      name: {
-        en: 'Kunstmuseum Bonn',
-        de: 'Kunstmuseum Bonn',
-        pl: 'Kunstmuseum Bonn'
-      },
-      city: 'Bonn',
-      country: 'Germany'
+      en: 'Kunstmuseum Bonn',
+      de: 'Kunstmuseum Bonn',
+      pl: 'Kunstmuseum Bonn'
     },
+    location: 'Bonn, Germany',
     description: {
       en: 'Group exhibition investigating relationships between color theory and spatial perception.',
       de: 'Gruppenausstellung zur Untersuchung der Beziehungen zwischen Farbtheorie und räumlicher Wahrnehmung.',
@@ -1145,14 +1112,11 @@ export const mockProjects: Project[] = [
     endDate: '2017-09-10',
     type: 'group',
     venue: {
-      name: {
-        en: 'Kunsthalle Wien',
-        de: 'Kunsthalle Wien',
-        pl: 'Kunsthalle Wien'
-      },
-      city: 'Vienna',
-      country: 'Austria'
+      en: 'Kunsthalle Wien',
+      de: 'Kunsthalle Wien',
+      pl: 'Kunsthalle Wien'
     },
+    location: 'Vienna, Austria',
     description: {
       en: 'Contemporary takes on geometric abstraction from emerging European artists.',
       de: 'Zeitgenössische Ansätze zur geometrischen Abstraktion von aufstrebenden europäischen Künstlern.',
@@ -1183,14 +1147,11 @@ export const mockProjects: Project[] = [
     endDate: '2016-11-20',
     type: 'solo',
     venue: {
-      name: {
-        en: 'Galeria Leto',
-        de: 'Galeria Leto',
-        pl: 'Galeria Leto'
-      },
-      city: 'Warsaw',
-      country: 'Poland'
+      en: 'Galeria Leto',
+      de: 'Galeria Leto',
+      pl: 'Galeria Leto'
     },
+    location: 'Warsaw, Poland',
     description: {
       en: 'First major solo exhibition presenting foundational works and early experiments.',
       de: 'Erste große Einzelausstellung mit grundlegenden Werken und frühen Experimenten.',
@@ -1221,14 +1182,11 @@ export const mockProjects: Project[] = [
     endDate: '2015-06-15',
     type: 'group',
     venue: {
-      name: {
-        en: 'Arsenal Gallery',
-        de: 'Arsenal Galerie',
-        pl: 'Galeria Arsenal'
-      },
-      city: 'Bialystok',
-      country: 'Poland'
+      en: 'Arsenal Gallery',
+      de: 'Arsenal Galerie',
+      pl: 'Galeria Arsenal'
     },
+    location: 'Bialystok, Poland',
     description: {
       en: 'Group exhibition featuring recent graduates from Polish art academies.',
       de: 'Gruppenausstellung mit aktuellen Absolventen polnischer Kunstakademien.',
