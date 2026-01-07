@@ -50,9 +50,8 @@ export default function ContactPage() {
 
           {/* Subtitle / Description - Center aligned */}
           <p className="font-body leading-snug max-w-2xl mx-auto" style={{ color: 'rgba(0, 0, 0, 0.8)', fontSize: '0.9rem' }}>
-            We appreciate all inquiries concerning artworks, projects, and cooperation, or press materials.<br />
-            Please use all fields of the form below for communication.<br />
-            Your information will be used solely to respond to your inquiry and will not be shared with third parties.
+            We welcome inquiries regarding artworks, projects, collaborations, and press materials. Please complete all fields below to ensure a prompt response.<br />
+            All information provided will be treated confidentially and used exclusively to address your inquiry.
           </p>
         </div>
 
