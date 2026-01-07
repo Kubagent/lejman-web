@@ -152,8 +152,9 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
           ))}
         </ul>
 
-        {/* Language Switcher with entrance animation and transparent buttons */}
-        <div
+        {/* Language Switcher - Hidden until translations are implemented */}
+        {/* TODO: Re-enable when website translations are ready */}
+        {/* <div
           style={{
             marginTop: '60px',
             display: 'flex',
@@ -196,7 +197,7 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
           >
             PL
           </button>
-        </div>
+        </div> */}
       </nav>
     </div>
   );
