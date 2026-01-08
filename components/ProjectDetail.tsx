@@ -32,6 +32,13 @@ export default function ProjectDetail({
   const venueName = project.venue[locale] ?? project.venue.en ?? '';
   const description = project.description?.[locale] ?? project.description?.en;
 
+  // Localized "Present" text for ongoing projects
+  const presentText = {
+    en: 'Present',
+    de: 'Gegenwart',
+    pl: 'Obecnie'
+  }[locale];
+
   // Format dates
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -42,9 +49,18 @@ export default function ProjectDetail({
     });
   };
 
-  const dateRange = project.startDate && project.endDate
-    ? `${formatDate(project.startDate)} – ${formatDate(project.endDate)}`
-    : project.year ? project.year.toString() : '';
+  // Format date range with ongoing support
+  const dateRange = (() => {
+    if (project.isOngoing && project.startDate) {
+      return `${formatDate(project.startDate)} – ${presentText}`;
+    }
+
+    if (project.startDate && project.endDate) {
+      return `${formatDate(project.startDate)} – ${formatDate(project.endDate)}`;
+    }
+
+    return project.year ? project.year.toString() : '';
+  })();
 
   // Format project type
   const typeLabels = {

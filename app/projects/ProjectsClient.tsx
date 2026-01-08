@@ -27,8 +27,23 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
   useEffect(() => {
     let result = [...projects];
 
-    // Sort by year (most recent first)
-    result.sort((a, b) => b.year - a.year);
+    // Sort: ongoing projects first, then by startDate (most recent), then by year
+    result.sort((a, b) => {
+      // Ongoing projects always come first
+      const aOngoing = a.isOngoing ? 1 : 0;
+      const bOngoing = b.isOngoing ? 1 : 0;
+      if (aOngoing !== bOngoing) {
+        return bOngoing - aOngoing; // Ongoing (1) before completed (0)
+      }
+
+      // Then sort by startDate if available
+      if (a.startDate && b.startDate) {
+        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+      }
+
+      // Fall back to year
+      return b.year - a.year;
+    });
 
     // Year filter
     if (filters.year) {

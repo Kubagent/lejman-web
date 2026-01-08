@@ -31,13 +31,14 @@ export async function getProjects(filters?: ProjectFilters): Promise<Project[]> 
 
     const filterClause = conditions.length > 0 ? ` && ${conditions.join(' && ')}` : '';
 
-    const query = `*[_type == "project"${filterClause}] | order(startDate desc, year desc) {
+    const query = `*[_type == "project"${filterClause}] | order(isOngoing desc, startDate desc, year desc) {
       _id,
       title,
       slug,
       year,
       startDate,
       endDate,
+      isOngoing,
       type,
       venue,
       location,
@@ -73,6 +74,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       year,
       startDate,
       endDate,
+      isOngoing,
       type,
       venue,
       location,

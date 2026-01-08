@@ -124,6 +124,7 @@ export interface Project {
   year: number;
   startDate?: string; // ISO format: '2024-03-15'
   endDate?: string;
+  isOngoing?: boolean; // Flag for ongoing/permanent projects
   type: 'solo' | 'group' | 'institutional';
   venue: LocalizedText;
   location: string; // City, Country

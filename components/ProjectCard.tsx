@@ -43,6 +43,13 @@ export default function ProjectCard({
   // Location (City, Country)
   const location = project.location;
 
+  // Localized "Present" text for ongoing projects
+  const presentText = {
+    en: 'Present',
+    de: 'Gegenwart',
+    pl: 'Obecnie'
+  }[locale];
+
   // Format date range
   const formatDateRange = () => {
     if (!project.startDate && !project.endDate) {
@@ -53,6 +60,12 @@ export default function ProjectCard({
       const date = new Date(dateString);
       return date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
     };
+
+    // Handle ongoing projects: "Mar 15, 2024 - Present"
+    if (project.isOngoing && project.startDate) {
+      const startFormatted = formatDate(project.startDate);
+      return `${startFormatted} - ${presentText}`;
+    }
 
     if (project.startDate && project.endDate) {
       const start = new Date(project.startDate);

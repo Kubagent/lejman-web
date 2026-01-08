@@ -80,6 +80,7 @@ export default function River({ videos, locale = 'en' }: RiverProps) {
             <RiverVideoSlotMux
               video={video}
               locale={locale}
+              isFirstVideo={index === 0}
             />
           </div>
         ))}

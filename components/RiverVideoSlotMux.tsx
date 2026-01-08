@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import MuxPlayer from '@mux/mux-player-react';
 import { urlFor } from '@/lib/sanity/image';
@@ -8,6 +8,7 @@ import { urlFor } from '@/lib/sanity/image';
 interface RiverVideoSlotMuxProps {
   video: any;
   locale?: string;
+  isFirstVideo?: boolean;
 }
 
 /**
@@ -22,12 +23,41 @@ interface RiverVideoSlotMuxProps {
 export default function RiverVideoSlotMux({
   video,
   locale = 'en',
+  isFirstVideo = false,
 }: RiverVideoSlotMuxProps) {
   const playerRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const clickCountRef = useRef(0);
+
+  // Intersection Observer for scroll-triggered autoplay (for non-first videos)
+  useEffect(() => {
+    if (isFirstVideo || !containerRef.current || !playerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            // Video is more than 50% in viewport, play it
+            playerRef.current?.play();
+          } else {
+            // Video is out of view, pause it
+            playerRef.current?.pause();
+          }
+        });
+      },
+      {
+        threshold: [0.5], // Trigger when 50% of video is visible
+        rootMargin: '0px',
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, [isFirstVideo]);
 
   // Get localized title
   const title = video.title[locale] ?? video.title.en ?? 'Untitled';
@@ -101,6 +131,7 @@ export default function RiverVideoSlotMux({
 
   return (
     <article
+      ref={containerRef}
       className="relative w-full bg-black overflow-hidden group"
       style={{ aspectRatio: '16 / 9' }}
       aria-label={`Video: ${title}${video.year ? ` (${video.year})` : ''}`}
@@ -115,7 +146,7 @@ export default function RiverVideoSlotMux({
           playbackId={playbackId}
           poster={posterUrl}
           streamType="on-demand"
-          autoPlay="muted"
+          autoPlay={isFirstVideo ? "muted" : undefined}
           loop
           muted
           playsInline

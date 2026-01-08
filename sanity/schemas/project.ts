@@ -53,6 +53,34 @@ export default defineType({
       name: 'endDate',
       title: 'End Date',
       type: 'date',
+      description: 'Leave empty for ongoing projects',
+      readOnly: ({ document }) => document?.isOngoing === true,
+      validation: (Rule) => Rule.custom((endDate, context) => {
+        const { document } = context as { document: any };
+
+        // If ongoing, endDate should be empty
+        if (document?.isOngoing && endDate) {
+          return 'End date must be empty for ongoing projects';
+        }
+
+        // If not ongoing and both dates exist, validate date order
+        if (!document?.isOngoing && document?.startDate && endDate) {
+          const start = new Date(document.startDate);
+          const end = new Date(endDate);
+          if (end < start) {
+            return 'End date must be after start date';
+          }
+        }
+
+        return true;
+      }),
+    }),
+    defineField({
+      name: 'isOngoing',
+      title: 'Ongoing Project',
+      type: 'boolean',
+      description: 'Check this if the project is currently ongoing (has no end date yet)',
+      initialValue: false,
     }),
     defineField({
       name: 'type',
@@ -117,12 +145,16 @@ export default defineType({
       venue: 'venue.en',
       date: 'startDate',
       media: 'images.0',
+      isOngoing: 'isOngoing',
     },
     prepare(selection) {
-      const { title, venue, date, media } = selection;
+      const { title, venue, date, media, isOngoing } = selection;
+      const dateLabel = isOngoing
+        ? `${date ? new Date(date).getFullYear() : 'No date'} - Present`
+        : date ? new Date(date).getFullYear() : 'No date';
       return {
         title: title,
-        subtitle: `${venue} - ${date ? new Date(date).getFullYear() : 'No date'}`,
+        subtitle: `${venue} - ${dateLabel}`,
         media: media,
       };
     },
