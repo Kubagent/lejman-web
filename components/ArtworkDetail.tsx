@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Artwork } from '@/lib/types';
 import { urlFor } from '@/lib/sanity/image';
@@ -9,10 +9,6 @@ import Lightbox from './Lightbox';
 interface ArtworkDetailProps {
   artwork: Artwork;
   locale?: 'en' | 'de' | 'pl';
-}
-
-interface CarouselState {
-  currentIndex: number;
 }
 
 /**
@@ -48,7 +44,26 @@ export default function ArtworkDetail({
 }: ArtworkDetailProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [mainImageIndex, setMainImageIndex] = useState(0);
+
+  // Prepare all images (main + additional)
+  const allImages = [artwork.mainImage, ...(artwork.images || [])];
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (allImages.length > 1) {
+        if (e.key === 'ArrowLeft') {
+          setMainImageIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+        } else if (e.key === 'ArrowRight') {
+          setMainImageIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [allImages.length]);
 
   // Get localized content
   const title = artwork.title[locale] ?? artwork.title.en ?? 'Untitled';
@@ -65,9 +80,6 @@ export default function ArtworkDetail({
         artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''
       } ${artwork.dimensions.unit ?? 'cm'}`
     : '';
-
-  // Prepare all images (main + additional)
-  const allImages = [artwork.mainImage, ...(artwork.images || [])];
 
   // Generate optimized image URLs
   const getImageUrl = (image: typeof artwork.mainImage, width: number) => {
@@ -94,8 +106,8 @@ export default function ArtworkDetail({
     year: artwork.year
   }));
 
-  const handleImageClick = (index: number) => {
-    setSelectedImageIndex(index);
+  const handleImageClick = () => {
+    setSelectedImageIndex(mainImageIndex);
     setLightboxOpen(true);
   };
 
@@ -127,12 +139,81 @@ export default function ArtworkDetail({
         </div>
 
         {/* Main image - Full screen size */}
-        <div className="w-full h-[80vh] flex items-center justify-center" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
-          <img
-            src={mainImageUrl}
-            alt={`${title} by Dominik L., ${artwork.year}`}
-            className="max-w-full max-h-full object-contain"
-          />
+        <div className="w-full mb-4" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
+          <div className="h-[80vh] flex items-center justify-center">
+            <img
+              src={getImageUrl(allImages[mainImageIndex], 960)}
+              alt={`${title} by Dominik Lejman, ${artwork.year}`}
+              className="max-w-full max-h-full object-contain cursor-pointer"
+              onClick={handleImageClick}
+            />
+          </div>
+
+          {/* Navigation below main image */}
+          {allImages.length > 1 && (
+            <div style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0 32px',
+              marginTop: '16px',
+              marginBottom: '40px'
+            }}>
+              {/* Left Arrow */}
+              <button
+                onClick={() => setMainImageIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1))}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#000000',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                aria-label="Previous image"
+              >
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              {/* Image Counter */}
+              <span style={{
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '14px',
+                color: '#999999'
+              }}>
+                {mainImageIndex + 1} / {allImages.length}
+              </span>
+
+              {/* Right Arrow */}
+              <button
+                onClick={() => setMainImageIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1))}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#000000',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                aria-label="Next image"
+              >
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Metadata section */}
@@ -155,61 +236,6 @@ export default function ArtworkDetail({
               <p className="font-body text-lg leading-relaxed text-black">
                 {description}
               </p>
-            </div>
-          )}
-
-          {/* Additional images carousel - if there are more than just the main image */}
-          {artwork.images && artwork.images.length > 0 && (
-            <div className="mt-16">
-              <h2 className="font-heading text-2xl md:text-3xl font-semibold text-black mb-8">
-                Additional Views
-              </h2>
-              <div className="relative w-full h-[70vh] flex items-center justify-center group">
-                {/* Current image */}
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <img
-                    src={getImageUrl(artwork.images[carouselIndex], 960)}
-                    alt={`${title} - Detail ${carouselIndex + 1}`}
-                    loading="lazy"
-                    className="max-w-full max-h-full object-contain"
-                  />
-                </div>
-
-                {/* Left arrow */}
-                {artwork.images.length > 1 && (
-                  <button
-                    onClick={() => setCarouselIndex((prev) => (prev === 0 ? artwork.images!.length - 1 : prev - 1))}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-dark-gray hover:text-black transition-colors opacity-0 group-hover:opacity-100"
-                    aria-label="Previous image"
-                  >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-                )}
-
-                {/* Right arrow */}
-                {artwork.images.length > 1 && (
-                  <button
-                    onClick={() => setCarouselIndex((prev) => (prev === artwork.images!.length - 1 ? 0 : prev + 1))}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-dark-gray hover:text-black transition-colors opacity-0 group-hover:opacity-100"
-                    aria-label="Next image"
-                  >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                )}
-
-                {/* Image counter */}
-                {artwork.images.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <p className="font-body text-xs text-black">
-                      {carouselIndex + 1} / {artwork.images.length}
-                    </p>
-                  </div>
-                )}
-              </div>
             </div>
           )}
         </div>

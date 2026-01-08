@@ -1,14 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { mockPublications } from '@/lib/mockData';
 import PublicationCard from '@/components/PublicationCard';
 import { Publication, PublicationFilters } from '@/lib/types';
 import CustomDropdown from '@/components/CustomDropdown';
 
 export default function TextsPage() {
-  const [publications, setPublications] = useState<Publication[]>(mockPublications);
-  const [filteredPublications, setFilteredPublications] = useState<Publication[]>(mockPublications);
+  const [publications, setPublications] = useState<Publication[]>([]);
+  const [filteredPublications, setFilteredPublications] = useState<Publication[]>([]);
   const [filters, setFilters] = useState<PublicationFilters>({
     year: undefined,
     type: 'all',
@@ -80,7 +79,7 @@ export default function TextsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="px-6 pt-12 md:px-12 md:pt-16 lg:px-24 lg:pt-20 pb-32">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24 pt-12 md:pt-16 lg:pt-20 pb-32">
         <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-4 text-center">
           Texts & Publications
         </h1>
@@ -213,7 +212,7 @@ export default function TextsPage() {
       {/* Publications List */}
       <div className="">
         {filteredPublications.length > 0 ? (
-          <div className="">
+          <div className="max-w-[60vw] mx-auto">
             {filteredPublications.map((publication, index) => (
               <PublicationCard
                 key={publication._id}
@@ -225,13 +224,17 @@ export default function TextsPage() {
           </div>
         ) : (
           <div className="text-center py-20">
-            <p className="font-sans text-base text-[#999999] mb-4">No publications found</p>
-            <button
-              onClick={clearFilters}
-              className="px-24 py-10 font-body text-base font-normal bg-[#000000] text-[#FFFFFF] border-2 border-[#000000] hover:bg-[#FFFFFF] hover:text-[#000000] focus:outline-none transition-all duration-200"
-            >
-              Clear filters
-            </button>
+            <p className="font-serif text-lg text-[#666666] leading-relaxed">
+              {hasActiveFilters ? 'No publications found' : 'Publications will be available soon. Please check back later.'}
+            </p>
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="mt-6 px-6 py-3 font-sans text-sm font-normal bg-[#000000] text-[#FFFFFF] hover:bg-[#FAFAFA] hover:text-[#000000] focus:outline-none transition-all duration-300"
+              >
+                Clear filters
+              </button>
+            )}
           </div>
         )}
       </div>

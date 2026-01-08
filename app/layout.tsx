@@ -3,8 +3,8 @@ import "./globals.css";
 import Layout from "@/components/Layout";
 
 export const metadata: Metadata = {
-  title: "Dominik L. - Artist Portfolio",
-  description: "Professional digital portfolio for visual artist Dominik L., showcasing painting, digital media, and motion-based work.",
+  title: "Dominik Lejman",
+  description: "Professional digital portfolio for visual artist Dominik Lejman, showcasing painting, digital media, and motion-based work.",
   icons: {
     icon: '/images/DL-favicon-circ.png',
     apple: '/images/DL-favicon-circ.png',

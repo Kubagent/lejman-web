@@ -165,7 +165,7 @@ If you want to use your own domain instead of `.pages.dev`:
 
 1. Go to your **Pages project** → **Custom domains**
 2. Click **Set up a custom domain**
-3. Enter your domain (e.g., `dominiklejman.com`)
+3. Enter your domain (e.g., `dlejman.com`)
 4. Follow the DNS setup instructions
 
 ### Step 2: Update Access Application

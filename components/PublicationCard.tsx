@@ -69,19 +69,13 @@ export default function PublicationCard({
           </div>
 
           {/* Category & Metadata */}
-          <div className="flex flex-wrap items-center gap-x-2 text-xs text-[#999999] font-sans mb-2">
+          <div className="flex flex-wrap items-center text-xs text-[#999999] font-sans mb-2">
             <span className="uppercase tracking-wider">{getCategoryLabel()}</span>
             {author && (
-              <>
-                <span>•</span>
-                <span>{author}</span>
-              </>
+              <span>{"\u00A0•\u00A0"}{author}</span>
             )}
             {publication.publisher && (
-              <>
-                <span>•</span>
-                <span>{publication.publisher}</span>
-              </>
+              <span>{"\u00A0•\u00A0"}{publication.publisher}</span>
             )}
           </div>
 
@@ -93,13 +87,12 @@ export default function PublicationCard({
           )}
 
           {/* Download Info */}
-          <div className="flex items-center justify-end gap-4 text-xs text-[#999999] font-sans mt-4">
+          <div className="flex items-center justify-end text-xs text-[#999999] font-sans mt-4">
             <span className="inline-flex items-center gap-1.5">
               <Download className="w-3 h-3" />
               {publication.type.toUpperCase()}
             </span>
-            {publication.fileSize && <span>• {publication.fileSize}</span>}
-            {publication.pageCount && <span>• {publication.pageCount} pp.</span>}
+            {publication.fileSize && <span>{"\u00A0•\u00A0"}{publication.fileSize}</span>}
           </div>
         </div>
 

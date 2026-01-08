@@ -266,12 +266,12 @@ if (!isValidTurnstile) {
 ### Domain Configuration for Resend
 
 In Resend dashboard:
-1. Add your domain (e.g., `dominiklejman.com`)
+1. Add your domain (e.g., `dlejman.com`)
 2. Add DNS records (SPF, DKIM, DMARC)
 3. Verify domain
 4. Update API route to use verified domain:
    ```typescript
-   from: 'Contact Form <noreply@dominiklejman.com>'
+   from: 'Contact Form <noreply@dlejman.com>'
    ```
 
 ---

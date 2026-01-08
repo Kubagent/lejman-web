@@ -136,7 +136,7 @@ async function sendEmail(data: {
       Authorization: `Bearer ${RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: 'Contact Form <noreply@dominiklejman.com>', // Update domain when configured
+      from: 'Contact Form <noreply@dlejman.com>',
       to: recipients,
       reply_to: data.email,
       subject: `New Contact Form Submission from ${data.name}`,
@@ -154,7 +154,7 @@ async function sendEmail(data: {
             <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;" />
 
             <p style="font-size: 14px; color: #999;">
-              This message was sent from the contact form on dominiklejman.com
+              This message was sent from the contact form on dlejman.com
             </p>
           </body>
         </html>
@@ -169,7 +169,7 @@ Message:
 ${data.message}
 
 ---
-This message was sent from the contact form on dominiklejman.com
+This message was sent from the contact form on dlejman.com
       `.trim(),
     }),
   });

@@ -34,77 +34,10 @@ export default function AboutPage() {
     { id: 'interviews' as AboutSection, label: 'Interviews' },
   ];
 
-  // Mock data for publications
-  const publications = [
-    {
-      id: 1,
-      title: 'Dominik Lejman: Air Wants to Go',
-      year: 2020,
-      format: 'PDF',
-      size: '12.5 MB',
-      downloadUrl: '#'
-    },
-    {
-      id: 2,
-      title: 'Lunatics - Venice Biennale Catalog',
-      year: 2022,
-      format: 'PDF',
-      size: '8.3 MB',
-      downloadUrl: '#'
-    },
-  ];
-
-  // Mock data for press kit
-  const pressKitItems = [
-    {
-      id: 1,
-      title: 'Artist Biography & CV',
-      format: 'PDF',
-      size: '245 KB',
-      downloadUrl: '#'
-    },
-    {
-      id: 2,
-      title: 'High Resolution Images Pack',
-      format: 'ZIP',
-      size: '156 MB',
-      downloadUrl: '#'
-    },
-  ];
-
-  // Mock data for links
-  const links = [
-    {
-      id: 1,
-      title: 'Official Website',
-      url: 'https://dominiklejman.com',
-      description: 'Personal portfolio and archive'
-    },
-    {
-      id: 2,
-      title: 'Instagram',
-      url: 'https://instagram.com/dominiklejman',
-      description: 'Latest works and updates'
-    },
-  ];
-
-  // Mock data for interviews
-  const interviews = [
-    {
-      id: 1,
-      title: 'Conversation on Contemporary Art',
-      publication: 'Artforum',
-      year: 2022,
-      url: '#'
-    },
-    {
-      id: 2,
-      title: 'The Moving Image in Painting',
-      publication: 'Frieze Magazine',
-      year: 2021,
-      url: '#'
-    },
-  ];
+  const publications: any[] = [];
+  const pressKitItems: any[] = [];
+  const links: any[] = [];
+  const interviews: any[] = [];
 
   return (
     <div className="bg-white">
@@ -263,147 +196,45 @@ export default function AboutPage() {
 
         {/* Publications Section */}
         {activeSection === 'publications' && (
-          <div className="py-12">
-            {publications.map((pub, index) => (
-              <div
-                key={pub.id}
-                className={`px-6 md:px-12 lg:px-24 py-12 ${
-                  index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
-                }`}
-              >
-                <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
-                  <div className="flex-1 min-w-[200px]">
-                    <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2">
-                      {pub.title}
-                    </h3>
-                    <p className="font-sans text-sm text-[#666666]">
-                      {pub.year} · {pub.format} · {pub.size}
-                    </p>
-                  </div>
-                  <a
-                    href={pub.downloadUrl}
-                    className="bg-[#000000] hover:bg-[#FAFAFA] transition-all duration-300"
-                    style={{
-                      padding: '12px 24px',
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      textDecoration: 'none',
-                      display: 'inline-block',
-                      textAlign: 'center',
-                      color: '#FFFFFF'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#000000'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#FFFFFF'}
-                  >
-                    Download
-                  </a>
-                </div>
-              </div>
-            ))}
+          <div className="py-20 px-6">
+            <div className="max-w-2xl mx-auto text-center">
+              <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                Publications will be available soon. Please check back later.
+              </p>
+            </div>
           </div>
         )}
 
         {/* Press Kit Section */}
         {activeSection === 'presskit' && (
-          <div className="py-12">
-            {pressKitItems.map((item, index) => (
-              <div
-                key={item.id}
-                className={`px-6 md:px-12 lg:px-24 py-12 ${
-                  index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
-                }`}
-              >
-                <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
-                  <div className="flex-1 min-w-[200px]">
-                    <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="font-sans text-sm text-[#666666]">
-                      {item.format} · {item.size}
-                    </p>
-                  </div>
-                  <a
-                    href={item.downloadUrl}
-                    className="bg-[#000000] hover:bg-[#FAFAFA] transition-all duration-300"
-                    style={{
-                      padding: '12px 24px',
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      textDecoration: 'none',
-                      display: 'inline-block',
-                      textAlign: 'center',
-                      color: '#FFFFFF'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#000000'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#FFFFFF'}
-                  >
-                    Download
-                  </a>
-                </div>
-              </div>
-            ))}
+          <div className="py-20 px-6">
+            <div className="max-w-2xl mx-auto text-center">
+              <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                Press kit materials will be available soon. Please check back later.
+              </p>
+            </div>
           </div>
         )}
 
         {/* Links Section */}
         {activeSection === 'links' && (
-          <div className="py-12">
-            {links.map((link, index) => (
-              <div
-                key={link.id}
-                className={`px-6 md:px-12 lg:px-24 py-12 ${
-                  index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
-                }`}
-              >
-                <div className="max-w-4xl mx-auto">
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group"
-                  >
-                    <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
-                      {link.title} →
-                    </h3>
-                    <p className="font-sans text-sm text-[#666666]">
-                      {link.description}
-                    </p>
-                  </a>
-                </div>
-              </div>
-            ))}
+          <div className="py-20 px-6">
+            <div className="max-w-2xl mx-auto text-center">
+              <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                Links will be available soon. Please check back later.
+              </p>
+            </div>
           </div>
         )}
 
         {/* Interviews Section */}
         {activeSection === 'interviews' && (
-          <div className="py-12">
-            {interviews.map((interview, index) => (
-              <div
-                key={interview.id}
-                className={`px-6 md:px-12 lg:px-24 py-12 ${
-                  index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
-                }`}
-              >
-                <div className="max-w-4xl mx-auto">
-                  <a
-                    href={interview.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group"
-                  >
-                    <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
-                      {interview.title} →
-                    </h3>
-                    <p className="font-sans text-sm text-[#666666]">
-                      {interview.publication} · {interview.year}
-                    </p>
-                  </a>
-                </div>
-              </div>
-            ))}
+          <div className="py-20 px-6">
+            <div className="max-w-2xl mx-auto text-center">
+              <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                Interviews will be available soon. Please check back later.
+              </p>
+            </div>
           </div>
         )}
       </div>

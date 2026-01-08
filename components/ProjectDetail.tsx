@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Project, Artwork } from '@/lib/types';
 import { urlFor } from '@/lib/sanity/image';
@@ -116,6 +116,20 @@ export default function ProjectDetail({
     setCurrentMediaIndex((prev) => (prev === allMedia.length - 1 ? 0 : prev + 1));
   };
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        goToPrevious();
+      } else if (e.key === 'ArrowRight') {
+        goToNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [goToPrevious, goToNext]);
+
   const currentMedia = allMedia[currentMediaIndex];
 
   // Debug logging
@@ -155,9 +169,9 @@ export default function ProjectDetail({
       <article className="pb-16 md:pb-24">
         {/* Media Carousel */}
         {allMedia.length > 0 && currentMedia && (
-          <div className="w-full mb-8 md:mb-12 lg:mb-16 relative">
-            {/* Media Container - Max viewport height */}
-            <div className="relative w-full bg-black flex items-center justify-center" style={{ maxHeight: '85vh' }}>
+          <>
+            {/* Media Container */}
+            <div className="w-full bg-black flex items-center justify-center mb-4" style={{ maxHeight: '85vh' }}>
               {currentMedia.type === 'image' ? (
                 <img
                   src={getImageUrl(currentMedia.data, 1920)}
@@ -191,42 +205,73 @@ export default function ProjectDetail({
                   ) : null}
                 </div>
               )}
-
-              {/* Navigation Arrows */}
-              {allMedia.length > 1 && (
-                <>
-                  {/* Left Arrow */}
-                  <button
-                    onClick={goToPrevious}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white text-black rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-focus z-10"
-                    aria-label="Previous media"
-                  >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-
-                  {/* Right Arrow */}
-                  <button
-                    onClick={goToNext}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white text-black rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-focus z-10"
-                    aria-label="Next media"
-                  >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-
-                  {/* Media Counter */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm px-4 py-2 rounded-full z-10">
-                    <p className="font-body text-sm text-white">
-                      {currentMediaIndex + 1} / {allMedia.length}
-                    </p>
-                  </div>
-                </>
-              )}
             </div>
-          </div>
+
+            {/* Minimalist Navigation */}
+            {allMedia.length > 1 && (
+              <div style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 32px',
+                marginBottom: '40px'
+              }}>
+                {/* Left Arrow */}
+                <button
+                  onClick={goToPrevious}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: '#000000',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                  aria-label="Previous media"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                {/* Media Counter */}
+                <span style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '14px',
+                  color: '#999999'
+                }}>
+                  {currentMediaIndex + 1} / {allMedia.length}
+                </span>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={goToNext}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: '#000000',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                  aria-label="Next media"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         {/* Project Metadata */}
