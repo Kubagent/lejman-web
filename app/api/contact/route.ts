@@ -107,6 +107,11 @@ async function sendEmail(data: {
   const ARTIST_EMAIL = process.env.ARTIST_EMAIL || 'artist@example.com';
   const GALLERY_EMAIL = process.env.GALLERY_EMAIL;
 
+  console.log('Attempting to send email...');
+  console.log('RESEND_API_KEY configured:', !!RESEND_API_KEY);
+  console.log('ARTIST_EMAIL:', ARTIST_EMAIL);
+  console.log('Environment:', process.env.NODE_ENV);
+
   // Check if Resend is configured
   if (!RESEND_API_KEY) {
     console.warn('RESEND_API_KEY not configured. Email will not be sent.');
@@ -119,7 +124,7 @@ async function sendEmail(data: {
       console.log('==============================================');
       return;
     }
-    throw new Error('Email service not configured');
+    throw new Error('Email service not configured - RESEND_API_KEY missing');
   }
 
   // Prepare recipients
@@ -177,8 +182,12 @@ This message was sent from the contact form on dlejman.com
   if (!response.ok) {
     const error = await response.text();
     console.error('Resend API error:', error);
-    throw new Error('Failed to send email');
+    console.error('Response status:', response.status);
+    console.error('Response headers:', Object.fromEntries(response.headers.entries()));
+    throw new Error(`Failed to send email: ${error}`);
   }
+
+  console.log('Email sent successfully via Resend');
 }
 
 /**
@@ -270,10 +279,12 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('Contact form error:', error);
+    console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');
 
     return NextResponse.json(
       {
         error: 'Failed to send message. Please try again later.',
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : 'Unknown error') : undefined
       },
       { status: 500 }
     );
