@@ -19,6 +19,7 @@ export default function AboutPage() {
   const [pressKitItems, setPressKitItems] = useState<PressKitItem[]>([]);
   const [links, setLinks] = useState<Link[]>([]);
   const [interviews, setInterviews] = useState<Interview[]>([]);
+  const [showSoonFor, setShowSoonFor] = useState<AboutSection | null>(null);
   const locale = 'en'; // TODO: Get from context
 
   useEffect(() => {
@@ -35,61 +36,57 @@ export default function AboutPage() {
     loadSettings();
   }, []);
 
+  // Load all content upfront to check availability
   useEffect(() => {
-    async function loadPublications() {
+    async function loadAllContent() {
       try {
-        const data = await getPublications();
-        setPublications(data);
+        const [pubData, pressData, linksData, interviewsData] = await Promise.all([
+          getPublications(),
+          getPressKitItems(),
+          getLinks(),
+          getInterviews(),
+        ]);
+        setPublications(pubData);
+        setPressKitItems(pressData);
+        setLinks(linksData);
+        setInterviews(interviewsData);
       } catch (error) {
-        console.error('Failed to load publications:', error);
+        console.error('Failed to load content:', error);
       }
     }
-    if (activeSection === 'publications') {
-      loadPublications();
-    }
-  }, [activeSection]);
+    loadAllContent();
+  }, []);
 
-  useEffect(() => {
-    async function loadPressKit() {
-      try {
-        const data = await getPressKitItems();
-        setPressKitItems(data);
-      } catch (error) {
-        console.error('Failed to load press kit items:', error);
-      }
+  // Check if a section has content
+  const hasContent = (sectionId: AboutSection): boolean => {
+    switch (sectionId) {
+      case 'biography':
+        return !!(siteSettings?.biography?.en || siteSettings?.biography?.de || siteSettings?.biography?.pl);
+      case 'publications':
+        return publications.length > 0;
+      case 'presskit':
+        return pressKitItems.length > 0;
+      case 'links':
+        return links.length > 0;
+      case 'interviews':
+        return interviews.length > 0;
+      default:
+        return false;
     }
-    if (activeSection === 'presskit') {
-      loadPressKit();
-    }
-  }, [activeSection]);
+  };
 
-  useEffect(() => {
-    async function loadLinks() {
-      try {
-        const data = await getLinks();
-        setLinks(data);
-      } catch (error) {
-        console.error('Failed to load links:', error);
-      }
+  // Handle section click
+  const handleSectionClick = (sectionId: AboutSection) => {
+    if (hasContent(sectionId)) {
+      setActiveSection(sectionId);
+      setShowSoonFor(null);
+    } else {
+      // Show "soon." message
+      setShowSoonFor(sectionId);
+      // Hide after 3 seconds
+      setTimeout(() => setShowSoonFor(null), 3000);
     }
-    if (activeSection === 'links') {
-      loadLinks();
-    }
-  }, [activeSection]);
-
-  useEffect(() => {
-    async function loadInterviews() {
-      try {
-        const data = await getInterviews();
-        setInterviews(data);
-      } catch (error) {
-        console.error('Failed to load interviews:', error);
-      }
-    }
-    if (activeSection === 'interviews') {
-      loadInterviews();
-    }
-  }, [activeSection]);
+  };
 
   const sections = [
     { id: 'biography' as AboutSection, label: 'Biography' },
@@ -101,6 +98,29 @@ export default function AboutPage() {
 
   return (
     <div className="bg-white">
+      <style jsx>{`
+        @keyframes soonAppear {
+          0% {
+            opacity: 0;
+            transform: scale(0.8) translateY(5px);
+          }
+          40% {
+            opacity: 1;
+            transform: scale(1.05) translateY(0);
+          }
+          60% {
+            transform: scale(0.98) translateY(0);
+          }
+          80% {
+            transform: scale(1.02) translateY(0);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+      `}</style>
+
       {/* 20px Spacer */}
       <div className="w-full bg-white" style={{ height: '20px' }} />
 
@@ -109,29 +129,51 @@ export default function AboutPage() {
         <div className="px-6 md:px-12 lg:px-24 py-8">
           <div className="flex items-stretch gap-4 w-full flex-wrap lg:flex-nowrap">
             {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setActiveSection(section.id)}
-                className={`transition-all duration-300 ease-in-out ${
-                  activeSection === section.id
-                    ? 'bg-[#000000] text-[#FFFFFF]'
-                    : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
-                }`}
-                style={{
-                  border: 'none',
-                  padding: '16px 24px',
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '15px',
-                  fontWeight: activeSection === section.id ? 500 : 400,
-                  cursor: 'pointer',
-                  outline: 'none',
-                  flex: '1 1 0',
-                  minWidth: '140px',
-                  textAlign: 'center'
-                }}
-              >
-                {section.label}
-              </button>
+              <div key={section.id} style={{ flex: '1 1 0', minWidth: '140px', position: 'relative' }}>
+                {/* "soon." message above button */}
+                {showSoonFor === section.id && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-30px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '15px',
+                      fontWeight: 400,
+                      color: '#000000',
+                      animation: 'soonAppear 0.8s ease-out forwards',
+                      whiteSpace: 'nowrap'
+                    }}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    soon.
+                  </div>
+                )}
+
+                <button
+                  onClick={() => handleSectionClick(section.id)}
+                  className={`w-full transition-all duration-300 ease-in-out ${
+                    activeSection === section.id
+                      ? 'bg-[#000000] text-[#FFFFFF]'
+                      : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
+                  }`}
+                  style={{
+                    border: 'none',
+                    padding: '16px 24px',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '15px',
+                    fontWeight: activeSection === section.id ? 500 : 400,
+                    cursor: hasContent(section.id) ? 'pointer' : 'not-allowed',
+                    outline: 'none',
+                    textAlign: 'center',
+                    opacity: hasContent(section.id) ? 1 : 0.6
+                  }}
+                >
+                  {section.label}
+                </button>
+              </div>
             ))}
           </div>
         </div>

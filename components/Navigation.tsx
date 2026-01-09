@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { getWrittenWorks } from '@/lib/sanity/writtenWorks';
 
 interface NavigationProps {
   isOpen: boolean;
@@ -10,15 +12,32 @@ interface NavigationProps {
 }
 
 const menuItems = [
-  { href: '/works', label: 'Works' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/written-work', label: 'Writings' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/works', label: 'Works', checkContent: false },
+  { href: '/projects', label: 'Projects', checkContent: false },
+  { href: '/written-work', label: 'Writings', checkContent: true },
+  { href: '/about', label: 'About', checkContent: false },
+  { href: '/contact', label: 'Contact', checkContent: false },
 ];
 
 export default function Navigation({ isOpen, onClose }: NavigationProps) {
+  const router = useRouter();
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showSoonFor, setShowSoonFor] = useState<string | null>(null);
+  const [hasWrittenWorks, setHasWrittenWorks] = useState<boolean>(false);
+
+  // Check for written works content
+  useEffect(() => {
+    async function checkContent() {
+      try {
+        const writtenWorks = await getWrittenWorks();
+        setHasWrittenWorks(writtenWorks.length > 0);
+      } catch (error) {
+        console.error('Failed to check written works:', error);
+        setHasWrittenWorks(false);
+      }
+    }
+    checkContent();
+  }, []);
 
   // Handle Escape key
   useEffect(() => {
@@ -45,29 +64,71 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
     };
   }, [isOpen, onClose]);
 
+  // Check if a menu item has content
+  const hasContent = (item: typeof menuItems[0]): boolean => {
+    if (!item.checkContent) return true;
+    if (item.href === '/written-work') return hasWrittenWorks;
+    return true;
+  };
+
+  // Handle menu item click
+  const handleMenuClick = (e: React.MouseEvent, item: typeof menuItems[0]) => {
+    if (!hasContent(item)) {
+      e.preventDefault();
+      setShowSoonFor(item.href);
+      setTimeout(() => setShowSoonFor(null), 3000);
+    } else {
+      onClose();
+    }
+  };
+
   if (!isOpen && !isAnimating) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Navigation menu"
-      style={{
-        position: 'fixed',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: '#FFFFFF',
-        opacity: isOpen ? 1 : 0,
-        transition: 'opacity 0.3s ease',
-        pointerEvents: isOpen ? 'auto' : 'none',
-        zIndex: 50,
-        overflow: 'hidden'
-      }}
-    >
+    <>
+      <style jsx>{`
+        @keyframes soonAppear {
+          0% {
+            opacity: 0;
+            transform: scale(0.8) translateY(5px);
+          }
+          40% {
+            opacity: 1;
+            transform: scale(1.05) translateY(0);
+          }
+          60% {
+            transform: scale(0.98) translateY(0);
+          }
+          80% {
+            transform: scale(1.02) translateY(0);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+      `}</style>
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#FFFFFF',
+          opacity: isOpen ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: isOpen ? 'auto' : 'none',
+          zIndex: 50,
+          overflow: 'hidden'
+        }}
+      >
       {/* Top Left - Logo */}
       <div
         style={{
@@ -126,12 +187,16 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
                 opacity: isOpen ? 1 : 0,
                 transform: isOpen ? 'translateY(0)' : 'translateY(40px)',
                 transition: `opacity 0.6s ease ${index * 0.1 + 0.1}s, transform 0.6s ease ${index * 0.1 + 0.1}s`,
-                textAlign: 'center'
+                textAlign: 'center',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '20px'
               }}
             >
               <Link
                 href={item.href}
-                onClick={onClose}
+                onClick={(e) => handleMenuClick(e, item)}
                 style={{
                   fontFamily: 'Montserrat, sans-serif',
                   fontWeight: 600,
@@ -141,13 +206,42 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
                   fontSize: 'clamp(1.68rem, 4.48vw, 3.36rem)',
                   lineHeight: '1.2',
                   display: 'inline-block',
-                  cursor: 'pointer'
+                  cursor: hasContent(item) ? 'pointer' : 'not-allowed',
+                  opacity: hasContent(item) ? 1 : 0.6
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseEnter={(e) => {
+                  if (hasContent(item)) {
+                    e.currentTarget.style.opacity = '0.7';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (hasContent(item)) {
+                    e.currentTarget.style.opacity = '1';
+                  } else {
+                    e.currentTarget.style.opacity = '0.6';
+                  }
+                }}
               >
                 {item.label}
               </Link>
+
+              {/* "soon." message to the right of menu item */}
+              {showSoonFor === item.href && (
+                <div
+                  style={{
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '15px',
+                    fontWeight: 400,
+                    color: '#000000',
+                    animation: 'soonAppear 0.8s ease-out forwards',
+                    whiteSpace: 'nowrap'
+                  }}
+                  role="status"
+                  aria-live="polite"
+                >
+                  soon.
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -200,5 +294,6 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
         </div> */}
       </nav>
     </div>
+    </>
   );
 }
