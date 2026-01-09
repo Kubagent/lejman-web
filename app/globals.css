@@ -145,7 +145,7 @@ a:active {
   .header-logo {
     left: 20px;
     max-width: calc(100vw - 100px); /* Leave room for hamburger menu */
-    top: 38px; /* Align vertically with hamburger menu center */
+    top: 44px; /* Align vertically with hamburger menu center */
     display: flex;
     align-items: center;
   }
@@ -170,5 +170,55 @@ a:active {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+/* Biography section responsive layout */
+/* Desktop (768px and above) - side by side layout */
+@media (min-width: 768px) {
+  .biography-section-outer {
+    padding: 60px 120px;
+  }
+
+  .biography-section-inner {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+
+  .biography-text-content {
+    padding-right: 20px;
+  }
+}
+
+/* Mobile (below 768px) - stacked layout with image first */
+@media (max-width: 767px) {
+  .biography-section-outer {
+    padding: 40px 20px;
+  }
+
+  .biography-section-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* Image comes first on mobile */
+  .biography-image-column {
+    order: 1;
+    flex: 1 1 100% !important;
+    width: 100%;
+  }
+
+  /* Text comes second on mobile */
+  .biography-text-column {
+    order: 2;
+    flex: 1 1 100% !important;
+    width: 100%;
+  }
+
+  .biography-text-content {
+    padding-right: 0;
+    text-align: left !important;
   }
 }

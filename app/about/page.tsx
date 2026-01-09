@@ -147,28 +147,24 @@ export default function AboutPage() {
         )}
         {activeSection === 'biography' && siteSettings && (
           <div
+            className="biography-section-outer"
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              paddingTop: '60px',
-              paddingBottom: '60px',
-              paddingLeft: '120px',
-              paddingRight: '120px',
               position: 'relative'
             }}
           >
             <div
+              className="biography-section-inner"
               style={{
                 maxWidth: '1600px',
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '60px'
+                width: '100%'
               }}
             >
               {/* Text Column - Left Side */}
               <div
+                className="biography-text-column"
                 style={{
                   flex: '1',
                   display: 'flex',
@@ -177,13 +173,13 @@ export default function AboutPage() {
                 }}
               >
                 <div
+                  className="biography-text-content"
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     fontSize: '0.9rem',
                     lineHeight: '1.6',
                     color: '#333333',
-                    textAlign: 'justify',
-                    paddingRight: '20px'
+                    textAlign: 'justify'
                   }}
                 >
                   {siteSettings.biography?.[locale] && siteSettings.biography[locale].trim() ? (
@@ -202,6 +198,7 @@ export default function AboutPage() {
 
               {/* Image - Right Side */}
               <div
+                className="biography-image-column"
                 style={{
                   flex: '0 0 45%',
                   position: 'relative'
