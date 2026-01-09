@@ -12,8 +12,8 @@ interface NavigationProps {
 const menuItems = [
   { href: '/works', label: 'Works' },
   { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
   { href: '/written-work', label: 'Writings' },
+  { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
 
