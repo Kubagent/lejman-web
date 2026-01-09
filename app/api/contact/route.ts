@@ -141,7 +141,7 @@ async function sendEmail(data: {
       Authorization: `Bearer ${RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: 'Contact Form <onboarding@resend.dev>',
+      from: 'Contact Form <noreply@dlejman.com>',
       to: recipients,
       reply_to: data.email,
       subject: `New Contact Form Submission from ${data.name}`,
