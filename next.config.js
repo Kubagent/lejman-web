@@ -14,6 +14,20 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/texts',
+        destination: '/written-work',
+        permanent: true, // 301 redirect for SEO
+      },
+      {
+        source: '/texts/:slug*',
+        destination: '/written-work/:slug*',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig

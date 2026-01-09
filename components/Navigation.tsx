@@ -13,7 +13,7 @@ const menuItems = [
   { href: '/works', label: 'Works' },
   { href: '/projects', label: 'Projects' },
   { href: '/about', label: 'About' },
-  { href: '/texts', label: 'Texts' },
+  { href: '/written-work', label: 'Writings' },
   { href: '/contact', label: 'Contact' },
 ];
 

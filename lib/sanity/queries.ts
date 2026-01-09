@@ -104,9 +104,9 @@ export const projectBySlugQuery = groq`
   }
 `;
 
-// All Texts - ordered by publishedDate desc
-export const textsQuery = groq`
-  *[_type == "publication"] | order(publishedDate desc) {
+// All Written Works - ordered by publishedDate desc
+export const writtenWorksQuery = groq`
+  *[_type == "writtenWork"] | order(publishedDate desc) {
     _id,
     title,
     slug,
@@ -117,9 +117,9 @@ export const textsQuery = groq`
   }
 `;
 
-// Single Text by slug
-export const textBySlugQuery = groq`
-  *[_type == "publication" && slug.current == $slug][0] {
+// Single Written Work by slug
+export const writtenWorkBySlugQuery = groq`
+  *[_type == "writtenWork" && slug.current == $slug][0] {
     _id,
     title,
     slug,

@@ -119,3 +119,56 @@ a:hover {
 a:active {
   color: var(--black);
 }
+
+/* Mobile-specific header and footer positioning to prevent overlap */
+/* Desktop (768px and above) - default positioning */
+@media (min-width: 768px) {
+  .header-logo {
+    left: 72px;
+  }
+
+  .header-menu {
+    right: 72px;
+  }
+
+  .footer-copyright {
+    left: 72px;
+  }
+
+  .footer-credit {
+    right: 72px;
+  }
+}
+
+/* Mobile (below 768px) - reduced spacing to prevent overlap */
+@media (max-width: 767px) {
+  .header-logo {
+    left: 20px;
+    max-width: calc(100vw - 100px); /* Leave room for hamburger menu */
+    top: 38px; /* Align vertically with hamburger menu center */
+    display: flex;
+    align-items: center;
+  }
+
+  .header-menu {
+    right: 20px;
+  }
+
+  .footer-copyright {
+    left: 20px;
+    max-width: calc(50vw - 30px); /* Take up to half width */
+  }
+
+  .footer-credit {
+    right: 20px;
+    max-width: calc(50vw - 30px); /* Take up to half width */
+  }
+
+  /* Ensure text doesn't wrap awkwardly on very small screens */
+  .footer-copyright div,
+  .footer-credit span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

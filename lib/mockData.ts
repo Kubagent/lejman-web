@@ -1,4 +1,4 @@
-import { RiverVideo, Artwork, Project, Publication } from './types';
+import { RiverVideo, Artwork, Project, WrittenWork } from './types';
 
 /**
  * Mock River Videos for Development/Preview
@@ -1224,7 +1224,7 @@ export const mockProjects: Project[] = [
  * Sample texts, catalogs, essays, and other downloadable documents.
  * Replace with real Sanity content once CMS is populated.
  */
-export const mockPublications: Publication[] = [
+export const mockWrittenWorks: WrittenWork[] = [
   {
     _id: 'publication-1',
     slug: {

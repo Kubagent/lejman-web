@@ -4,12 +4,21 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getSiteSettings, SiteSettings } from '@/lib/sanity/siteSettings';
 import { urlFor } from '@/lib/sanity/image';
+import { getPublications, Publication } from '@/lib/sanity/publications';
+import { getPressKitItems, PressKitItem } from '@/lib/sanity/pressKit';
+import { getLinks, Link } from '@/lib/sanity/links';
+import { getInterviews, Interview } from '@/lib/sanity/interviews';
+import { getFileAssetUrl } from '@/lib/sanity/file';
 
 type AboutSection = 'biography' | 'publications' | 'presskit' | 'links' | 'interviews';
 
 export default function AboutPage() {
   const [activeSection, setActiveSection] = useState<AboutSection>('biography');
   const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
+  const [publications, setPublications] = useState<Publication[]>([]);
+  const [pressKitItems, setPressKitItems] = useState<PressKitItem[]>([]);
+  const [links, setLinks] = useState<Link[]>([]);
+  const [interviews, setInterviews] = useState<Interview[]>([]);
   const locale = 'en'; // TODO: Get from context
 
   useEffect(() => {
@@ -26,6 +35,62 @@ export default function AboutPage() {
     loadSettings();
   }, []);
 
+  useEffect(() => {
+    async function loadPublications() {
+      try {
+        const data = await getPublications();
+        setPublications(data);
+      } catch (error) {
+        console.error('Failed to load publications:', error);
+      }
+    }
+    if (activeSection === 'publications') {
+      loadPublications();
+    }
+  }, [activeSection]);
+
+  useEffect(() => {
+    async function loadPressKit() {
+      try {
+        const data = await getPressKitItems();
+        setPressKitItems(data);
+      } catch (error) {
+        console.error('Failed to load press kit items:', error);
+      }
+    }
+    if (activeSection === 'presskit') {
+      loadPressKit();
+    }
+  }, [activeSection]);
+
+  useEffect(() => {
+    async function loadLinks() {
+      try {
+        const data = await getLinks();
+        setLinks(data);
+      } catch (error) {
+        console.error('Failed to load links:', error);
+      }
+    }
+    if (activeSection === 'links') {
+      loadLinks();
+    }
+  }, [activeSection]);
+
+  useEffect(() => {
+    async function loadInterviews() {
+      try {
+        const data = await getInterviews();
+        setInterviews(data);
+      } catch (error) {
+        console.error('Failed to load interviews:', error);
+      }
+    }
+    if (activeSection === 'interviews') {
+      loadInterviews();
+    }
+  }, [activeSection]);
+
   const sections = [
     { id: 'biography' as AboutSection, label: 'Biography' },
     { id: 'publications' as AboutSection, label: 'Publications' },
@@ -33,11 +98,6 @@ export default function AboutPage() {
     { id: 'links' as AboutSection, label: 'Links' },
     { id: 'interviews' as AboutSection, label: 'Interviews' },
   ];
-
-  const publications: any[] = [];
-  const pressKitItems: any[] = [];
-  const links: any[] = [];
-  const interviews: any[] = [];
 
   return (
     <div className="bg-white">
@@ -196,45 +256,205 @@ export default function AboutPage() {
 
         {/* Publications Section */}
         {activeSection === 'publications' && (
-          <div className="py-20 px-6">
-            <div className="max-w-2xl mx-auto text-center">
-              <p className="font-serif text-lg text-[#666666] leading-relaxed">
-                Publications will be available soon. Please check back later.
-              </p>
-            </div>
+          <div className="py-12">
+            {publications.length > 0 ? (
+              publications.map((pub, index) => (
+                <div
+                  key={pub._id}
+                  className={`py-12 ${
+                    index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
+                  }`}
+                  style={{
+                    paddingLeft: '120px',
+                    paddingRight: '120px'
+                  }}
+                >
+                  <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
+                    <div className="flex-1 min-w-[200px]">
+                      <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2">
+                        {pub.title}
+                      </h3>
+                      <p className="font-sans text-sm text-[#666666]">
+                        {pub.year}{" • "}{pub.format}{" • "}{pub.size}
+                      </p>
+                    </div>
+                    <a
+                      href={getFileAssetUrl(pub.file)}
+                      download
+                      className="bg-[#000000] hover:bg-[#FAFAFA] transition-all duration-300"
+                      style={{
+                        padding: '12px 24px',
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        textAlign: 'center',
+                        color: '#FFFFFF'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = '#000000'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#FFFFFF'}
+                    >
+                      Download
+                    </a>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="py-20 px-6">
+                <div className="max-w-2xl mx-auto text-center">
+                  <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                    Publications will be available soon. Please check back later.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* Press Kit Section */}
         {activeSection === 'presskit' && (
-          <div className="py-20 px-6">
-            <div className="max-w-2xl mx-auto text-center">
-              <p className="font-serif text-lg text-[#666666] leading-relaxed">
-                Press kit materials will be available soon. Please check back later.
-              </p>
-            </div>
+          <div className="py-12">
+            {pressKitItems.length > 0 ? (
+              pressKitItems.map((item, index) => (
+                <div
+                  key={item._id}
+                  className={`py-12 ${
+                    index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
+                  }`}
+                  style={{
+                    paddingLeft: '120px',
+                    paddingRight: '120px'
+                  }}
+                >
+                  <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
+                    <div className="flex-1 min-w-[200px]">
+                      <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="font-sans text-sm text-[#666666]">
+                        {item.format}{" • "}{item.size}
+                      </p>
+                    </div>
+                    <a
+                      href={getFileAssetUrl(item.file)}
+                      download
+                      className="bg-[#000000] hover:bg-[#FAFAFA] transition-all duration-300"
+                      style={{
+                        padding: '12px 24px',
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        textAlign: 'center',
+                        color: '#FFFFFF'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = '#000000'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#FFFFFF'}
+                    >
+                      Download
+                    </a>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="py-20 px-6">
+                <div className="max-w-2xl mx-auto text-center">
+                  <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                    Press kit materials will be available soon. Please check back later.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* Links Section */}
         {activeSection === 'links' && (
-          <div className="py-20 px-6">
-            <div className="max-w-2xl mx-auto text-center">
-              <p className="font-serif text-lg text-[#666666] leading-relaxed">
-                Links will be available soon. Please check back later.
-              </p>
-            </div>
+          <div className="py-12">
+            {links.length > 0 ? (
+              links.map((link, index) => (
+                <div
+                  key={link._id}
+                  className={`py-12 ${
+                    index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
+                  }`}
+                  style={{
+                    paddingLeft: '120px',
+                    paddingRight: '120px'
+                  }}
+                >
+                  <div className="max-w-4xl mx-auto">
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group"
+                    >
+                      <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
+                        {link.title} →
+                      </h3>
+                      <p className="font-sans text-sm text-[#666666]">
+                        {link.description}
+                      </p>
+                    </a>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="py-20 px-6">
+                <div className="max-w-2xl mx-auto text-center">
+                  <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                    Links will be available soon. Please check back later.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* Interviews Section */}
         {activeSection === 'interviews' && (
-          <div className="py-20 px-6">
-            <div className="max-w-2xl mx-auto text-center">
-              <p className="font-serif text-lg text-[#666666] leading-relaxed">
-                Interviews will be available soon. Please check back later.
-              </p>
-            </div>
+          <div className="py-12">
+            {interviews.length > 0 ? (
+              interviews.map((interview, index) => (
+                <div
+                  key={interview._id}
+                  className={`py-12 ${
+                    index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
+                  }`}
+                  style={{
+                    paddingLeft: '120px',
+                    paddingRight: '120px'
+                  }}
+                >
+                  <div className="max-w-4xl mx-auto">
+                    <a
+                      href={interview.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group"
+                    >
+                      <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
+                        {interview.title} →
+                      </h3>
+                      <p className="font-sans text-sm text-[#666666]">
+                        {interview.publication}{" • "}{interview.year}
+                      </p>
+                    </a>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="py-20 px-6">
+                <div className="max-w-2xl mx-auto text-center">
+                  <p className="font-serif text-lg text-[#666666] leading-relaxed">
+                    Interviews will be available soon. Please check back later.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

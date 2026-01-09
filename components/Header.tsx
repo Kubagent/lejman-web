@@ -13,10 +13,10 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
     <>
       {/* Top Left - Artist Name/Logo - 150% larger with visibility enhancement */}
       <div
+        className="header-logo"
         style={{
           position: 'fixed',
           top: '32px',
-          left: '72px',
           zIndex: 40
         }}
       >
@@ -40,10 +40,10 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
 
       {/* Top Right - Animated Menu Button (hamburger/cross) - 150% larger with visibility enhancement */}
       <div
+        className="header-menu"
         style={{
           position: 'fixed',
           top: '32px',
-          right: '72px',
           zIndex: isMenuOpen ? 60 : 40
         }}
       >

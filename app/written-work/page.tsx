@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import PublicationCard from '@/components/PublicationCard';
-import { Publication, PublicationFilters } from '@/lib/types';
+import { WrittenWork, WrittenWorkFilters } from '@/lib/types';
 import CustomDropdown from '@/components/CustomDropdown';
 
-export default function TextsPage() {
-  const [publications, setPublications] = useState<Publication[]>([]);
-  const [filteredPublications, setFilteredPublications] = useState<Publication[]>([]);
-  const [filters, setFilters] = useState<PublicationFilters>({
+export default function WrittenWorkPage() {
+  const [writtenWorks, setWrittenWorks] = useState<WrittenWork[]>([]);
+  const [filteredWrittenWorks, setFilteredWrittenWorks] = useState<WrittenWork[]>([]);
+  const [filters, setFilters] = useState<WrittenWorkFilters>({
     year: undefined,
     type: 'all',
     category: 'all',
@@ -16,9 +16,9 @@ export default function TextsPage() {
   });
   const locale = 'en'; // TODO: Get from context/router
 
-  // Filter publications whenever filters change
+  // Filter written works whenever filters change
   useEffect(() => {
-    let filtered = [...publications];
+    let filtered = [...writtenWorks];
 
     // Search filter (title, description, author)
     if (filters.search) {
@@ -58,11 +58,11 @@ export default function TextsPage() {
       return b.year - a.year;
     });
 
-    setFilteredPublications(filtered);
-  }, [filters, publications]);
+    setFilteredWrittenWorks(filtered);
+  }, [filters, writtenWorks]);
 
-  // Get unique years from publications
-  const years = Array.from(new Set(publications.map((pub) => pub.year))).sort((a, b) => b - a);
+  // Get unique years from written works
+  const years = Array.from(new Set(writtenWorks.map((pub) => pub.year))).sort((a, b) => b - a);
 
   // Clear all filters
   const clearFilters = () => {
@@ -81,7 +81,7 @@ export default function TextsPage() {
       {/* Header */}
       <div className="container mx-auto px-6 md:px-12 lg:px-24 pt-12 md:pt-16 lg:pt-20 pb-32">
         <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-4 text-center">
-          Texts & Publications
+          Selected Writings
         </h1>
       </div>
 
@@ -98,7 +98,7 @@ export default function TextsPage() {
               {/* Search Input */}
               <input
                 type="text"
-                placeholder="Search publications..."
+                placeholder="Search written works..."
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                 className={`outline-none transition-all duration-300 ease-in-out text-center ${
@@ -115,7 +115,7 @@ export default function TextsPage() {
                   flex: '1',
                   minWidth: '200px'
                 }}
-                aria-label="Search publications"
+                aria-label="Search written works"
               />
 
               {/* Year Filter */}
@@ -199,7 +199,7 @@ export default function TextsPage() {
                 fontSize: '12.5px',
                 color: '#999999'
               }}>
-                {filteredPublications.length} {filteredPublications.length === 1 ? 'publication' : 'publications'}
+                {filteredWrittenWorks.length} {filteredWrittenWorks.length === 1 ? 'writtenWork' : 'written works'}
               </span>
             </div>
           </div>
@@ -211,12 +211,12 @@ export default function TextsPage() {
 
       {/* Publications List */}
       <div className="">
-        {filteredPublications.length > 0 ? (
+        {filteredWrittenWorks.length > 0 ? (
           <div className="max-w-[60vw] mx-auto">
-            {filteredPublications.map((publication, index) => (
+            {filteredWrittenWorks.map((writtenWork, index) => (
               <PublicationCard
-                key={publication._id}
-                publication={publication}
+                key={writtenWork._id}
+                writtenWork={writtenWork}
                 locale={locale}
                 index={index}
               />
@@ -225,7 +225,7 @@ export default function TextsPage() {
         ) : (
           <div className="text-center py-20">
             <p className="font-serif text-lg text-[#666666] leading-relaxed">
-              {hasActiveFilters ? 'No publications found' : 'Publications will be available soon. Please check back later.'}
+              {hasActiveFilters ? 'No written works found' : 'Publications will be available soon. Please check back later.'}
             </p>
             {hasActiveFilters && (
               <button

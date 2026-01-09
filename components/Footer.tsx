@@ -9,10 +9,10 @@ export default function Footer() {
     <footer className="relative w-full" style={{ height: '150px' }}>
       {/* Bottom Left - Copyright */}
       <div
+        className="footer-copyright"
         style={{
           position: 'absolute',
           bottom: '72px',
-          left: '72px',
           zIndex: 10,
           fontFamily: 'Cormorant Garamond, serif'
         }}
@@ -24,10 +24,10 @@ export default function Footer() {
 
       {/* Bottom Right - Created With */}
       <div
+        className="footer-credit"
         style={{
           position: 'absolute',
           bottom: '72px',
-          right: '72px',
           zIndex: 10,
           fontFamily: 'Cormorant Garamond, serif'
         }}

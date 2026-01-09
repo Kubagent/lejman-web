@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { Publication } from '@/lib/types';
+import { WrittenWork } from '@/lib/types';
 import { FileText, Download, FileIcon } from 'lucide-react';
 
 interface PublicationCardProps {
-  publication: Publication;
+  writtenWork: WrittenWork;
   locale?: 'en' | 'de' | 'pl';
 }
 
@@ -14,17 +14,17 @@ interface PublicationCardInternalProps extends PublicationCardProps {
 }
 
 export default function PublicationCard({
-  publication,
+  writtenWork,
   locale = 'en',
   index = 0
 }: PublicationCardInternalProps) {
-  const title = publication.title[locale] || publication.title.en || '';
-  const description = publication.description?.[locale] || publication.description?.en || '';
-  const author = publication.author?.[locale] || publication.author?.en || '';
+  const title = writtenWork.title[locale] || writtenWork.title.en || '';
+  const description = writtenWork.description?.[locale] || writtenWork.description?.en || '';
+  const author = writtenWork.author?.[locale] || writtenWork.author?.en || '';
 
   // Get file type icon
   const getFileIcon = () => {
-    switch (publication.type) {
+    switch (writtenWork.type) {
       case 'pdf':
         return <FileText className="w-4 h-4" />;
       default:
@@ -42,7 +42,7 @@ export default function PublicationCard({
       monograph: { en: 'Monograph', de: 'Monografie', pl: 'Monografia' },
       other: { en: 'Publication', de: 'Publikation', pl: 'Publikacja' }
     };
-    return catMap[publication.category]?.[locale] || publication.category;
+    return catMap[writtenWork.category]?.[locale] || writtenWork.category;
   };
 
   // Alternating background
@@ -51,7 +51,7 @@ export default function PublicationCard({
   return (
     <article className={`group ${bgClass}`}>
       <a
-        href={publication.fileUrl || '#'}
+        href={writtenWork.fileUrl || '#'}
         download
         className="group flex gap-6 items-start py-10 px-6 md:px-8 no-underline"
         aria-label={`Download ${title}`}
@@ -64,7 +64,7 @@ export default function PublicationCard({
               {title}
             </h3>
             <span className="flex-shrink-0 font-sans text-sm text-[#999999]">
-              {publication.year}
+              {writtenWork.year}
             </span>
           </div>
 
@@ -74,8 +74,8 @@ export default function PublicationCard({
             {author && (
               <span>{"\u00A0•\u00A0"}{author}</span>
             )}
-            {publication.publisher && (
-              <span>{"\u00A0•\u00A0"}{publication.publisher}</span>
+            {writtenWork.publisher && (
+              <span>{"\u00A0•\u00A0"}{writtenWork.publisher}</span>
             )}
           </div>
 
@@ -90,18 +90,18 @@ export default function PublicationCard({
           <div className="flex items-center justify-end text-xs text-[#999999] font-sans mt-4">
             <span className="inline-flex items-center gap-1.5">
               <Download className="w-3 h-3" />
-              {publication.type.toUpperCase()}
+              {writtenWork.type.toUpperCase()}
             </span>
-            {publication.fileSize && <span>{"\u00A0•\u00A0"}{publication.fileSize}</span>}
+            {writtenWork.fileSize && <span>{"\u00A0•\u00A0"}{writtenWork.fileSize}</span>}
           </div>
         </div>
 
         {/* Right: Small Thumbnail */}
         <div className="flex-shrink-0 w-16 md:w-20 h-20 md:h-28 bg-[#F5F5F5] overflow-hidden">
-          {publication.thumbnail ? (
+          {writtenWork.thumbnail ? (
             <div className="relative w-full h-full">
               <Image
-                src={publication.thumbnail.asset._ref}
+                src={writtenWork.thumbnail.asset._ref}
                 alt={`${title} cover`}
                 fill
                 className="object-cover group-hover:opacity-80 transition-opacity duration-200"

@@ -150,8 +150,8 @@ export interface ProjectFilters {
   search?: string;
 }
 
-// Publication/Text Document Types
-export interface Publication {
+// Written Work Document Types
+export interface WrittenWork {
   _id: string;
   slug: {
     _type: 'slug';
@@ -173,15 +173,15 @@ export interface Publication {
   featured?: boolean;
 }
 
-// Props for Publication Components
-export interface PublicationCardProps {
-  publication: Publication;
+// Props for Written Work Components
+export interface WrittenWorkCardProps {
+  writtenWork: WrittenWork;
   locale?: 'en' | 'de' | 'pl';
   viewMode?: 'grid' | 'list';
 }
 
-// Filter types for publications
-export interface PublicationFilters {
+// Filter types for written works
+export interface WrittenWorkFilters {
   year?: number;
   type?: 'pdf' | 'doc' | 'epub' | 'other' | 'all';
   category?: 'essay' | 'catalog' | 'interview' | 'press' | 'monograph' | 'other' | 'all';
