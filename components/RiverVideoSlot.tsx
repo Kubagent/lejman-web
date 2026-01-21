@@ -347,7 +347,7 @@ export default function RiverVideoSlot({
         posterUrl && (
           <img
             src={posterUrl}
-            alt={title}
+            alt={`Video artwork: ${title}${video.year ? `, ${video.year}` : ''} by Dominik Lejman`}
             className="absolute inset-0 w-full h-full object-cover"
           />
         )

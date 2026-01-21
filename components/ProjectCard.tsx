@@ -160,7 +160,7 @@ export default function ProjectCard({
           <div className="relative flex-shrink-0 bg-near-white overflow-hidden" style={{ maxHeight: '70vh', width: 'auto', aspectRatio: '4/3', marginLeft: '200px', marginRight: '200px' }}>
             <img
               src={imageUrl}
-              alt={`${title} project view`}
+              alt={`${title} at ${venueName}, ${project.year} - Dominik Lejman exhibition`}
               loading="lazy"
               className="w-full h-full object-contain"
               style={{ maxHeight: '70vh' }}

@@ -44,26 +44,52 @@ export default function ArtworkDetail({
 }: ArtworkDetailProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [mainImageIndex, setMainImageIndex] = useState(0);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
 
   // Prepare all images (main + additional)
   const allImages = [artwork.mainImage, ...(artwork.images || [])];
 
+  // Combine all media (videos first, then images) into one array
+  const allMedia: Array<{ type: 'image' | 'video'; data: any; index: number }> = [];
+
+  // Add videos first (so they show initially)
+  if (artwork.videos && artwork.videos.length > 0) {
+    artwork.videos.forEach((video, idx) => {
+      allMedia.push({ type: 'video', data: video, index: idx });
+    });
+  }
+
+  // Add images after videos
+  allImages.forEach((image, idx) => {
+    allMedia.push({ type: 'image', data: image, index: idx });
+  });
+
+  // Navigation handlers
+  const goToPrevious = () => {
+    setCurrentMediaIndex((prev) => (prev === 0 ? allMedia.length - 1 : prev - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentMediaIndex((prev) => (prev === allMedia.length - 1 ? 0 : prev + 1));
+  };
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (allImages.length > 1) {
+      if (allMedia.length > 1) {
         if (e.key === 'ArrowLeft') {
-          setMainImageIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1));
+          goToPrevious();
         } else if (e.key === 'ArrowRight') {
-          setMainImageIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1));
+          goToNext();
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [allImages.length]);
+  }, [allMedia.length]);
+
+  const currentMedia = allMedia[currentMediaIndex];
 
   // Get localized content
   const title = artwork.title[locale] ?? artwork.title.en ?? 'Untitled';
@@ -95,10 +121,7 @@ export default function ArtworkDetail({
       .url();
   };
 
-  // Main image URL (960px for desktop)
-  const mainImageUrl = getImageUrl(artwork.mainImage, 960);
-
-  // Lightbox images
+  // Lightbox images (only images, not videos)
   const lightboxImages = allImages.map((img) => ({
     url: getImageUrl(img, 1920), // High-res for lightbox
     alt: `${title}, ${artwork.year}, ${medium}`,
@@ -107,8 +130,11 @@ export default function ArtworkDetail({
   }));
 
   const handleImageClick = () => {
-    setSelectedImageIndex(mainImageIndex);
-    setLightboxOpen(true);
+    // Only open lightbox if current media is an image
+    if (currentMedia?.type === 'image') {
+      setSelectedImageIndex(currentMedia.index);
+      setLightboxOpen(true);
+    }
   };
 
   return (
@@ -138,83 +164,113 @@ export default function ArtworkDetail({
           </Link>
         </div>
 
-        {/* Main image - Full screen size */}
-        <div className="w-full mb-4" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
-          <div className="h-[80vh] flex items-center justify-center">
-            <img
-              src={getImageUrl(allImages[mainImageIndex], 960)}
-              alt={`${title} by Dominik Lejman, ${artwork.year}`}
-              className="max-w-full max-h-full object-contain cursor-pointer"
-              onClick={handleImageClick}
-            />
-          </div>
-
-          {/* Navigation below main image */}
-          {allImages.length > 1 && (
-            <div style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0 32px',
-              marginTop: '16px',
-              marginBottom: '40px'
-            }}>
-              {/* Left Arrow */}
-              <button
-                onClick={() => setMainImageIndex((prev) => (prev === 0 ? allImages.length - 1 : prev - 1))}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: '#000000',
-                  transition: 'opacity 0.2s'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-                aria-label="Previous image"
-              >
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-
-              {/* Image Counter */}
-              <span style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '14px',
-                color: '#999999'
-              }}>
-                {mainImageIndex + 1} / {allImages.length}
-              </span>
-
-              {/* Right Arrow */}
-              <button
-                onClick={() => setMainImageIndex((prev) => (prev === allImages.length - 1 ? 0 : prev + 1))}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: '#000000',
-                  transition: 'opacity 0.2s'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-                aria-label="Next image"
-              >
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+        {/* Media Gallery - Images and Videos */}
+        {allMedia.length > 0 && currentMedia && (
+          <>
+            {/* Media Container */}
+            <div className="w-full bg-black flex items-center justify-center mb-4" style={{ maxHeight: '85vh' }}>
+              {currentMedia.type === 'image' ? (
+                <img
+                  src={getImageUrl(currentMedia.data, 1920)}
+                  alt={`${title} by Dominik Lejman, ${artwork.year}`}
+                  className="w-full h-full object-contain cursor-pointer"
+                  style={{ maxHeight: '85vh' }}
+                  onClick={handleImageClick}
+                />
+              ) : (
+                <div className="w-full" style={{ maxHeight: '85vh' }}>
+                  {/* Handle Mux video */}
+                  {currentMedia.data._type === 'mux.video' && currentMedia.data.asset?.playbackId ? (
+                    <video
+                      src={`https://stream.mux.com/${currentMedia.data.asset.playbackId}.m3u8`}
+                      controls
+                      className="w-full h-auto"
+                      style={{ maxHeight: '85vh' }}
+                      preload="metadata"
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : currentMedia.data._type === 'file' && currentMedia.data.asset?.url ? (
+                    <video
+                      src={currentMedia.data.asset.url}
+                      controls
+                      className="w-full h-auto"
+                      style={{ maxHeight: '85vh' }}
+                      preload="metadata"
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : null}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+
+            {/* Navigation */}
+            {allMedia.length > 1 && (
+              <div style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 32px',
+                marginBottom: '40px'
+              }}>
+                {/* Left Arrow */}
+                <button
+                  onClick={goToPrevious}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: '#000000',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                  aria-label="Previous media"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                {/* Media Counter */}
+                <span style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '14px',
+                  color: '#999999'
+                }}>
+                  {currentMediaIndex + 1} / {allMedia.length}
+                </span>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={goToNext}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: '#000000',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.5'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                  aria-label="Next media"
+                >
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </>
+        )}
 
         {/* Metadata section */}
         <div className="w-full md:max-w-4xl md:mx-auto py-12 md:py-16" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
@@ -236,6 +292,46 @@ export default function ArtworkDetail({
               <p className="font-body text-lg leading-relaxed text-black">
                 {description}
               </p>
+            </div>
+          )}
+
+          {/* Linked Projects - Compact bubble style */}
+          {artwork.projects && artwork.projects.length > 0 && (
+            <div className="mt-16">
+              <p className="font-body text-sm text-dark-gray mb-3">Associated Projects:</p>
+              <div className="flex flex-wrap gap-3">
+              {artwork.projects.map((project) => {
+                const projectTitle = project.title[locale] ?? project.title.en ?? 'Untitled Project';
+                const thumbnailUrl = project.thumbnail
+                  ? urlFor(project.thumbnail).width(80).height(80).quality(80).url()
+                  : null;
+
+                return project.slug?.current ? (
+                  <Link
+                    key={project._id}
+                    href={`/projects/${project.slug.current}`}
+                    className="group inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+                  >
+                    {thumbnailUrl ? (
+                      <img
+                        src={thumbnailUrl}
+                        alt=""
+                        className="w-7 h-7 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
+                        </svg>
+                      </div>
+                    )}
+                    <span className="font-body text-sm text-dark-gray group-hover:text-black transition-colors">
+                      {projectTitle}
+                    </span>
+                  </Link>
+                ) : null;
+              })}
+              </div>
             </div>
           )}
         </div>

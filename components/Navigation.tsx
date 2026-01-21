@@ -129,12 +129,12 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
           overflow: 'hidden'
         }}
       >
-      {/* Top Left - Logo */}
+      {/* Top Left - Logo (center-aligned with hamburger button) */}
       <div
+        className="nav-logo"
         style={{
           position: 'fixed',
-          top: '32px',
-          left: '32px',
+          top: '22px',
           zIndex: 60
         }}
       >
@@ -150,10 +150,10 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
           onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
         >
           <Image
-            src="/images/DL-favicon-circ.png"
+            src="/images/bio/dl_logo.png"
             alt="Dominik Lejman"
-            width={48}
-            height={48}
+            width={120}
+            height={80}
             priority
           />
         </Link>

@@ -32,11 +32,11 @@ export default function ProjectDetail({
   const venueName = project.venue[locale] ?? project.venue.en ?? '';
   const description = project.description?.[locale] ?? project.description?.en;
 
-  // Localized "Present" text for ongoing projects
-  const presentText = {
-    en: 'Present',
-    de: 'Gegenwart',
-    pl: 'Obecnie'
+  // Localized "Permanent since" text for ongoing projects
+  const permanentSinceText = {
+    en: 'Permanent since',
+    de: 'Permanent seit',
+    pl: 'Stała instalacja od'
   }[locale];
 
   // Format dates
@@ -52,7 +52,7 @@ export default function ProjectDetail({
   // Format date range with ongoing support
   const dateRange = (() => {
     if (project.isOngoing && project.startDate) {
-      return `${formatDate(project.startDate)} – ${presentText}`;
+      return `${permanentSinceText} ${formatDate(project.startDate)}`;
     }
 
     if (project.startDate && project.endDate) {
@@ -70,20 +70,20 @@ export default function ProjectDetail({
   };
   const typeLabel = typeLabels[project.type][locale] ?? typeLabels[project.type].en;
 
-  // Combine all media (photos and videos) into one array
+  // Combine all media (videos first, then photos) into one array
   const allMedia: Array<{ type: 'image' | 'video'; data: any; index: number }> = [];
 
-  // Add images
-  if (project.images && project.images.length > 0) {
-    project.images.forEach((image, idx) => {
-      allMedia.push({ type: 'image', data: image, index: idx });
-    });
-  }
-
-  // Add videos
+  // Add videos first (so they show initially)
   if (project.videos && project.videos.length > 0) {
     project.videos.forEach((video, idx) => {
       allMedia.push({ type: 'video', data: video, index: idx });
+    });
+  }
+
+  // Add images after videos
+  if (project.images && project.images.length > 0) {
+    project.images.forEach((image, idx) => {
+      allMedia.push({ type: 'image', data: image, index: idx });
     });
   }
 
@@ -132,13 +132,6 @@ export default function ProjectDetail({
 
   const currentMedia = allMedia[currentMediaIndex];
 
-  // Debug logging
-  console.log('Total media items:', allMedia.length);
-  console.log('Current media index:', currentMediaIndex);
-  console.log('Current media:', currentMedia);
-  console.log('Images:', project.images?.length || 0);
-  console.log('Videos:', project.videos?.length || 0);
-
   return (
     <>
       {/* Back to Projects Link */}
@@ -175,7 +168,7 @@ export default function ProjectDetail({
               {currentMedia.type === 'image' ? (
                 <img
                   src={getImageUrl(currentMedia.data, 1920)}
-                  alt={`${title} - Media ${currentMediaIndex + 1}`}
+                  alt={`${title} at ${venueName}, ${project.year} - Dominik Lejman`}
                   className="w-full h-full object-contain"
                   style={{ maxHeight: '85vh' }}
                 />
@@ -298,37 +291,46 @@ export default function ProjectDetail({
             </div>
           )}
 
-          {/* Featured Artworks */}
+          {/* Linked Artworks - Compact bubble style */}
           {featuredArtworks && featuredArtworks.length > 0 && (
-            <div className="mt-12 md:mt-16">
-              <h2 className="text-2xl md:text-3xl font-serif font-semibold text-black mb-6 md:mb-8">
-                Featured Artworks
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                {featuredArtworks.map((artwork) => (
+            <div className="mt-16">
+              <p className="font-body text-sm text-dark-gray mb-3">Associated Artworks:</p>
+              <div className="flex flex-wrap gap-3">
+              {featuredArtworks.map((artwork) => {
+                const artworkTitle = artwork.title[locale] ?? artwork.title.en ?? 'Untitled';
+                const thumbnailUrl = artwork.mainImage
+                  ? getImageUrl(artwork.mainImage, 80)
+                  : null;
+
+                return (
                   <Link
                     key={artwork._id}
                     href={`/works/${artwork.slug.current}`}
-                    className="group block no-underline"
+                    className="group inline-flex items-center gap-2 pl-1 pr-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
                   >
-                    <div className="aspect-square bg-near-white overflow-hidden mb-2">
-                      {artwork.mainImage && (
-                        <img
-                          src={getImageUrl(artwork.mainImage, 400)}
-                          alt={artwork.title.en ?? 'Artwork'}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          loading="lazy"
-                        />
-                      )}
-                    </div>
-                    <h3 className="font-body text-sm md:text-base text-dark-gray group-hover:text-black transition-colors">
-                      {artwork.title[locale] ?? artwork.title.en}
-                    </h3>
+                    {thumbnailUrl ? (
+                      <img
+                        src={thumbnailUrl}
+                        alt=""
+                        className="w-7 h-7 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                      </div>
+                    )}
+                    <span className="font-body text-sm text-dark-gray group-hover:text-black transition-colors">
+                      {artworkTitle}
+                    </span>
                   </Link>
-                ))}
+                );
+              })}
               </div>
             </div>
           )}
+
         </div>
 
       </article>

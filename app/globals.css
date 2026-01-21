@@ -131,6 +131,10 @@ a:active {
     right: 72px;
   }
 
+  .nav-logo {
+    left: 72px;
+  }
+
   .footer-copyright {
     left: 72px;
   }
@@ -152,6 +156,10 @@ a:active {
 
   .header-menu {
     right: 20px;
+  }
+
+  .nav-logo {
+    left: 20px;
   }
 
   .footer-copyright {

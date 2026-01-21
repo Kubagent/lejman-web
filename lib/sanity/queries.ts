@@ -23,6 +23,7 @@ export const riverVideosQuery = groq`
     description,
     year,
     linkedArtwork-> {
+      _type,
       slug
     }
   }

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import { RiverProps } from '@/lib/types';
 import RiverVideoSlotMux from './RiverVideoSlotMux';
 import { RiverErrorBoundary } from './RiverErrorBoundary';
@@ -35,6 +36,14 @@ export default function River({ videos, locale = 'en' }: RiverProps) {
   // Sort videos by order property to ensure correct sequence
   const sortedVideos = [...videos].sort((a, b) => a.order - b.order);
 
+  // Track which video is currently active (playing)
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+
+  // Callback for when a video requests to play
+  const handleVideoPlay = useCallback((videoId: string) => {
+    setActiveVideoId(videoId);
+  }, []);
+
   // Handle empty state
   if (!videos || videos.length === 0) {
     return (
@@ -69,7 +78,7 @@ export default function River({ videos, locale = 'en' }: RiverProps) {
       </a>
 
       {/* River Video Stack */}
-      <div className="flex flex-col gap-[25px]" role="list" aria-label="Video gallery with 5 videos">
+      <div className="flex flex-col gap-[60px]" role="list" aria-label="Video gallery with 5 videos">
         {sortedVideos.map((video, index) => (
           <div
             key={video._id}
@@ -81,6 +90,8 @@ export default function River({ videos, locale = 'en' }: RiverProps) {
               video={video}
               locale={locale}
               isFirstVideo={index === 0}
+              isActive={activeVideoId === video._id}
+              onPlay={handleVideoPlay}
             />
           </div>
         ))}

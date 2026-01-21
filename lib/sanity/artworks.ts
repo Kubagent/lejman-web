@@ -85,9 +85,13 @@ export async function getArtworkBySlug(slug: string): Promise<Artwork | null> {
       customDimensions,
       mainImage,
       images,
+      videos[]{
+        _type,
+        asset->
+      },
       description,
       featured,
-      projects[]->{ _id, title, year, venue }
+      projects[]->{ _id, title, slug, year, venue, "thumbnail": images[0] }
     }`;
 
     const artwork = await client.fetch<Artwork | null>(query, { slug });

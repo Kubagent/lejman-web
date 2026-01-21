@@ -57,10 +57,10 @@ export default defineType({
     }),
     defineField({
       name: 'linkedArtwork',
-      title: 'Linked Artwork',
+      title: 'Linked Artwork/Project',
       type: 'reference',
-      to: [{ type: 'artwork' }],
-      description: 'Optional: Link this video to an artwork. Double-clicking the video will navigate to the artwork page.',
+      to: [{ type: 'artwork' }, { type: 'project' }],
+      description: 'Optional: Link this video to an artwork or project page.',
     }),
   ],
   preview: {

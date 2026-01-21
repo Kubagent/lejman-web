@@ -2,6 +2,7 @@
 
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import MuxPlayer from '@mux/mux-player-react';
 import { urlFor } from '@/lib/sanity/image';
 
@@ -9,6 +10,8 @@ interface RiverVideoSlotMuxProps {
   video: any;
   locale?: string;
   isFirstVideo?: boolean;
+  isActive?: boolean;
+  onPlay?: (videoId: string) => void;
 }
 
 /**
@@ -24,6 +27,8 @@ export default function RiverVideoSlotMux({
   video,
   locale = 'en',
   isFirstVideo = false,
+  isActive = false,
+  onPlay,
 }: RiverVideoSlotMuxProps) {
   const playerRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,19 +37,16 @@ export default function RiverVideoSlotMux({
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const clickCountRef = useRef(0);
 
-  // Intersection Observer for scroll-triggered autoplay (for non-first videos)
+  // Intersection Observer for scroll-triggered autoplay (all videos including first)
   useEffect(() => {
-    if (isFirstVideo || !containerRef.current || !playerRef.current) return;
+    if (!containerRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            // Video is more than 50% in viewport, play it
-            playerRef.current?.play();
-          } else {
-            // Video is out of view, pause it
-            playerRef.current?.pause();
+            // Video is more than 50% in viewport, request to play
+            onPlay?.(video._id);
           }
         });
       },
@@ -57,7 +59,37 @@ export default function RiverVideoSlotMux({
     observer.observe(containerRef.current);
 
     return () => observer.disconnect();
-  }, [isFirstVideo]);
+  }, [onPlay, video._id]);
+
+  // Handle play/pause based on active state from parent
+  useEffect(() => {
+    if (!playerRef.current) return;
+
+    if (isActive) {
+      playerRef.current.play();
+    } else {
+      playerRef.current.pause();
+    }
+  }, [isActive]);
+
+  // For first video: register as active when it starts playing via autoPlay
+  useEffect(() => {
+    if (!isFirstVideo) return;
+
+    const player = playerRef.current;
+    if (!player) return;
+
+    const handleFirstVideoPlay = () => {
+      onPlay?.(video._id);
+    };
+
+    // MuxPlayer emits 'play' event when playback starts
+    player.addEventListener('play', handleFirstVideoPlay);
+
+    return () => {
+      player.removeEventListener('play', handleFirstVideoPlay);
+    };
+  }, [isFirstVideo, onPlay, video._id]);
 
   // Get localized title
   const title = video.title[locale] ?? video.title.en ?? 'Untitled';
@@ -87,9 +119,10 @@ export default function RiverVideoSlotMux({
       if (clickCountRef.current === 2) {
         clickCountRef.current = 0;
 
-        // Navigate to artwork if linked
+        // Navigate to artwork/project if linked
         if (video.linkedArtwork?.slug?.current) {
-          router.push(`/works/${video.linkedArtwork.slug.current}`);
+          const basePath = video.linkedArtwork._type === 'project' ? '/projects' : '/works';
+          router.push(`${basePath}/${video.linkedArtwork.slug.current}`);
           return;
         }
       }
@@ -161,30 +194,48 @@ export default function RiverVideoSlotMux({
         />
       </div>
 
-      {/* More Button - Only show if artwork is linked */}
-      {video.linkedArtwork?.slug?.current && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            router.push(`/works/${video.linkedArtwork.slug.current}`);
-          }}
-          className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      {/* Read More Link - Always visible, greyed out when no link */}
+      {video.linkedArtwork?.slug?.current ? (
+        <Link
+          href={`${video.linkedArtwork._type === 'project' ? '/projects' : '/works'}/${video.linkedArtwork.slug.current}`}
+          onClick={(e) => e.stopPropagation()}
+          className="absolute right-4 top-1/2 -translate-y-1/2"
           style={{
             fontFamily: 'Inter, sans-serif',
-            fontSize: '12px',
+            fontSize: '10px',
             fontWeight: 400,
             color: '#FFFFFF',
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            backdropFilter: 'blur(8px)',
-            padding: '8px 16px',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backdropFilter: 'blur(4px)',
+            padding: '6px 10px',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
             cursor: 'pointer',
+            zIndex: 10,
+            textDecoration: 'none'
+          }}
+          aria-label={`Read more about ${title} - view artwork details`}
+        >
+          Read more
+        </Link>
+      ) : (
+        <span
+          className="absolute right-4 top-1/2 -translate-y-1/2"
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '10px',
+            fontWeight: 400,
+            color: 'rgba(255, 255, 255, 0.4)',
+            backgroundColor: 'rgba(0, 0, 0, 0.25)',
+            backdropFilter: 'blur(4px)',
+            padding: '6px 10px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            cursor: 'default',
             zIndex: 10
           }}
-          aria-label={`View more about ${title}`}
+          aria-label="No linked content available"
         >
-          More
-        </button>
+          Read more
+        </span>
       )}
     </article>
   );

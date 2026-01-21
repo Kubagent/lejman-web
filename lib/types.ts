@@ -75,6 +75,18 @@ export interface CustomDimension {
   label: string;
 }
 
+// Linked project reference (expanded from Sanity query)
+export interface LinkedProject {
+  _id: string;
+  title: LocalizedText;
+  slug?: {
+    current: string;
+  };
+  year?: number;
+  venue?: LocalizedText;
+  thumbnail?: SanityImageAsset;
+}
+
 export interface Artwork {
   _id: string;
   title: LocalizedText;
@@ -87,10 +99,11 @@ export interface Artwork {
   dimensions?: ArtworkDimensions;
   customDimensions?: CustomDimension[];
   images: SanityImageAsset[];
+  videos?: any[]; // Array of video assets (Mux or file)
   description?: LocalizedText;
   mainImage: SanityImageAsset;
   featured?: boolean;
-  projects?: string[]; // Array of project _id references
+  projects?: LinkedProject[]; // Array of expanded project references
 }
 
 // Props for Artwork Components

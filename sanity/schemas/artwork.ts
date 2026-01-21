@@ -107,6 +107,25 @@ export default defineType({
       description: 'Gallery images shown on the artwork detail page',
     }),
     defineField({
+      name: 'videos',
+      title: 'Videos',
+      type: 'array',
+      description: 'Videos of the artwork (displayed in the same gallery as images)',
+      of: [
+        {
+          type: 'mux.video',
+          title: 'Video (Mux)',
+        },
+        {
+          type: 'file',
+          title: 'Video File',
+          options: {
+            accept: 'video/*'
+          }
+        }
+      ],
+    }),
+    defineField({
       name: 'featured',
       title: 'Featured Artwork',
       type: 'boolean',
