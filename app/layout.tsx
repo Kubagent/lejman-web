@@ -90,6 +90,57 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400&display=swap"
           rel="stylesheet"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "@id": "https://dlejman.com/#person",
+              "name": "Dominik Lejman",
+              "url": "https://dlejman.com/",
+              "sameAs": [
+                "https://pl.wikipedia.org/wiki/Dominik_Lejman",
+                "https://www.wikidata.org/wiki/Q9209785",
+                "https://www.personsprojects.com/artists/dominik-lejman",
+                "https://www.artsy.net/artist/dominik-lejman",
+                "https://www.e-flux.com/announcements/6785463/dominik-lejmanphantoms",
+                "https://molskigallery.com/artysci/dominik-lejman",
+                "https://www.instagram.com/dominik.m.lejman/"
+              ],
+              "jobTitle": "Contemporary Artist",
+              "description": "Dominik Lejman is a contemporary Polish artist known for hybrid paintings combining traditional painting with video projection and moving image.",
+              "nationality": {
+                "@type": "Country",
+                "name": "Poland"
+              },
+              "knowsAbout": [
+                "contemporary art",
+                "hybrid painting",
+                "video art",
+                "video projection",
+                "painting",
+                "installation art"
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "@id": "https://dlejman.com/#website",
+              "url": "https://dlejman.com/",
+              "name": "Dominik Lejman — Official Website",
+              "publisher": {
+                "@id": "https://dlejman.com/#person"
+              },
+              "inLanguage": "en"
+            })
+          }}
+        />
       </head>
       <body>
         <Layout>{children}</Layout>

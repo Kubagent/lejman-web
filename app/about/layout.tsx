@@ -15,5 +15,24 @@ export default function AboutLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "@id": "https://dlejman.com/about#profile",
+            "url": "https://dlejman.com/about",
+            "name": "About Dominik Lejman",
+            "mainEntity": {
+              "@id": "https://dlejman.com/#person"
+            }
+          })
+        }}
+      />
+      {children}
+    </>
+  );
 }
