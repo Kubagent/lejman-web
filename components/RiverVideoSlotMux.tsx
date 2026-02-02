@@ -147,7 +147,9 @@ export default function RiverVideoSlotMux({
     return (
       <article
         className="relative w-full bg-black overflow-hidden"
-        style={{ aspectRatio: '16 / 9' }}
+        style={{
+          height: 'calc(100vh - 40px)'
+        }}
         aria-label={`Video: ${title} - Not available`}
       >
         <div className="absolute inset-0 flex items-center justify-center">
@@ -166,7 +168,9 @@ export default function RiverVideoSlotMux({
     <article
       ref={containerRef}
       className="relative w-full bg-black overflow-hidden group"
-      style={{ aspectRatio: '16 / 9' }}
+      style={{
+        height: 'calc(100vh - 40px)'
+      }}
       aria-label={`Video: ${title}${video.year ? ` (${video.year})` : ''}`}
     >
       {/* Mux Player */}
@@ -187,14 +191,15 @@ export default function RiverVideoSlotMux({
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
-          }}
+            '--media-object-fit': 'cover',
+            '--media-object-position': 'center',
+          } as React.CSSProperties}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         />
       </div>
 
-      {/* Read More Link - Always visible, greyed out when no link */}
+      {/* More Link - Always visible, greyed out when no link */}
       {video.linkedArtwork?.slug?.current ? (
         <Link
           href={`${video.linkedArtwork._type === 'project' ? '/projects' : '/works'}/${video.linkedArtwork.slug.current}`}
@@ -213,9 +218,9 @@ export default function RiverVideoSlotMux({
             zIndex: 10,
             textDecoration: 'none'
           }}
-          aria-label={`Read more about ${title} - view artwork details`}
+          aria-label={`More about ${title} - view artwork details`}
         >
-          Read more
+          More
         </Link>
       ) : (
         <span
@@ -234,7 +239,7 @@ export default function RiverVideoSlotMux({
           }}
           aria-label="No linked content available"
         >
-          Read more
+          More
         </span>
       )}
     </article>

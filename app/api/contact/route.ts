@@ -105,7 +105,7 @@ async function sendEmail(data: {
 }): Promise<void> {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const ARTIST_EMAIL = process.env.ARTIST_EMAIL || 'artist@example.com';
-  const GALLERY_EMAIL = process.env.GALLERY_EMAIL;
+  const ALINA_EMAIL = process.env.ALINA_EMAIL;
 
   console.log('Attempting to send email...');
   console.log('RESEND_API_KEY configured:', !!RESEND_API_KEY);
@@ -120,7 +120,7 @@ async function sendEmail(data: {
       console.log('===== CONTACT FORM SUBMISSION (DEV MODE) =====');
       console.log('From:', data.name, `<${data.email}>`);
       console.log('Message:', data.message);
-      console.log('Would send to:', ARTIST_EMAIL, GALLERY_EMAIL ? `and ${GALLERY_EMAIL}` : '');
+      console.log('Would send to:', ARTIST_EMAIL, ALINA_EMAIL ? `and ${ALINA_EMAIL}` : '');
       console.log('==============================================');
       return;
     }
@@ -129,8 +129,8 @@ async function sendEmail(data: {
 
   // Prepare recipients
   const recipients = [ARTIST_EMAIL];
-  if (GALLERY_EMAIL) {
-    recipients.push(GALLERY_EMAIL);
+  if (ALINA_EMAIL) {
+    recipients.push(ALINA_EMAIL);
   }
 
   // Send email via Resend API

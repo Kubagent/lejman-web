@@ -14,7 +14,7 @@ export default function Footer() {
           position: 'absolute',
           bottom: '72px',
           zIndex: 10,
-          fontFamily: 'Cormorant Garamond, serif'
+          fontFamily: 'Montserrat, sans-serif'
         }}
       >
         <div className="text-xs md:text-sm text-mid-gray">
@@ -29,7 +29,7 @@ export default function Footer() {
           position: 'absolute',
           bottom: '72px',
           zIndex: 10,
-          fontFamily: 'Cormorant Garamond, serif'
+          fontFamily: 'Montserrat, sans-serif'
         }}
       >
         <span className="text-xs md:text-sm text-mid-gray">
