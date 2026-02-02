@@ -138,7 +138,7 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
             height: '100%',
             '--media-object-fit': 'cover',
             '--media-object-position': 'center',
-          } as unknown as React.CSSProperties}
+          } as any}
         />
       </div>
 
