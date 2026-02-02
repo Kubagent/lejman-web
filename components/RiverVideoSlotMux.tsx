@@ -193,7 +193,7 @@ export default function RiverVideoSlotMux({
             height: '100%',
             '--media-object-fit': 'cover',
             '--media-object-position': 'center',
-          } as React.CSSProperties}
+          } as any}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         />
