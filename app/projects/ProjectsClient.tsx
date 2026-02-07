@@ -14,13 +14,13 @@ interface ProjectsClientProps {
  * Projects Client Component
  *
  * Handles all client-side interactivity for the projects page:
- * - View mode toggle (detailed/compact)
+ * - View mode toggle (list/grid)
  * - Real-time filtering (year, type, search)
  * - Filter state management
  */
 export default function ProjectsClient({ projects, years }: ProjectsClientProps) {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
-  const [viewMode, setViewMode] = useState<'detailed' | 'compact'>('detailed');
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [filters, setFilters] = useState<ProjectFilters>({});
 
   // Apply filters whenever filters change
@@ -106,11 +106,11 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
           <div className="space-y-8">
             {/* Top Row: View Toggle, Search and Filters */}
             <div className="flex items-stretch gap-6 w-full flex-wrap">
-              {/* Detailed View Button */}
+              {/* List View Button */}
               <button
-                onClick={() => setViewMode('detailed')}
+                onClick={() => setViewMode('list')}
                 className={`border-0 outline-none transition-all duration-300 ease-in-out ${
-                  viewMode === 'detailed'
+                  viewMode === 'list'
                     ? 'bg-[#000000] text-[#FFFFFF]'
                     : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
                 }`}
@@ -124,17 +124,17 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
                   minWidth: '180px',
                   textAlign: 'center'
                 }}
-                aria-label="Detailed view"
-                aria-pressed={viewMode === 'detailed'}
+                aria-label="List view"
+                aria-pressed={viewMode === 'list'}
               >
-                Detailed View
+                List View
               </button>
 
-              {/* Compact View Button */}
+              {/* Grid View Button */}
               <button
-                onClick={() => setViewMode('compact')}
+                onClick={() => setViewMode('grid')}
                 className={`border-0 outline-none transition-all duration-300 ease-in-out ${
-                  viewMode === 'compact'
+                  viewMode === 'grid'
                     ? 'bg-[#000000] text-[#FFFFFF]'
                     : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
                 }`}
@@ -148,10 +148,10 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
                   minWidth: '180px',
                   textAlign: 'center'
                 }}
-                aria-label="Compact view"
-                aria-pressed={viewMode === 'compact'}
+                aria-label="Grid view"
+                aria-pressed={viewMode === 'grid'}
               >
-                Compact View
+                Grid View
               </button>
 
               {/* Search Input */}
@@ -248,21 +248,36 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
       {/* Spacer */}
       <div className="w-full bg-white" style={{ height: '20px' }} />
 
-      {/* Projects List */}
+      {/* Projects List/Grid */}
       <section className="bg-white min-h-screen">
-        <div className="py-12 md:py-16">
+        <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
           {filteredProjects.length > 0 ? (
-            <div className="flex flex-col gap-[50px] max-w-[60vw] mx-auto">
-              {filteredProjects.map((project, index) => (
-                <ProjectCard
-                  key={project._id}
-                  project={project}
-                  locale="en"
-                  viewMode={viewMode}
-                  index={index}
-                />
-              ))}
-            </div>
+            viewMode === 'grid' ? (
+              // Grid View - 3-column layout like Works
+              <div className="grid grid-cols-3 gap-[25px]">
+                {filteredProjects.map((project) => (
+                  <ProjectCard
+                    key={project._id}
+                    project={project}
+                    locale="en"
+                    viewMode="grid"
+                  />
+                ))}
+              </div>
+            ) : (
+              // List View - Single column with detailed cards
+              <div className="flex flex-col gap-[50px] max-w-[60vw] mx-auto">
+                {filteredProjects.map((project, index) => (
+                  <ProjectCard
+                    key={project._id}
+                    project={project}
+                    locale="en"
+                    viewMode="list"
+                    index={index}
+                  />
+                ))}
+              </div>
+            )
           ) : (
             // Empty state
             <div className="text-center py-16 md:py-24">

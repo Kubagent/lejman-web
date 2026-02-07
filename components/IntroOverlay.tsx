@@ -29,6 +29,7 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
   const [mounted, setMounted] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Check if component is mounted (for portal) and check sessionStorage
@@ -87,6 +88,14 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
     }, 500); // Match CSS transition duration
   }, [isFadingOut]);
 
+  const toggleSound = useCallback(() => {
+    if (playerRef.current) {
+      const newMuted = !isMuted;
+      playerRef.current.muted = newMuted;
+      setIsMuted(newMuted);
+    }
+  }, [isMuted]);
+
   // Get Mux playback ID
   const playbackId = video?.video?.asset?.playbackId;
 
@@ -142,7 +151,32 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
         />
       </div>
 
-      {/* Skip Button */}
+      {/* Sound Toggle Button - Top Left (symmetrical to Skip) */}
+      <button
+        onClick={toggleSound}
+        style={{
+          position: 'absolute',
+          top: '72px',
+          left: '72px',
+          zIndex: 10,
+          fontFamily: 'Montserrat, sans-serif',
+          fontSize: '14px',
+          fontWeight: 400,
+          color: '#FFFFFF',
+          backgroundColor: 'transparent',
+          border: '1px solid rgba(255, 255, 255, 0.5)',
+          padding: '10px 20px',
+          cursor: 'pointer',
+          transition: 'opacity 0.2s ease',
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
+        onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+        aria-label={isMuted ? 'Enable sound' : 'Mute sound'}
+      >
+        {isMuted ? 'Sound' : 'Mute'}
+      </button>
+
+      {/* Skip Button - Bottom Right */}
       <button
         onClick={dismissIntro}
         style={{

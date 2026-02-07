@@ -34,43 +34,79 @@ export default function RiverVideoSlotMux({
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const clickCountRef = useRef(0);
 
-  // Intersection Observer for scroll-triggered autoplay (all videos including first)
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Intersection Observer for scroll-triggered autoplay
+  // Desktop: play when 50% visible
+  // Mobile: play ONLY when fully visible (100%), pause immediately when any part scrolls out
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            // Video is more than 50% in viewport, request to play
-            onPlay?.(video._id);
-          }
-        });
-      },
-      {
-        threshold: [0.5], // Trigger when 50% of video is visible
-        rootMargin: '0px',
-      }
-    );
+    if (isMobile) {
+      // Mobile: strict visibility - only play when fully in view to minimize Mux minutes
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.95) {
+              // Video is fully in view, play it
+              playerRef.current?.play();
+              onPlay?.(video._id);
+            } else {
+              // Video is not fully in view, pause to save Mux minutes
+              playerRef.current?.pause();
+            }
+          });
+        },
+        {
+          threshold: [0, 0.95], // Trigger at 0% (leaving) and 95% (nearly full view)
+          rootMargin: '0px',
+        }
+      );
 
-    observer.observe(containerRef.current);
+      observer.observe(containerRef.current);
+      return () => observer.disconnect();
+    } else {
+      // Desktop: original behavior - play when 50% visible
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+              onPlay?.(video._id);
+            }
+          });
+        },
+        {
+          threshold: [0.5],
+          rootMargin: '0px',
+        }
+      );
 
-    return () => observer.disconnect();
-  }, [onPlay, video._id]);
+      observer.observe(containerRef.current);
+      return () => observer.disconnect();
+    }
+  }, [onPlay, video._id, isMobile]);
 
-  // Handle play/pause based on active state from parent
+  // Handle play/pause based on active state from parent (desktop only)
+  // Mobile handles its own play/pause via the observer above
   useEffect(() => {
-    if (!playerRef.current) return;
+    if (!playerRef.current || isMobile) return;
 
     if (isActive) {
       playerRef.current.play();
     } else {
       playerRef.current.pause();
     }
-  }, [isActive]);
+  }, [isActive, isMobile]);
 
   // For first video: register as active when it starts playing via autoPlay
   useEffect(() => {
@@ -167,10 +203,7 @@ export default function RiverVideoSlotMux({
   return (
     <article
       ref={containerRef}
-      className="relative w-full bg-black overflow-hidden group"
-      style={{
-        height: 'calc(100vh - 40px)'
-      }}
+      className="relative w-full bg-black overflow-hidden group h-[50vh] md:h-[calc(100vh-40px)]"
       aria-label={`Video: ${title}${video.year ? ` (${video.year})` : ''}`}
     >
       {/* Mux Player */}

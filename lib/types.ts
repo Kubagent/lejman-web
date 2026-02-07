@@ -153,7 +153,7 @@ export interface Project {
 export interface ProjectCardProps {
   project: Project;
   locale?: 'en' | 'de' | 'pl';
-  viewMode?: 'detailed' | 'compact';
+  viewMode?: 'list' | 'grid';
 }
 
 // Filter types for projects
