@@ -8,7 +8,7 @@ import { RiverErrorBoundary } from './RiverErrorBoundary';
 /**
  * River - Main container component for the video river layout
  *
- * Displays 5 video slots in a vertical river layout on the homepage.
+ * Displays video slots in a vertical river layout on the homepage.
  * Each video slot takes up full viewport width and maintains 16:9 aspect ratio.
  *
  * Features:
@@ -78,7 +78,7 @@ export default function River({ videos, locale = 'en' }: RiverProps) {
       </a>
 
       {/* River Video Stack */}
-      <div className="flex flex-col gap-[150px]" role="list" aria-label="Video gallery with 5 videos">
+      <div className="flex flex-col gap-[150px]" role="list" aria-label={`Video gallery with ${sortedVideos.length} videos`}>
         {sortedVideos.map((video, index) => (
           <div
             key={video._id}

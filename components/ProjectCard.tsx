@@ -176,12 +176,12 @@ export default function ProjectCard({
         <div className="flex flex-col md:flex-row gap-8 py-8 px-6 md:px-12 lg:px-24">
         {/* Image thumbnail (if available) */}
         {imageUrl && (
-          <div className="relative flex-shrink-0 bg-near-white overflow-hidden" style={{ maxHeight: '70vh', width: 'auto', aspectRatio: '4/3', marginLeft: '200px', marginRight: '200px' }}>
+          <div className="relative flex-shrink-0 bg-near-white overflow-hidden w-full h-64 md:h-auto md:w-auto md:mx-[200px]" style={{ maxHeight: '70vh', aspectRatio: '4/3' }}>
             <img
               src={imageUrl}
               alt={`${title} at ${venueName}, ${project.year} - Dominik Lejman exhibition`}
               loading="lazy"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover md:object-contain"
               style={{ maxHeight: '70vh' }}
             />
           </div>

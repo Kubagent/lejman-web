@@ -18,9 +18,9 @@ export default defineType({
     }),
     defineField({
       name: 'order',
-      title: 'Display Order (1-5)',
+      title: 'Display Order',
       type: 'number',
-      validation: (Rule) => Rule.required().min(1).max(5).integer(),
+      validation: (Rule) => Rule.required().min(1).integer(),
     }),
     defineField({
       name: 'video',

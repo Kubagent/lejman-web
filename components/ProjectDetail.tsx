@@ -178,6 +178,7 @@ export default function ProjectDetail({
                   {currentMedia.data._type === 'mux.video' && currentMedia.data.asset?.playbackId ? (
                     <video
                       src={`https://stream.mux.com/${currentMedia.data.asset.playbackId}.m3u8`}
+                      poster={`https://image.mux.com/${currentMedia.data.asset.playbackId}/thumbnail.jpg?width=1920&height=1080&fit_mode=smartcrop`}
                       controls
                       className="w-full h-auto"
                       style={{ maxHeight: '85vh' }}

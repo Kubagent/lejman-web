@@ -203,7 +203,8 @@ export default function RiverVideoSlotMux({
   return (
     <article
       ref={containerRef}
-      className="relative w-full bg-black overflow-hidden group h-[calc(100vh-40px)] mobile:h-[50vh]"
+      className="relative w-full bg-black overflow-hidden group h-[80vw] md:h-[calc(100vh-20px)]"
+      style={{ maxHeight: 'calc(100vh - 20px)' }}
       aria-label={`Video: ${title}${video.year ? ` (${video.year})` : ''}`}
     >
       {/* Mux Player */}
