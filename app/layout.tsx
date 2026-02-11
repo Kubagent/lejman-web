@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "@/components/Layout";
+import IntroOverlay from "@/components/IntroOverlay";
+import { getIntroVideo } from "@/lib/sanity/riverVideos";
 
 const BASE_URL = 'https://dlejman.com';
 
@@ -76,11 +78,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const introVideo = await getIntroVideo();
+
   return (
     <html lang="en">
       <head>
@@ -143,7 +147,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Layout>{children}</Layout>
+        <IntroOverlay video={introVideo}>
+          <Layout>{children}</Layout>
+        </IntroOverlay>
       </body>
     </html>
   );

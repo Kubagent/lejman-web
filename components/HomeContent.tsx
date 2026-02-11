@@ -1,7 +1,6 @@
 'use client';
 
 import River from '@/components/River';
-import IntroOverlay from '@/components/IntroOverlay';
 
 interface HomeContentProps {
   riverVideos: any[];
@@ -9,18 +8,14 @@ interface HomeContentProps {
 }
 
 /**
- * HomeContent - Client wrapper for homepage with intro overlay
+ * HomeContent - Client wrapper for homepage river
  *
- * Handles the intro overlay logic for first-time session visitors.
- * Uses the first river video (order: 1) as the intro video.
+ * The first river video (order: 1) is used as the intro video (handled by IntroOverlay in layout).
  * The intro video is excluded from the river to avoid duplication.
  */
 export default function HomeContent({ riverVideos, locale = 'en' }: HomeContentProps) {
   // Sort videos by order
   const sortedVideos = [...riverVideos].sort((a, b) => a.order - b.order);
-
-  // First video is the intro video
-  const introVideo = sortedVideos[0];
 
   // Remaining videos are for the river (excluding the intro video)
   const riverOnlyVideos = sortedVideos.slice(1);
@@ -44,9 +39,5 @@ export default function HomeContent({ riverVideos, locale = 'en' }: HomeContentP
     );
   }
 
-  return (
-    <IntroOverlay video={introVideo}>
-      <River videos={riverOnlyVideos} locale={locale} />
-    </IntroOverlay>
-  );
+  return <River videos={riverOnlyVideos} locale={locale} />;
 }

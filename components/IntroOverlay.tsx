@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { usePathname } from 'next/navigation';
 import MuxPlayer from '@mux/mux-player-react';
 import { urlFor } from '@/lib/sanity/image';
 
@@ -25,6 +26,7 @@ interface IntroOverlayProps {
  * - Uses React Portal to render above everything
  */
 export default function IntroOverlay({ video, children }: IntroOverlayProps) {
+  const pathname = usePathname();
   const playerRef = useRef<any>(null);
   const [mounted, setMounted] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
@@ -41,9 +43,9 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
     }
   }, []);
 
-  // Start auto-dismiss timer when intro is shown
+  // Start auto-dismiss timer when intro is shown (home page only)
   useEffect(() => {
-    if (mounted && showIntro && !isFadingOut) {
+    if (pathname === '/' && mounted && showIntro && !isFadingOut) {
       timerRef.current = setTimeout(() => {
         dismissIntro();
       }, INTRO_DURATION);
@@ -54,11 +56,11 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
         }
       };
     }
-  }, [mounted, showIntro, isFadingOut]);
+  }, [pathname, mounted, showIntro, isFadingOut]);
 
-  // Lock body scroll when intro is showing
+  // Lock body scroll when intro is showing (home page only)
   useEffect(() => {
-    if (mounted && showIntro && !isFadingOut) {
+    if (pathname === '/' && mounted && showIntro && !isFadingOut) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -66,7 +68,7 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [mounted, showIntro, isFadingOut]);
+  }, [pathname, mounted, showIntro, isFadingOut]);
 
   const dismissIntro = useCallback(() => {
     if (isFadingOut) return;
@@ -104,14 +106,24 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
     ? urlFor(video.posterImage).width(1920).height(1080).quality(85).url()
     : undefined;
 
+  // Only show intro on the home page
+  if (pathname !== '/') {
+    return <>{children}</>;
+  }
+
   // No video available, skip intro entirely
   if (!playbackId) {
     return <>{children}</>;
   }
 
-  // Not mounted yet (SSR) or intro already seen, show children directly
-  if (!mounted || !showIntro) {
+  // Intro already seen, show children directly
+  if (!showIntro) {
     return <>{children}</>;
+  }
+
+  // Not mounted yet (SSR/hydration), hide children to prevent River flash
+  if (!mounted) {
+    return <div style={{ visibility: 'hidden' }}>{children}</div>;
   }
 
   // Render intro overlay via portal to body (above everything)

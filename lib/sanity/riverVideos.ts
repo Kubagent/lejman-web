@@ -1,5 +1,5 @@
 import { client } from './client';
-import { riverVideosQuery } from './queries';
+import { introVideoQuery, riverVideosQuery } from './queries';
 import { RiverVideo } from '../types';
 
 /**
@@ -16,6 +16,18 @@ export async function getRiverVideos(): Promise<RiverVideo[]> {
   } catch (error) {
     console.error('Error fetching river videos:', error);
     return [];
+  }
+}
+
+/**
+ * Fetch the intro video (first river video by order)
+ */
+export async function getIntroVideo() {
+  try {
+    return await client.fetch(introVideoQuery);
+  } catch (error) {
+    console.error('Error fetching intro video:', error);
+    return null;
   }
 }
 

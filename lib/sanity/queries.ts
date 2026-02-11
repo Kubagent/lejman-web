@@ -1,5 +1,19 @@
 import { groq } from 'next-sanity';
 
+// Intro Video - first river video by order (used for intro overlay)
+export const introVideoQuery = groq`
+  *[_type == "riverVideo"] | order(order asc)[0] {
+    _id,
+    title,
+    video {
+      asset->{
+        playbackId
+      }
+    },
+    posterImage
+  }
+`;
+
 // River Videos - ordered by display order
 export const riverVideosQuery = groq`
   *[_type == "riverVideo"] | order(order asc) {
