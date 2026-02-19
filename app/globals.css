@@ -230,3 +230,10 @@ a:active {
     text-align: left !important;
   }
 }
+
+/* Mobile River scroll-snap: one video at a time */
+@media (max-width: 767px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+}
