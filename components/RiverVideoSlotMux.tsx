@@ -203,12 +203,12 @@ export default function RiverVideoSlotMux({
   return (
     <article
       ref={containerRef}
-      className="relative w-full bg-black overflow-hidden group h-[80vw] md:h-[calc(100vh-20px)] max-h-[calc(100vh-20px)] mobile:h-[100svh] mobile:max-h-none mobile:bg-white mobile:flex mobile:items-center mobile:snap-start"
+      className="river-video-slot relative w-full bg-black overflow-hidden group h-[80vw] md:h-[calc(100vh-20px)] max-h-[calc(100vh-20px)]"
       aria-label={`Video: ${title}${video.year ? ` (${video.year})` : ''}`}
     >
       {/* Mux Player */}
       <div
-        className="absolute inset-0 w-full h-full cursor-pointer mobile:static mobile:h-auto mobile:aspect-video"
+        className="river-video-wrapper absolute inset-0 w-full h-full cursor-pointer"
         onClick={handlePlayerClick}
       >
         <MuxPlayer
