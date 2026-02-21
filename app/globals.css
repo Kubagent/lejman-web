@@ -268,38 +268,28 @@ a:active {
   }
 
   /*
-   * INTRO VIDEO ONLY (first river slot) — mobile rotation.
+   * INTRO OVERLAY VIDEO — mobile rotation.
    *
-   * Rotates the video wrapper 90° CCW so the landscape video fills
-   * the portrait screen. The "More" button lives on the <article>
-   * element outside this wrapper and is never rotated.
+   * Rotates the IntroOverlay video wrapper 90° CCW so the landscape
+   * video fills the full portrait screen. The Sound/Skip buttons live
+   * on the overlay element (outside this wrapper) and are never rotated.
    *
    * After rotate(-90deg):
-   *   CSS width  (68svh) → visual HEIGHT  (fills slot height)
-   *   CSS height (100vw) → visual WIDTH   (fills slot width)
+   *   CSS width  (100vh) → visual HEIGHT = 100vh (fills screen height)
+   *   CSS height (100vw) → visual WIDTH  = 100vw (fills screen width)
    *
-   * Negative margins centre the pre-rotation box on the slot midpoint;
-   * overflow:hidden on the slot clips any pre-rotation bleed.
+   * Negative margins centre the pre-rotation box on the screen midpoint
+   * so the post-rotation visual exactly covers the overlay.
    */
-  [data-river-slot="1"] .river-video-wrapper {
+  .intro-video-wrapper {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    right: auto !important;
-    bottom: auto !important;
-    width: 68svh !important;        /* → visual height after rotation */
+    width: 100vh !important;        /* → visual height after rotation */
     height: 100vw !important;       /* → visual width  after rotation */
     margin-top: -50vw !important;   /* = -height / 2  */
-    margin-left: -34svh !important; /* = -width  / 2  */
+    margin-left: -50vh !important;  /* = -width  / 2  */
     transform: rotate(-90deg) !important;
     transform-origin: center center !important;
-    aspect-ratio: unset !important;
-  }
-
-  [data-river-slot="1"] mux-player {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-    aspect-ratio: unset !important;
   }
 }
