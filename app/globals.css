@@ -149,7 +149,8 @@ a:active {
   .header-logo {
     left: 20px;
     max-width: calc(100vw - 100px); /* Leave room for hamburger menu */
-    top: 44px; /* Align vertically with hamburger menu center */
+    top: 32px;   /* Match inline top of .header-menu */
+    height: 60px; /* Match button height so align-items: center hits the same midpoint */
     display: flex;
     align-items: center;
   }
@@ -242,9 +243,9 @@ a:active {
     gap: 0 !important;
   }
 
-  /* Each video slot = one full screen, white bg, centered content */
+  /* Each video slot = 68% of screen height so next video peeks at the bottom */
   .river-video-slot {
-    height: 100svh !important;
+    height: 68svh !important;
     max-height: none !important;
     background-color: #FFFFFF !important;
     display: flex !important;
@@ -264,5 +265,41 @@ a:active {
   mux-player {
     display: block !important;
     aspect-ratio: auto !important;
+  }
+
+  /*
+   * INTRO VIDEO ONLY (first river slot) — mobile rotation.
+   *
+   * Rotates the video wrapper 90° CCW so the landscape video fills
+   * the portrait screen. The "More" button lives on the <article>
+   * element outside this wrapper and is never rotated.
+   *
+   * After rotate(-90deg):
+   *   CSS width  (68svh) → visual HEIGHT  (fills slot height)
+   *   CSS height (100vw) → visual WIDTH   (fills slot width)
+   *
+   * Negative margins centre the pre-rotation box on the slot midpoint;
+   * overflow:hidden on the slot clips any pre-rotation bleed.
+   */
+  [data-river-slot="1"] .river-video-wrapper {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 68svh !important;        /* → visual height after rotation */
+    height: 100vw !important;       /* → visual width  after rotation */
+    margin-top: -50vw !important;   /* = -height / 2  */
+    margin-left: -34svh !important; /* = -width  / 2  */
+    transform: rotate(-90deg) !important;
+    transform-origin: center center !important;
+    aspect-ratio: unset !important;
+  }
+
+  [data-river-slot="1"] mux-player {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: unset !important;
   }
 }
