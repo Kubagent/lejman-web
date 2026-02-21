@@ -119,8 +119,6 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
           right: 0,
           bottom: 0,
           left: 0,
-          width: '100vw',
-          height: '100vh',
           backgroundColor: '#FFFFFF',
           opacity: isOpen ? 1 : 0,
           transition: 'opacity 0.3s ease',
@@ -165,7 +163,7 @@ export default function Navigation({ isOpen, onClose }: NavigationProps) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
+        minHeight: '100%',
         width: '100%',
         padding: '0 20px'
       }}>

@@ -267,6 +267,29 @@ a:active {
     aspect-ratio: auto !important;
   }
 
+  /* Hide River/children while intro is active to prevent rotation blink.
+     data-intro="active"  → intro fully visible, children hidden instantly.
+     data-intro="fading"  → overlay fading out, children fade in in sync. */
+  [data-intro="active"] {
+    opacity: 0;
+  }
+
+  [data-intro="fading"] {
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+  }
+
+  /* Intro overlay buttons — both pinned to the right on mobile */
+  .intro-sound-btn {
+    top: 72px !important;
+    left: auto !important;
+    right: 57px !important;
+  }
+
+  .intro-skip-btn {
+    right: 57px !important;
+  }
+
   /*
    * INTRO OVERLAY VIDEO — mobile rotation.
    *

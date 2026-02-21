@@ -163,8 +163,9 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
         />
       </div>
 
-      {/* Sound Toggle Button - Top Left (symmetrical to Skip) */}
+      {/* Sound Toggle Button - Top Left on desktop, Top Right on mobile */}
       <button
+        className="intro-sound-btn"
         onClick={toggleSound}
         style={{
           position: 'absolute',
@@ -190,6 +191,7 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
 
       {/* Skip Button - Bottom Right */}
       <button
+        className="intro-skip-btn"
         onClick={dismissIntro}
         style={{
           position: 'absolute',
@@ -218,8 +220,10 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
   return (
     <>
       {createPortal(introOverlay, document.body)}
-      {/* Children always rendered, visible when intro fades */}
-      {children}
+      {/* data-intro drives mobile-only opacity via CSS (hides River during intro to prevent rotation blink) */}
+      <div data-intro={isFadingOut ? 'fading' : 'active'}>
+        {children}
+      </div>
     </>
   );
 }
