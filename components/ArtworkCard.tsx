@@ -40,7 +40,13 @@ export default function ArtworkCard({
   const description = artwork.description?.[locale] ?? artwork.description?.en ?? '';
 
   // Format dimensions
-  const dimensions = artwork.customDimensions
+  const rawCustomDims = artwork.customDimensions as any;
+  const customDimsStr = typeof rawCustomDims === 'string'
+    ? rawCustomDims
+    : Array.isArray(rawCustomDims) && rawCustomDims.length > 0
+      ? rawCustomDims.map((d: any) => `${d.value}cm (${d.label})`).join(' × ')
+      : undefined;
+  const dimensions = customDimsStr
     ?? (artwork.dimensions
       ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''} cm`
       : '');
