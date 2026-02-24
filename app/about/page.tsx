@@ -319,6 +319,8 @@ export default function AboutPage() {
                     </div>
                     <a
                       href={getFileAssetUrl(pub.file)}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       download
                       className="bg-[#000000] hover:bg-[#FAFAFA] transition-all duration-300"
                       style={{
@@ -377,6 +379,8 @@ export default function AboutPage() {
                     </div>
                     <a
                       href={getFileAssetUrl(item.file)}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       download
                       className="bg-[#000000] hover:bg-[#FAFAFA] transition-all duration-300"
                       style={{
@@ -469,19 +473,38 @@ export default function AboutPage() {
                   }}
                 >
                   <div className="max-w-4xl mx-auto">
-                    <a
-                      href={interview.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group"
-                    >
-                      <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
-                        {interview.title} →
-                      </h3>
-                      <p className="font-sans text-sm text-[#666666]">
-                        {interview.publication}{" • "}{interview.year}
-                      </p>
-                    </a>
+                    {(() => {
+                      const href = interview.url
+                        ?? interview.pdfFile?.asset?.url
+                        ?? interview.videoFile?.asset?.url;
+                      const typeLabel = !interview.url
+                        ? interview.pdfFile?.asset?.url ? ' (PDF)' : interview.videoFile?.asset?.url ? ' (Video)' : ''
+                        : '';
+                      return href ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group"
+                        >
+                          <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
+                            {interview.title}{typeLabel} →
+                          </h3>
+                          <p className="font-sans text-sm text-[#666666]">
+                            {interview.publication}{" • "}{interview.year}
+                          </p>
+                        </a>
+                      ) : (
+                        <div>
+                          <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2">
+                            {interview.title}
+                          </h3>
+                          <p className="font-sans text-sm text-[#666666]">
+                            {interview.publication}{" • "}{interview.year}
+                          </p>
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               ))

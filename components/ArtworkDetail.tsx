@@ -95,17 +95,13 @@ export default function ArtworkDetail({
   const title = artwork.title[locale] ?? artwork.title.en ?? 'Untitled';
   const medium = artwork.medium[locale] ?? artwork.medium.en ?? '';
   const description = artwork.description?.[locale] ?? artwork.description?.en;
+  const yearDisplay = artwork.yearEnd ? `${artwork.year}–${artwork.yearEnd}` : String(artwork.year);
 
   // Format dimensions
-  const dimensions = artwork.customDimensions && artwork.customDimensions.length > 0
-    ? artwork.customDimensions
-        .map(d => `${d.value}cm (${d.label})`)
-        .join(' × ')
-    : artwork.dimensions
-    ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${
-        artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''
-      } ${artwork.dimensions.unit ?? 'cm'}`
-    : '';
+  const dimensions = artwork.customDimensions
+    ?? (artwork.dimensions
+      ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''} ${artwork.dimensions.unit ?? 'cm'}`
+      : '');
 
   // Generate optimized image URLs
   const getImageUrl = (image: typeof artwork.mainImage, width: number) => {
@@ -124,7 +120,7 @@ export default function ArtworkDetail({
   // Lightbox images (only images, not videos)
   const lightboxImages = allImages.map((img) => ({
     url: getImageUrl(img, 1920), // High-res for lightbox
-    alt: `${title}, ${artwork.year}, ${medium}`,
+    alt: `${title}, ${yearDisplay}, ${medium}`,
     title: title,
     year: artwork.year
   }));
@@ -172,7 +168,7 @@ export default function ArtworkDetail({
               {currentMedia.type === 'image' ? (
                 <img
                   src={getImageUrl(currentMedia.data, 1920)}
-                  alt={`${title} by Dominik Lejman, ${artwork.year}`}
+                  alt={`${title} by Dominik Lejman, ${yearDisplay}`}
                   className="w-full h-full object-contain cursor-pointer"
                   style={{ maxHeight: '85vh' }}
                   onClick={handleImageClick}
@@ -282,7 +278,7 @@ export default function ArtworkDetail({
 
           {/* Basic info - vertical stack */}
           <div className="space-y-4 font-body text-lg text-dark-gray mb-12">
-            <div>{artwork.year}</div>
+            <div>{yearDisplay}</div>
             {medium && <div>{medium}</div>}
             {dimensions && <div>{dimensions}</div>}
           </div>

@@ -54,15 +54,25 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'content',
-      title: 'Content',
-      type: 'object',
-      fields: [
-        { name: 'en', title: 'English', type: 'text' },
-        { name: 'de', title: 'German', type: 'text' },
-        { name: 'pl', title: 'Polish', type: 'text' },
-      ],
-      validation: (Rule) => Rule.required(),
+      name: 'file',
+      title: 'File',
+      type: 'file',
+      description: 'Upload the document (PDF, DOC, EPUB, etc.)',
+      options: { accept: '.pdf,.doc,.docx,.epub,.txt' },
+    }),
+    defineField({
+      name: 'type',
+      title: 'File Format',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'PDF', value: 'pdf' },
+          { title: 'DOC / DOCX', value: 'doc' },
+          { title: 'EPUB', value: 'epub' },
+          { title: 'Other', value: 'other' },
+        ],
+        layout: 'radio',
+      },
     }),
     defineField({
       name: 'excerpt',

@@ -31,10 +31,13 @@ export async function getWrittenWorks(): Promise<WrittenWork[]> {
       _id,
       title,
       slug,
-      author,
+      "author": { "en": author, "de": author, "pl": author },
+      "year": publishedDate[0..3],
       publishedDate,
       category,
-      excerpt
+      type,
+      "fileUrl": file.asset->url,
+      "description": excerpt
     }`;
 
     const writtenWorks = await client.fetch<WrittenWork[]>(query);

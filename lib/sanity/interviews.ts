@@ -5,7 +5,9 @@ export interface Interview {
   title: string;
   publication: string;
   year: number;
-  url: string;
+  url?: string;
+  pdfFile?: { asset?: { url: string } };
+  videoFile?: { asset?: { url: string } };
   order: number;
 }
 
@@ -22,6 +24,8 @@ export async function getInterviews(): Promise<Interview[]> {
       publication,
       year,
       url,
+      pdfFile { asset->{ url } },
+      videoFile { asset->{ url } },
       order
     }`;
 

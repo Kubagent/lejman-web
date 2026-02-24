@@ -30,7 +30,9 @@ export default function WorksClient({ artworks, years, mediums }: WorksClientPro
 
     // Year filter
     if (filters.year) {
-      result = result.filter(artwork => artwork.year === filters.year);
+      result = result.filter(artwork =>
+        filters.year! >= artwork.year && filters.year! <= (artwork.yearEnd ?? artwork.year)
+      );
     }
 
     // Medium filter

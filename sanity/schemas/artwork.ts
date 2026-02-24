@@ -28,9 +28,23 @@ export default defineType({
     }),
     defineField({
       name: 'year',
-      title: 'Year',
+      title: 'Year (Start)',
       type: 'number',
       validation: (Rule) => Rule.required().min(1900).max(new Date().getFullYear() + 1),
+    }),
+    defineField({
+      name: 'yearEnd',
+      title: 'Year End (if multi-year work)',
+      type: 'number',
+      description: 'Leave blank for single-year works. Fill in for works spanning multiple years, e.g. 2022 for a work created 2018–2022.',
+      validation: (Rule) =>
+        Rule.custom((yearEnd, context) => {
+          if (yearEnd === undefined || yearEnd === null) return true;
+          const year = (context.document as { year?: number })?.year;
+          if (year && yearEnd <= year) return 'Year End must be greater than Year (Start)';
+          if (yearEnd > new Date().getFullYear() + 1) return 'Year End seems too far in the future';
+          return true;
+        }),
     }),
     defineField({
       name: 'medium',
@@ -57,39 +71,8 @@ export default defineType({
     defineField({
       name: 'customDimensions',
       title: 'Custom Dimensions (for irregular formats)',
-      type: 'array',
-      description: 'Use this for artworks with non-standard measurements (e.g., 150cm left vertical x 120cm horizontal x 170cm right vertical)',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {
-              name: 'value',
-              title: 'Measurement (cm)',
-              type: 'number',
-              validation: (Rule) => Rule.required(),
-            },
-            {
-              name: 'label',
-              title: 'Label',
-              type: 'string',
-              placeholder: 'e.g., left vertical, horizontal, right vertical',
-              validation: (Rule) => Rule.required(),
-            },
-          ],
-          preview: {
-            select: {
-              value: 'value',
-              label: 'label',
-            },
-            prepare({ value, label }) {
-              return {
-                title: `${value}cm (${label})`,
-              };
-            },
-          },
-        },
-      ],
+      type: 'string',
+      description: 'Free-text dimensions for non-standard measurements, e.g. "150 × 120 × 170 cm (left vertical × horizontal × right vertical)"',
     }),
     defineField({
       name: 'mainImage',
@@ -143,6 +126,12 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Optional. Lower numbers appear first. Leave blank to sort automatically by year.',
+    }),
+    defineField({
       name: 'projects',
       title: 'Projects',
       type: 'array',
@@ -153,14 +142,16 @@ export default defineType({
     select: {
       title: 'title.en',
       year: 'year',
+      yearEnd: 'yearEnd',
       medium: 'medium.en',
       media: 'mainImage',
     },
     prepare(selection) {
-      const { title, year, medium, media } = selection;
+      const { title, year, yearEnd, medium, media } = selection;
+      const yearDisplay = year ? (yearEnd ? `${year}–${yearEnd}` : String(year)) : 'No year';
       return {
         title: title || 'Untitled',
-        subtitle: `${year || 'No year'} · ${medium || 'No medium'}`,
+        subtitle: `${yearDisplay} · ${medium || 'No medium'}`,
         media: media,
       };
     },

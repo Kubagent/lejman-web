@@ -1,8 +1,6 @@
 'use client';
 
-import Image from 'next/image';
 import { WrittenWork } from '@/lib/types';
-import { FileText, Download, FileIcon } from 'lucide-react';
 
 interface PublicationCardProps {
   writtenWork: WrittenWork;
@@ -22,99 +20,71 @@ export default function PublicationCard({
   const description = writtenWork.description?.[locale] || writtenWork.description?.en || '';
   const author = writtenWork.author?.[locale] || writtenWork.author?.en || '';
 
-  // Get file type icon
-  const getFileIcon = () => {
-    switch (writtenWork.type) {
-      case 'pdf':
-        return <FileText className="w-4 h-4" />;
-      default:
-        return <FileIcon className="w-4 h-4" />;
-    }
-  };
-
-  // Format category display
   const getCategoryLabel = () => {
     const catMap: Record<string, Record<string, string>> = {
       essay: { en: 'Essay', de: 'Essay', pl: 'Esej' },
+      review: { en: 'Review', de: 'Rezension', pl: 'Recenzja' },
       catalog: { en: 'Catalog', de: 'Katalog', pl: 'Katalog' },
       interview: { en: 'Interview', de: 'Interview', pl: 'Wywiad' },
       press: { en: 'Press', de: 'Presse', pl: 'Prasa' },
       monograph: { en: 'Monograph', de: 'Monografie', pl: 'Monografia' },
-      other: { en: 'Publication', de: 'Publikation', pl: 'Publikacja' }
+      statement: { en: 'Statement', de: 'Statement', pl: 'Wypowiedź' },
+      other: { en: 'Publication', de: 'Publikation', pl: 'Publikacja' },
     };
     return catMap[writtenWork.category]?.[locale] || writtenWork.category;
   };
 
-  // Alternating background
   const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]';
 
   return (
-    <article className={`group ${bgClass}`}>
-      <a
-        href={writtenWork.fileUrl || '#'}
-        download
-        className="group flex gap-6 items-start py-10 px-6 md:px-8 no-underline"
-        aria-label={`Download ${title}`}
-      >
-        {/* Left: Content */}
-        <div className="flex-1 min-w-0">
-          {/* Title & Year */}
-          <div className="flex items-baseline justify-between gap-6 mb-3">
-            <h3 className="font-serif text-lg md:text-xl font-medium text-black group-hover:underline transition-all inline-block">
-              {title}
-            </h3>
-            <span className="flex-shrink-0 font-sans text-sm text-[#999999]">
-              {writtenWork.year}
-            </span>
-          </div>
-
-          {/* Category & Metadata */}
-          <div className="flex flex-wrap items-center text-xs text-[#999999] font-sans mb-2">
-            <span className="uppercase tracking-wider">{getCategoryLabel()}</span>
-            {author && (
-              <span>{"\u00A0•\u00A0"}{author}</span>
-            )}
-            {writtenWork.publisher && (
-              <span>{"\u00A0•\u00A0"}{writtenWork.publisher}</span>
-            )}
-          </div>
-
-          {/* Description */}
+    <article
+      className={bgClass}
+      style={{ paddingLeft: '120px', paddingRight: '120px', paddingTop: '48px', paddingBottom: '48px' }}
+    >
+      <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
+        {/* Left: metadata */}
+        <div className="flex-1 min-w-[200px]">
+          <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2">
+            {title}
+          </h3>
+          <p className="font-sans text-sm text-[#666666]">
+            {writtenWork.year}
+            {getCategoryLabel() && <span>{" • "}{getCategoryLabel()}</span>}
+            {author && <span>{" • "}{author}</span>}
+          </p>
           {description && (
-            <p className="font-sans text-sm text-[#666666] leading-relaxed line-clamp-2 mb-3">
+            <p className="font-sans text-sm text-[#999999] mt-2 leading-relaxed line-clamp-2">
               {description}
             </p>
           )}
-
-          {/* Download Info */}
-          <div className="flex items-center justify-end text-xs text-[#999999] font-sans mt-4">
-            <span className="inline-flex items-center gap-1.5">
-              <Download className="w-3 h-3" />
-              {writtenWork.type.toUpperCase()}
-            </span>
-            {writtenWork.fileSize && <span>{"\u00A0•\u00A0"}{writtenWork.fileSize}</span>}
-          </div>
         </div>
 
-        {/* Right: Small Thumbnail */}
-        <div className="flex-shrink-0 w-16 md:w-20 h-20 md:h-28 bg-[#F5F5F5] overflow-hidden">
-          {writtenWork.thumbnail ? (
-            <div className="relative w-full h-full">
-              <Image
-                src={writtenWork.thumbnail.asset._ref}
-                alt={`${title} cover`}
-                fill
-                className="object-cover group-hover:opacity-80 transition-opacity duration-200"
-                sizes="80px"
-              />
-            </div>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-[#CCCCCC]">
-              {getFileIcon()}
-            </div>
-          )}
-        </div>
-      </a>
+        {/* Right: download button */}
+        {writtenWork.fileUrl && (
+          <a
+            href={writtenWork.fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            className="bg-[#000000] hover:bg-[#FAFAFA] transition-all duration-300 flex-shrink-0"
+            style={{
+              padding: '12px 24px',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '14px',
+              fontWeight: 400,
+              textDecoration: 'none',
+              display: 'inline-block',
+              textAlign: 'center',
+              color: '#FFFFFF',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#000000')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+            aria-label={`Download ${title}`}
+          >
+            Download
+          </a>
+        )}
+      </div>
     </article>
   );
 }

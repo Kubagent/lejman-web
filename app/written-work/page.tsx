@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import PublicationCard from '@/components/PublicationCard';
 import { WrittenWork, WrittenWorkFilters } from '@/lib/types';
 import CustomDropdown from '@/components/CustomDropdown';
+import { getWrittenWorks } from '@/lib/sanity/writtenWorks';
 
 export default function WrittenWorkPage() {
   const [writtenWorks, setWrittenWorks] = useState<WrittenWork[]>([]);
@@ -15,6 +16,11 @@ export default function WrittenWorkPage() {
     search: ''
   });
   const locale = 'en'; // TODO: Get from context/router
+
+  // Fetch data from Sanity on mount
+  useEffect(() => {
+    getWrittenWorks().then((data) => setWrittenWorks(data as unknown as WrittenWork[]));
+  }, []);
 
   // Filter written works whenever filters change
   useEffect(() => {

@@ -31,7 +31,6 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
             fontFamily: 'Montserrat, sans-serif',
             fontSize: 'clamp(1.47rem, 3.5vw, 2.52rem)',
             fontWeight: 600,
-            textShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)',
             textDecoration: 'none'
           }}
         >
@@ -74,7 +73,6 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
               left: '0',
               transform: isMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)',
               transition: 'all 0.5s ease',
-              boxShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)'
             }}></span>
             {/* Middle line - fades out */}
             <span style={{
@@ -87,7 +85,6 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
               left: '0',
               opacity: isMenuOpen ? 0 : 1,
               transition: 'opacity 0.3s ease',
-              boxShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)'
             }}></span>
             {/* Bottom line - rotates to form bottom part of X */}
             <span style={{
@@ -100,7 +97,6 @@ export default function Header({ onMenuClick, isMenuOpen, onMenuClose }: HeaderP
               left: '0',
               transform: isMenuOpen ? 'rotate(-45deg)' : 'rotate(0deg)',
               transition: 'all 0.5s ease',
-              boxShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 16px rgba(255, 255, 255, 0.6)'
             }}></span>
           </span>
         </button>

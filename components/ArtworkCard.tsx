@@ -40,15 +40,10 @@ export default function ArtworkCard({
   const description = artwork.description?.[locale] ?? artwork.description?.en ?? '';
 
   // Format dimensions
-  const dimensions = artwork.customDimensions && artwork.customDimensions.length > 0
-    ? artwork.customDimensions
-        .map(d => `${d.value}cm (${d.label})`)
-        .join(' × ')
-    : artwork.dimensions
-    ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${
-        artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''
-      } cm`
-    : '';
+  const dimensions = artwork.customDimensions
+    ?? (artwork.dimensions
+      ? `${artwork.dimensions.width} × ${artwork.dimensions.height}${artwork.dimensions.depth ? ` × ${artwork.dimensions.depth}` : ''} cm`
+      : '');
 
   // Generate optimized image URL
   // Grid view: smaller size (600px), List view: larger (800px)
@@ -64,7 +59,8 @@ export default function ArtworkCard({
     : '/placeholder-artwork.jpg';
 
   // ARIA label for accessibility
-  const ariaLabel = `${title}, ${artwork.year}${medium ? `, ${medium}` : ''}`;
+  const yearDisplay = artwork.yearEnd ? `${artwork.year}–${artwork.yearEnd}` : String(artwork.year);
+  const ariaLabel = `${title}, ${yearDisplay}${medium ? `, ${medium}` : ''}`;
 
   // Alternating background for list view
   const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]';
@@ -94,7 +90,7 @@ export default function ArtworkCard({
                 {title}
               </h3>
               <div className="flex flex-wrap gap-x-4 gap-y-1 font-body text-base text-dark-gray">
-                <span>{artwork.year}</span>
+                <span>{yearDisplay}</span>
                 {medium && <span className="before:content-['·'] before:mr-4">{medium}</span>}
                 {dimensions && <span className="before:content-['·'] before:mr-4">{dimensions}</span>}
               </div>
@@ -134,7 +130,7 @@ export default function ArtworkCard({
             {title}
           </h3>
           <div className="font-body text-sm md:text-base text-white/90">
-            <span>{artwork.year}</span>
+            <span>{yearDisplay}</span>
             {medium && <span className="before:content-['·'] before:mx-2">{medium}</span>}
           </div>
           {dimensions && (

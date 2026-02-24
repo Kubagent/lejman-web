@@ -34,11 +34,12 @@ function buildArtworkQuery(filters?: ArtworkFilters): string {
 
   const filterClause = conditions.length > 0 ? ` && ${conditions.join(' && ')}` : '';
 
-  return `*[_type == "artwork"${filterClause}] | order(year desc, title.en asc) {
+  return `*[_type == "artwork"${filterClause}] | order(order asc, year desc, title.en asc) {
     _id,
     title,
     slug,
     year,
+    yearEnd,
     medium,
     dimensions,
     customDimensions,
@@ -80,6 +81,7 @@ export async function getArtworkBySlug(slug: string): Promise<Artwork | null> {
       title,
       slug,
       year,
+      yearEnd,
       medium,
       dimensions,
       customDimensions,
@@ -109,10 +111,14 @@ export async function getArtworkBySlug(slug: string): Promise<Artwork | null> {
  */
 export async function getArtworkYears(): Promise<number[]> {
   try {
-    const query = `*[_type == "artwork"].year | order(@desc)`;
-    const years = await client.fetch<number[]>(query);
-    // Remove duplicates and return
-    return Array.from(new Set(years)).sort((a, b) => b - a);
+    const query = `*[_type == "artwork"] { year, yearEnd }`;
+    const rows = await client.fetch<{ year: number; yearEnd?: number }[]>(query);
+    const allYears = new Set<number>();
+    for (const { year, yearEnd } of rows) {
+      const end = yearEnd ?? year;
+      for (let y = year; y <= end; y++) allYears.add(y);
+    }
+    return Array.from(allYears).sort((a, b) => b - a);
   } catch (error) {
     console.error('[getArtworkYears] Error fetching years:', error);
     return [];
@@ -150,6 +156,7 @@ export async function getFeaturedArtworks(limit: number = 6): Promise<Artwork[]>
       title,
       slug,
       year,
+      yearEnd,
       medium,
       mainImage,
       featured

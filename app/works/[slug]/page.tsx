@@ -37,19 +37,20 @@ export async function generateMetadata({
 
   const title = artwork.title.en ?? 'Untitled';
   const medium = artwork.medium.en ?? '';
-  const description = artwork.description?.en ?? `${title}, ${artwork.year}. ${medium}`;
+  const yearDisplay = artwork.yearEnd ? `${artwork.year}–${artwork.yearEnd}` : String(artwork.year);
+  const description = artwork.description?.en ?? `${title}, ${yearDisplay}. ${medium}`;
 
   return {
-    title: `${title} (${artwork.year}) - Dominik L.`,
+    title: `${title} (${yearDisplay}) - Dominik L.`,
     description: description,
     openGraph: {
-      title: `${title} (${artwork.year})`,
+      title: `${title} (${yearDisplay})`,
       description: description,
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} (${artwork.year})`,
+      title: `${title} (${yearDisplay})`,
       description: description,
     },
   };

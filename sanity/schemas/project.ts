@@ -133,6 +133,12 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Optional. Lower numbers appear first. Leave blank to sort automatically by date.',
+    }),
+    defineField({
       name: 'artworks',
       title: 'Artworks Shown',
       type: 'array',

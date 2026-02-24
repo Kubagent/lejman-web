@@ -70,11 +70,6 @@ export interface ArtworkDimensions {
   unit?: 'cm' | 'in' | 'm';
 }
 
-export interface CustomDimension {
-  value: number;
-  label: string;
-}
-
 // Linked project reference (expanded from Sanity query)
 export interface LinkedProject {
   _id: string;
@@ -95,9 +90,10 @@ export interface Artwork {
     current: string;
   };
   year: number;
+  yearEnd?: number;
   medium: LocalizedText;
   dimensions?: ArtworkDimensions;
-  customDimensions?: CustomDimension[];
+  customDimensions?: string;
   images: SanityImageAsset[];
   videos?: any[]; // Array of video assets (Mux or file)
   description?: LocalizedText;

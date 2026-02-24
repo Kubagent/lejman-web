@@ -4,6 +4,13 @@ export default defineType({
   name: 'interview',
   title: 'Interview',
   type: 'document',
+  validation: (Rule) =>
+    Rule.custom((doc: any) => {
+      if (!doc?.url && !doc?.pdfFile?.asset && !doc?.videoFile?.asset) {
+        return 'Please provide at least one of: URL, PDF file, or video file';
+      }
+      return true;
+    }),
   fields: [
     defineField({
       name: 'title',
@@ -26,11 +33,24 @@ export default defineType({
     }),
     defineField({
       name: 'url',
-      title: 'URL',
+      title: 'URL (link to external source)',
       type: 'url',
-      validation: (Rule) => Rule.required().uri({
-        scheme: ['http', 'https'],
-      }),
+      description: 'Link to the interview online (e.g. magazine website)',
+      validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'pdfFile',
+      title: 'PDF File',
+      type: 'file',
+      description: 'Upload a PDF of the interview',
+      options: { accept: '.pdf' },
+    }),
+    defineField({
+      name: 'videoFile',
+      title: 'Video File (MP4)',
+      type: 'file',
+      description: 'Upload an MP4 video of the interview',
+      options: { accept: 'video/mp4,video/*' },
     }),
     defineField({
       name: 'order',
