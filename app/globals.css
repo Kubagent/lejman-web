@@ -232,12 +232,8 @@ a:active {
   }
 }
 
-/* Mobile River: full-width videos with scroll-snap, one at a time */
+/* Mobile River: full-width videos, one at a time */
 @media (max-width: 767px) {
-  html {
-    scroll-snap-type: y proximity;
-  }
-
   /* Remove gap between videos — full-height sections provide separation */
   .river-video-stack {
     gap: 0 !important;
@@ -250,7 +246,6 @@ a:active {
     background-color: #FFFFFF !important;
     display: flex !important;
     align-items: center !important;
-    scroll-snap-align: start;
   }
 
   /* Video wrapper: static flow, full-width, 16:9 aspect ratio */

@@ -55,28 +55,37 @@ export default function RiverVideoSlotMux({
     if (!containerRef.current) return;
 
     if (isMobile) {
-      // Mobile: strict visibility - only play when fully in view to minimize Mux minutes
+      // Mobile: play when mostly visible, pause when leaving.
+      // Debounced 150ms so momentum-scroll threshold crossings don't
+      // trigger rapid play/pause toggling.
+      let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.95) {
-              // Video is fully in view, play it
-              playerRef.current?.play();
-              onPlay?.(video._id);
-            } else {
-              // Video is not fully in view, pause to save Mux minutes
-              playerRef.current?.pause();
-            }
+            if (debounceTimer) clearTimeout(debounceTimer);
+            const visible = entry.isIntersecting && entry.intersectionRatio >= 0.95;
+            debounceTimer = setTimeout(() => {
+              if (visible) {
+                playerRef.current?.play();
+                onPlay?.(video._id);
+              } else {
+                playerRef.current?.pause();
+              }
+            }, 150);
           });
         },
         {
-          threshold: [0, 0.95], // Trigger at 0% (leaving) and 95% (nearly full view)
+          threshold: [0, 0.95],
           rootMargin: '0px',
         }
       );
 
       observer.observe(containerRef.current);
-      return () => observer.disconnect();
+      return () => {
+        observer.disconnect();
+        if (debounceTimer) clearTimeout(debounceTimer);
+      };
     } else {
       // Desktop: original behavior - play when 50% visible
       const observer = new IntersectionObserver(
