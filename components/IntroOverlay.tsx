@@ -40,6 +40,14 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
     const seen = sessionStorage.getItem(SESSION_KEY);
     if (seen) {
       setShowIntro(false);
+    } else if (pathname === '/') {
+      // Disable browser scroll restoration so it can't scroll River into view
+      // mid-intro (happens on back-navigation and mobile session restore)
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      // Snap to top while overlay is fully opaque — safe, user sees nothing
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
   }, []);
 
@@ -77,6 +85,10 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
+
+    // Reset scroll while overlay is still opaque so River is always
+    // revealed from the first video, not a mid-stack position
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
     // Start fade out
     setIsFadingOut(true);

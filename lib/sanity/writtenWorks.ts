@@ -11,7 +11,6 @@ export interface WrittenWork {
     current: string;
   };
   author?: string;
-  publishedDate?: string;
   category?: string;
   excerpt?: {
     en?: string;
@@ -32,8 +31,7 @@ export async function getWrittenWorks(): Promise<WrittenWork[]> {
       title,
       slug,
       "author": { "en": author, "de": author, "pl": author },
-      "year": publishedDate[0..3],
-      publishedDate,
+      "year": publishedDate,
       category,
       type,
       "fileUrl": file.asset->url,

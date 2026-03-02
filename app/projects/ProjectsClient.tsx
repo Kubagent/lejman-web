@@ -201,7 +201,7 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
                     { value: '', label: 'Type' },
                     { value: 'solo', label: 'Solo' },
                     { value: 'group', label: 'Group' },
-                    { value: 'institutional', label: 'Institutional' }
+                    { value: 'institutional', label: 'Collaboration' }
                   ]}
                   value={filters.type ?? ''}
                   onChange={(value) => handleFilterChange('type', value || undefined)}

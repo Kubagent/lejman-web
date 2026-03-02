@@ -41,9 +41,9 @@ export default function PublicationCard({
       className={bgClass}
       style={{ paddingLeft: '120px', paddingRight: '120px', paddingTop: '48px', paddingBottom: '48px' }}
     >
-      <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
+      <div className="max-w-4xl mx-auto flex items-center justify-between gap-8">
         {/* Left: metadata */}
-        <div className="flex-1 min-w-[200px]">
+        <div className="flex-1 min-w-0">
           <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2">
             {title}
           </h3>

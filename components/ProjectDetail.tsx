@@ -66,7 +66,7 @@ export default function ProjectDetail({
   const typeLabels = {
     solo: { en: 'Solo Project', de: 'Einzelausstellung', pl: 'Wystawa indywidualna' },
     group: { en: 'Group Project', de: 'Gruppenausstellung', pl: 'Wystawa zbiorowa' },
-    institutional: { en: 'Institutional Project', de: 'Institutionelle Ausstellung', pl: 'Wystawa instytucjonalna' }
+    institutional: { en: 'Collaboration', de: 'Kollaboration', pl: 'Współpraca' }
   };
   const typeLabel = typeLabels[project.type][locale] ?? typeLabels[project.type].en;
 

@@ -90,7 +90,7 @@ export default defineType({
         list: [
           { title: 'Solo', value: 'solo' },
           { title: 'Group', value: 'group' },
-          { title: 'Institutional', value: 'institutional' },
+          { title: 'Collaboration', value: 'institutional' },
         ],
         layout: 'radio',
       },

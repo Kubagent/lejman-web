@@ -93,14 +93,14 @@ export default function ProjectCard({
   const typeLabel = {
     solo: 'Solo Project',
     group: 'Group Project',
-    institutional: 'Institutional Project'
+    institutional: 'Collaboration'
   }[project.type];
 
   // Short type label for grid view overlay
   const shortTypeLabel = {
     solo: 'Solo',
     group: 'Group',
-    institutional: 'Institutional'
+    institutional: 'Collaboration'
   }[project.type];
 
   // Generate optimized image URL - use first photo as thumbnail

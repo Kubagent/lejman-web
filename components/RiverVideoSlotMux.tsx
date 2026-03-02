@@ -34,7 +34,9 @@ export default function RiverVideoSlotMux({
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const clickCountRef = useRef(0);
 
