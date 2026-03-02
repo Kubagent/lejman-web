@@ -221,6 +221,7 @@ export default function RiverVideoSlotMux({
       <div
         className="river-video-wrapper absolute inset-0 w-full h-full cursor-pointer"
         onClick={handlePlayerClick}
+        style={{ touchAction: 'pan-y' }}
       >
         <MuxPlayer
           ref={playerRef}
