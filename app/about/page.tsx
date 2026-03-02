@@ -300,13 +300,9 @@ export default function AboutPage() {
               publications.map((pub, index) => (
                 <div
                   key={pub._id}
-                  className={`py-12 ${
+                  className={`py-12 px-4 md:px-[120px] ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
-                  style={{
-                    paddingLeft: '120px',
-                    paddingRight: '120px'
-                  }}
                 >
                   <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
                     <div className="flex-1 min-w-[200px]">
@@ -360,13 +356,9 @@ export default function AboutPage() {
               pressKitItems.map((item, index) => (
                 <div
                   key={item._id}
-                  className={`py-12 ${
+                  className={`py-12 px-4 md:px-[120px] ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
-                  style={{
-                    paddingLeft: '120px',
-                    paddingRight: '120px'
-                  }}
                 >
                   <div className="max-w-4xl mx-auto flex items-center justify-between gap-8 flex-wrap">
                     <div className="flex-1 min-w-[200px]">
@@ -420,13 +412,9 @@ export default function AboutPage() {
               links.map((link, index) => (
                 <div
                   key={link._id}
-                  className={`py-12 ${
+                  className={`py-12 px-4 md:px-[120px] ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
-                  style={{
-                    paddingLeft: '120px',
-                    paddingRight: '120px'
-                  }}
                 >
                   <div className="max-w-4xl mx-auto">
                     <a
@@ -464,13 +452,9 @@ export default function AboutPage() {
               interviews.map((interview, index) => (
                 <div
                   key={interview._id}
-                  className={`py-12 ${
+                  className={`py-12 px-4 md:px-[120px] ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
-                  style={{
-                    paddingLeft: '120px',
-                    paddingRight: '120px'
-                  }}
                 >
                   <div className="max-w-4xl mx-auto">
                     {(() => {

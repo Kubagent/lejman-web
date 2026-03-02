@@ -218,7 +218,7 @@ export default function WrittenWorkPage() {
       {/* Publications List */}
       <div className="">
         {filteredWrittenWorks.length > 0 ? (
-          <div className="max-w-[60vw] mx-auto">
+          <div className="w-full md:max-w-[60vw] mx-auto">
             {filteredWrittenWorks.map((writtenWork, index) => (
               <PublicationCard
                 key={writtenWork._id}

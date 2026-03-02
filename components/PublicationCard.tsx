@@ -38,8 +38,8 @@ export default function PublicationCard({
 
   return (
     <article
-      className={bgClass}
-      style={{ paddingLeft: '120px', paddingRight: '120px', paddingTop: '48px', paddingBottom: '48px' }}
+      className={`${bgClass} px-4 md:px-[120px]`}
+      style={{ paddingTop: '48px', paddingBottom: '48px' }}
     >
       <div className="max-w-4xl mx-auto flex items-center justify-between gap-8">
         {/* Left: metadata */}
