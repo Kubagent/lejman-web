@@ -1,6 +1,7 @@
 'use client';
 
 import { WrittenWork } from '@/lib/types';
+import { getFileAssetUrl } from '@/lib/sanity/file';
 
 interface PublicationCardProps {
   writtenWork: WrittenWork;
@@ -36,6 +37,10 @@ export default function PublicationCard({
 
   const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]';
 
+  // fileUrl from GROQ dereference can be null even when a file exists;
+  // fall back to building the URL from the asset _ref directly
+  const downloadUrl = writtenWork.fileUrl || (writtenWork.file ? getFileAssetUrl(writtenWork.file) : null);
+
   return (
     <article
       className={`${bgClass} px-4 md:px-[120px]`}
@@ -60,9 +65,9 @@ export default function PublicationCard({
         </div>
 
         {/* Right: download button */}
-        {writtenWork.fileUrl && (
+        {downloadUrl && (
           <a
-            href={writtenWork.fileUrl}
+            href={downloadUrl}
             target="_blank"
             rel="noopener noreferrer"
             download

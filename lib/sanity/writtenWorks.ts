@@ -34,6 +34,7 @@ export async function getWrittenWorks(): Promise<WrittenWork[]> {
       "year": publishedDate,
       category,
       type,
+      file,
       "fileUrl": file.asset->url,
       "description": excerpt
     }`;
