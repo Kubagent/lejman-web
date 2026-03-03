@@ -58,7 +58,7 @@ export default function PublicationCard({
             {author && <span>{" • "}{author}</span>}
           </p>
           {description && (
-            <p className="font-sans text-sm text-[#999999] mt-2 leading-relaxed line-clamp-2">
+            <p className="font-sans text-sm text-[#999999] mt-2 leading-relaxed">
               {description}
             </p>
           )}
