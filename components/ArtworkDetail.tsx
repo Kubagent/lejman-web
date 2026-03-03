@@ -187,6 +187,7 @@ export default function ArtworkDetail({
                       src={`https://stream.mux.com/${currentMedia.data.asset.playbackId}.m3u8`}
                       poster={`https://image.mux.com/${currentMedia.data.asset.playbackId}/thumbnail.jpg?width=1920&height=1080&fit_mode=smartcrop`}
                       controls
+                      playsInline
                       className="w-full h-auto"
                       style={{ maxHeight: '85vh' }}
                       preload="metadata"
@@ -196,7 +197,9 @@ export default function ArtworkDetail({
                   ) : currentMedia.data._type === 'file' && currentMedia.data.asset?.url ? (
                     <video
                       src={currentMedia.data.asset.url}
+                      poster={artwork.mainImage ? getImageUrl(artwork.mainImage, 1920) : undefined}
                       controls
+                      playsInline
                       className="w-full h-auto"
                       style={{ maxHeight: '85vh' }}
                       preload="metadata"
