@@ -52,7 +52,10 @@ export async function getProjects(filters?: ProjectFilters): Promise<Project[]> 
     }`;
 
     const projects = await client.fetch<Project[]>(query);
-    return projects || [];
+    return (projects || []).map(p => ({
+      ...p,
+      year: p.startDate ? parseInt(p.startDate.substring(0, 4)) : (p.year ?? 0),
+    }));
   } catch (error) {
     console.error('[getProjects] Error fetching projects:', error);
     return [];
@@ -107,10 +110,18 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
  */
 export async function getProjectYears(): Promise<number[]> {
   try {
-    const query = `*[_type == "project"].year | order(@desc)`;
-    const years = await client.fetch<number[]>(query);
-    // Remove duplicates and return
-    return Array.from(new Set(years)).sort((a, b) => b - a);
+    const query = `*[_type == "project" && defined(startDate)] { startDate, endDate, isOngoing }`;
+    const projects = await client.fetch<{ startDate: string; endDate?: string; isOngoing?: boolean }[]>(query);
+    const currentYear = new Date().getFullYear();
+    const years = new Set<number>();
+    for (const p of projects) {
+      const start = parseInt(p.startDate.substring(0, 4));
+      const end = p.isOngoing ? currentYear : (p.endDate ? parseInt(p.endDate.substring(0, 4)) : start);
+      for (let y = start; y <= end; y++) {
+        years.add(y);
+      }
+    }
+    return Array.from(years).sort((a, b) => b - a);
   } catch (error) {
     console.error('[getProjectYears] Error fetching years:', error);
     return [];

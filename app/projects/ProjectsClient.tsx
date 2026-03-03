@@ -45,9 +45,18 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
       return b.year - a.year;
     });
 
-    // Year filter
+    // Year filter — match if selected year falls within project's duration
     if (filters.year) {
-      result = result.filter(project => project.year === filters.year);
+      const currentYear = new Date().getFullYear();
+      result = result.filter(project => {
+        const startYear = project.year;
+        const endYear = project.isOngoing
+          ? currentYear
+          : project.endDate
+            ? parseInt(project.endDate.substring(0, 4))
+            : startYear;
+        return filters.year! >= startYear && filters.year! <= endYear;
+      });
     }
 
     // Type filter
