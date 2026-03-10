@@ -185,11 +185,11 @@ export default function ArtworkDetail({
                   {currentMedia.data._type === 'mux.video' && currentMedia.data.asset?.playbackId ? (
                     <video
                       src={`https://stream.mux.com/${currentMedia.data.asset.playbackId}.m3u8`}
-                      poster={`https://image.mux.com/${currentMedia.data.asset.playbackId}/thumbnail.jpg?width=1920&height=1080&fit_mode=smartcrop`}
+                      poster={`https://image.mux.com/${currentMedia.data.asset.playbackId}/thumbnail.jpg?width=1920`}
                       controls
                       playsInline
                       className="w-full h-auto"
-                      style={{ maxHeight: '85vh' }}
+                      style={{ maxHeight: '85vh', objectFit: 'contain' }}
                       preload="metadata"
                     >
                       Your browser does not support the video tag.

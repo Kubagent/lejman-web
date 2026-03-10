@@ -58,7 +58,6 @@ export default function ArtworkCard({
       ? artwork.mainImage.asset._ref  // Mock URL
       : urlFor(artwork.mainImage)
           .width(viewMode === 'grid' ? 600 : 800)
-          .height(viewMode === 'grid' ? 600 : 800)
           .quality(85)
           .auto('format')
           .url()

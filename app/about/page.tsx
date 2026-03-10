@@ -449,7 +449,9 @@ export default function AboutPage() {
         {activeSection === 'interviews' && (
           <div className="py-12">
             {interviews.length > 0 ? (
-              interviews.map((interview, index) => (
+              [...interviews]
+                .sort((a, b) => b.year - a.year)
+                .map((interview, index) => (
                 <div
                   key={interview._id}
                   className={`py-12 px-4 md:px-[120px] ${

@@ -77,7 +77,7 @@ export default function ArtworkFilters({
 
   return (
     <div className="w-full bg-white sticky top-0 z-10 border-b border-[#E5E5E5]">
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-20">
+      <div className="px-[30px] py-16 md:py-20">
         {/* Two-Row Layout: Filters on top, Actions below */}
         <div className="space-y-8">
           {/* Top Row: View Toggle, Search and Filters - Desktop: single row, Mobile: 3 rows */}

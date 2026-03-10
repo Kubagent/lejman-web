@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import MuxPlayer from '@mux/mux-player-react';
 import { urlFor } from '@/lib/sanity/image';
 
-const INTRO_DURATION = 10000; // 10 seconds
+const INTRO_DURATION = 16000; // 16s fallback — video's onEnded fires first in normal playback
 const SESSION_KEY = 'lejman-intro-seen';
 
 interface IntroOverlayProps {
@@ -166,6 +166,7 @@ export default function IntroOverlay({ video, children }: IntroOverlayProps) {
           muted
           playsInline
           preload="auto"
+          onEnded={dismissIntro}
           style={{
             width: '100%',
             height: '100%',

@@ -214,12 +214,12 @@ export default function RiverVideoSlotMux({
   return (
     <article
       ref={containerRef}
-      className="river-video-slot relative w-full bg-black overflow-hidden group h-[80vw] md:h-[calc(100vh-20px)] max-h-[calc(100vh-20px)]"
+      className="river-video-slot w-full flex flex-col bg-white group h-[80vw] md:h-[calc(100vh-20px)] max-h-[calc(100vh-20px)]"
       aria-label={`Video: ${title}${video.year ? ` (${video.year})` : ''}`}
     >
-      {/* Mux Player */}
+      {/* Mux Player — fills all space above the button bar */}
       <div
-        className="river-video-wrapper absolute inset-0 w-full h-full cursor-pointer"
+        className="river-video-wrapper relative flex-1 w-full overflow-hidden bg-black cursor-pointer"
         onClick={handlePlayerClick}
         style={{ touchAction: 'pan-y' }}
       >
@@ -236,7 +236,7 @@ export default function RiverVideoSlotMux({
           style={{
             width: '100%',
             height: '100%',
-            '--media-object-fit': 'cover',
+            '--media-object-fit': 'contain',
             '--media-object-position': 'center',
           } as any}
           onPlay={() => setIsPlaying(true)}
@@ -244,48 +244,30 @@ export default function RiverVideoSlotMux({
         />
       </div>
 
-      {/* More Link - Always visible, greyed out when no link */}
-      {video.linkedArtwork?.slug?.current ? (
-        <Link
-          href={`${video.linkedArtwork._type === 'project' ? '/projects' : '/works'}/${video.linkedArtwork.slug.current}`}
-          onClick={(e) => e.stopPropagation()}
-          className="absolute right-4 top-1/2 -translate-y-1/2"
-          style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '10px',
-            fontWeight: 400,
-            color: '#FFFFFF',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            backdropFilter: 'blur(4px)',
-            padding: '6px 10px',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            cursor: 'pointer',
-            zIndex: 10,
-            textDecoration: 'none'
-          }}
-          aria-label={`More about ${title} - view artwork details`}
+      {/* More bar — only shown when a link is available */}
+      {video.linkedArtwork?.slug?.current && (
+        <div
+          className="bg-white flex items-center justify-end"
+          style={{ minHeight: '44px', padding: '0 20px', flexShrink: 0 }}
         >
-          More
-        </Link>
-      ) : (
-        <span
-          className="absolute right-4 top-1/2 -translate-y-1/2"
-          style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '10px',
-            fontWeight: 400,
-            color: 'rgba(255, 255, 255, 0.4)',
-            backgroundColor: 'rgba(0, 0, 0, 0.25)',
-            backdropFilter: 'blur(4px)',
-            padding: '6px 10px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            cursor: 'default',
-            zIndex: 10
-          }}
-          aria-label="No linked content available"
-        >
-          More
-        </span>
+          <Link
+            href={`${video.linkedArtwork._type === 'project' ? '/projects' : '/works'}/${video.linkedArtwork.slug.current}`}
+            style={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '13px',
+              fontWeight: 400,
+              color: '#000000',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              minHeight: '44px',
+              padding: '0 4px',
+            }}
+            aria-label={`More about ${title} - view artwork details`}
+          >
+            More →
+          </Link>
+        </div>
       )}
     </article>
   );

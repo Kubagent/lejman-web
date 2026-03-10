@@ -61,7 +61,7 @@ export default function WorksClient({ artworks, years, mediums }: WorksClientPro
     <>
       {/* Page Header */}
       <section className="bg-white">
-        <div className="container mx-auto px-6 md:px-12 lg:px-24 pt-12 md:pt-16 pb-32">
+        <div className="container mx-auto px-6 md:px-12 lg:px-[30px] pt-12 md:pt-16 pb-32">
           <h1 className="font-heading text-4xl md:text-6xl font-semibold text-black mb-4 text-center">
             Selected Works
           </h1>
@@ -86,7 +86,7 @@ export default function WorksClient({ artworks, years, mediums }: WorksClientPro
 
       {/* Artwork Grid */}
       <section className="bg-white min-h-screen">
-        <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 md:py-16">
+        <div className="px-[30px] py-12 md:py-16">
           <ArtworkGrid
             artworks={filteredArtworks}
             locale="en"

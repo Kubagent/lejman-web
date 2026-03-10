@@ -245,22 +245,26 @@ a:active {
     max-height: none !important;
     background-color: #FFFFFF !important;
     display: flex !important;
-    align-items: center !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
     touch-action: pan-y !important; /* let browser own vertical scroll momentum */
   }
 
-  /* Video wrapper: static flow, full-width, 16:9 aspect ratio */
+  /* Video wrapper: fills all slot height above the More bar */
   .river-video-wrapper {
-    position: static !important;
+    position: relative !important;
     inset: auto !important;
+    flex: 1 !important;
+    width: 100% !important;
     height: auto !important;
-    aspect-ratio: 16 / 9;
     touch-action: pan-y !important;
   }
 
   /* Force MuxPlayer to fill its container (overrides shadow DOM defaults) */
   mux-player {
     display: block !important;
+    width: 100% !important;
+    height: 100% !important;
     aspect-ratio: auto !important;
     touch-action: pan-y !important; /* override any internal gesture handlers */
   }
