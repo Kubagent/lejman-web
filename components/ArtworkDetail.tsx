@@ -189,6 +189,7 @@ export default function ArtworkDetail({
                       streamType="on-demand"
                       playsInline
                       preload="metadata"
+                      poster={artwork.mainImage ? getImageUrl(artwork.mainImage, 1920) : undefined}
                       style={{
                         width: '100%',
                         maxHeight: '85vh',

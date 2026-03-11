@@ -182,6 +182,7 @@ export default function ProjectDetail({
                       streamType="on-demand"
                       playsInline
                       preload="metadata"
+                      poster={project.images?.[0] ? getImageUrl(project.images[0], 1920) : undefined}
                       style={{
                         width: '100%',
                         maxHeight: '85vh',
@@ -192,6 +193,7 @@ export default function ProjectDetail({
                   ) : currentMedia.data._type === 'file' && currentMedia.data.asset?.url ? (
                     <video
                       src={currentMedia.data.asset.url}
+                      poster={project.images?.[0] ? getImageUrl(project.images[0], 1920) : undefined}
                       controls
                       playsInline
                       className="w-full h-auto"
