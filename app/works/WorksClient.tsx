@@ -86,7 +86,7 @@ export default function WorksClient({ artworks, years, mediums }: WorksClientPro
 
       {/* Artwork Grid */}
       <section className="bg-white min-h-screen">
-        <div className="md:px-[30px] py-12 md:py-16">
+        <div className="tablet:px-[30px] desktop:px-[30px] py-12 md:py-16">
           <ArtworkGrid
             artworks={filteredArtworks}
             locale="en"
