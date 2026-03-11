@@ -77,58 +77,59 @@ export default function ArtworkFilters({
 
   return (
     <div className="w-full bg-white sticky top-0 z-10 border-b border-[#E5E5E5]">
-      <div className="px-[30px] py-16 md:py-20">
+      <div className="md:px-[30px] py-16 md:py-20">
         {/* Two-Row Layout: Filters on top, Actions below */}
         <div className="space-y-8">
           {/* Top Row: View Toggle, Search and Filters - Desktop: single row, Mobile: 3 rows */}
           <div className="flex items-stretch gap-6 w-full flex-wrap">
-            {/* Grid View Button */}
-            <button
-              onClick={() => onViewModeChange('grid')}
-              className={`border-0 outline-none transition-all duration-300 ease-in-out ${
-                viewMode === 'grid'
-                  ? 'bg-[#000000] text-[#FFFFFF]'
-                  : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
-              }`}
-              style={{
-                border: 'none',
-                padding: '16px 24px',
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '15px',
-                fontWeight: 400,
-                width: '180px',
-                minWidth: '180px',
-                textAlign: 'center'
-              }}
-              aria-label="Grid view"
-              aria-pressed={viewMode === 'grid'}
-            >
-              Grid View
-            </button>
+            {/* View Toggle — always side-by-side */}
+            <div className="flex gap-6 flex-shrink-0">
+              <button
+                onClick={() => onViewModeChange('grid')}
+                className={`border-0 outline-none transition-all duration-300 ease-in-out ${
+                  viewMode === 'grid'
+                    ? 'bg-[#000000] text-[#FFFFFF]'
+                    : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
+                }`}
+                style={{
+                  border: 'none',
+                  padding: '16px 24px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '15px',
+                  fontWeight: 400,
+                  width: '180px',
+                  minWidth: '180px',
+                  textAlign: 'center'
+                }}
+                aria-label="Grid view"
+                aria-pressed={viewMode === 'grid'}
+              >
+                Grid View
+              </button>
 
-            {/* List View Button */}
-            <button
-              onClick={() => onViewModeChange('list')}
-              className={`border-0 outline-none transition-all duration-300 ease-in-out ${
-                viewMode === 'list'
-                  ? 'bg-[#000000] text-[#FFFFFF]'
-                  : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
-              }`}
-              style={{
-                border: 'none',
-                padding: '16px 24px',
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '15px',
-                fontWeight: 400,
-                width: '180px',
-                minWidth: '180px',
-                textAlign: 'center'
-              }}
-              aria-label="List view"
-              aria-pressed={viewMode === 'list'}
-            >
-              List View
-            </button>
+              <button
+                onClick={() => onViewModeChange('list')}
+                className={`border-0 outline-none transition-all duration-300 ease-in-out ${
+                  viewMode === 'list'
+                    ? 'bg-[#000000] text-[#FFFFFF]'
+                    : 'bg-[#FAFAFA] text-[#000000] hover:bg-[#000000] hover:text-[#FFFFFF]'
+                }`}
+                style={{
+                  border: 'none',
+                  padding: '16px 24px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '15px',
+                  fontWeight: 400,
+                  width: '180px',
+                  minWidth: '180px',
+                  textAlign: 'center'
+                }}
+                aria-label="List view"
+                aria-pressed={viewMode === 'list'}
+              >
+                List View
+              </button>
+            </div>
 
             {/* Search Input */}
             <input

@@ -250,13 +250,14 @@ a:active {
     touch-action: pan-y !important; /* let browser own vertical scroll momentum */
   }
 
-  /* Video wrapper: fills all slot height above the More bar */
+  /* Video wrapper: 16:9 natural size — slot bg-white fills remaining space */
   .river-video-wrapper {
     position: relative !important;
     inset: auto !important;
-    flex: 1 !important;
+    flex: none !important;
     width: 100% !important;
     height: auto !important;
+    aspect-ratio: 16 / 9 !important;
     touch-action: pan-y !important;
   }
 
