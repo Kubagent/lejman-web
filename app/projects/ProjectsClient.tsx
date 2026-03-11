@@ -110,7 +110,7 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
 
       {/* Filters Bar */}
       <section className="bg-white sticky top-0 z-10 border-b border-[#E5E5E5]">
-        <div className="tablet:px-[30px] desktop:px-[30px] py-16 md:py-20">
+        <div className="section-px py-16 md:py-20">
           {/* Two-Row Layout: Filters on top, Actions below */}
           <div className="space-y-8">
             {/* Top Row: View Toggle, Search and Filters */}
@@ -262,7 +262,7 @@ export default function ProjectsClient({ projects, years }: ProjectsClientProps)
 
       {/* Projects List/Grid */}
       <section className="bg-white min-h-screen">
-        <div className="tablet:px-[30px] desktop:px-[30px] py-12 md:py-16">
+        <div className="section-px py-12 md:py-16">
           {filteredProjects.length > 0 ? (
             viewMode === 'grid' ? (
               // Grid View - 3-column layout like Works

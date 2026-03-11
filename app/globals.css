@@ -319,3 +319,16 @@ a:active {
     transform-origin: center center !important;
   }
 }
+
+/* Desktop-only 30px side padding for works/projects grid and filter bars */
+.section-px {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+@media (max-width: 767px) {
+  .section-px {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
