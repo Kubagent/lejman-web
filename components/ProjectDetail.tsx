@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import MuxPlayer from '@mux/mux-player-react';
 import { Project, Artwork } from '@/lib/types';
 import { urlFor } from '@/lib/sanity/image';
 
@@ -176,17 +177,18 @@ export default function ProjectDetail({
                 <div className="w-full" style={{ maxHeight: '85vh' }}>
                   {/* Handle Mux video */}
                   {currentMedia.data._type === 'mux.video' && currentMedia.data.asset?.playbackId ? (
-                    <video
-                      src={`https://stream.mux.com/${currentMedia.data.asset.playbackId}.m3u8`}
-                      poster={`https://image.mux.com/${currentMedia.data.asset.playbackId}/thumbnail.jpg?width=1920`}
-                      controls
+                    <MuxPlayer
+                      playbackId={currentMedia.data.asset.playbackId}
+                      streamType="on-demand"
                       playsInline
-                      className="w-full h-auto"
-                      style={{ maxHeight: '85vh', objectFit: 'contain' }}
                       preload="metadata"
-                    >
-                      Your browser does not support the video tag.
-                    </video>
+                      style={{
+                        width: '100%',
+                        maxHeight: '85vh',
+                        '--media-object-fit': 'contain',
+                        '--media-object-position': 'center',
+                      } as any}
+                    />
                   ) : currentMedia.data._type === 'file' && currentMedia.data.asset?.url ? (
                     <video
                       src={currentMedia.data.asset.url}
