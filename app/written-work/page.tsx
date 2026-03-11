@@ -85,7 +85,7 @@ export default function WrittenWorkPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 pt-12 md:pt-16 lg:pt-20 pb-32">
+      <div className="section-px pt-12 md:pt-16 lg:pt-20 pb-32">
         <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-4 text-center">
           Selected Writings
         </h1>
@@ -216,7 +216,7 @@ export default function WrittenWorkPage() {
       <div className="w-full bg-white" style={{ height: '20px' }} />
 
       {/* Publications List */}
-      <div className="">
+      <div className="section-px">
         {filteredWrittenWorks.length > 0 ? (
           <div className="w-full md:max-w-[60vw] mx-auto">
             {filteredWrittenWorks.map((writtenWork, index) => (

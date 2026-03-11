@@ -300,7 +300,7 @@ export default function AboutPage() {
               publications.map((pub, index) => (
                 <div
                   key={pub._id}
-                  className={`py-12 px-4 md:px-[120px] ${
+                  className={`py-12 section-px ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
                 >
@@ -356,7 +356,7 @@ export default function AboutPage() {
               pressKitItems.map((item, index) => (
                 <div
                   key={item._id}
-                  className={`py-12 px-4 md:px-[120px] ${
+                  className={`py-12 section-px ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
                 >
@@ -412,7 +412,7 @@ export default function AboutPage() {
               links.map((link, index) => (
                 <div
                   key={link._id}
-                  className={`py-12 px-4 md:px-[120px] ${
+                  className={`py-12 section-px ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
                 >
@@ -455,7 +455,7 @@ export default function AboutPage() {
                 .map((interview, index) => (
                 <div
                   key={interview._id}
-                  className={`py-12 px-4 md:px-[120px] ${
+                  className={`py-12 section-px ${
                     index % 2 === 0 ? 'bg-white' : 'bg-[#FAFAFA]'
                   }`}
                 >
