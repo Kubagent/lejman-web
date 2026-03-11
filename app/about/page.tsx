@@ -422,8 +422,9 @@ export default function AboutPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group"
+                      style={{ textDecoration: 'none' }}
                     >
-                      <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
+                      <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity" style={{ textDecoration: 'underline' }}>
                         {link.title} →
                       </h3>
                       <p className="font-sans text-sm text-[#666666]">
@@ -472,8 +473,9 @@ export default function AboutPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="group"
+                          style={{ textDecoration: 'none' }}
                         >
-                          <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity">
+                          <h3 className="font-serif text-xl md:text-2xl font-semibold text-black mb-2 group-hover:opacity-70 transition-opacity" style={{ textDecoration: 'underline' }}>
                             {interview.title}{typeLabel} →
                           </h3>
                           <p className="font-sans text-sm text-[#666666]">
