@@ -143,7 +143,7 @@ export default function ArtworkDetail({
     <>
       <article className="min-h-screen bg-white">
         {/* Back button */}
-        <div className="py-4" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
+        <div className="detail-px py-4">
           <Link
             href="/works"
             className="inline-flex items-center gap-1 font-body text-xs text-dark-gray hover:text-black transition-colors whitespace-nowrap"
@@ -279,7 +279,7 @@ export default function ArtworkDetail({
         )}
 
         {/* Metadata section */}
-        <div className="w-full md:max-w-4xl md:mx-auto py-12 md:py-16" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
+        <div className="detail-px w-full md:max-w-4xl md:mx-auto py-12 md:py-16">
           {/* Title */}
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-black mb-8">
             {title}

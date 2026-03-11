@@ -32,9 +32,7 @@ export const metadata: Metadata = {
  */
 export default function ContactPage() {
   return (
-    <div className="bg-white" style={{
-      paddingLeft: '50px',
-      paddingRight: '50px',
+    <div className="detail-px bg-white" style={{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

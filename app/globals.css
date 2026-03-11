@@ -320,6 +320,19 @@ a:active {
   }
 }
 
+/* Detail/contact pages: 50px desktop, 20px mobile */
+.detail-px {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@media (max-width: 767px) {
+  .detail-px {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
 /* Desktop-only 30px side padding for works/projects grid and filter bars */
 .section-px {
   padding-left: 30px;
