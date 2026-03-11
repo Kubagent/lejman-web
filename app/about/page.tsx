@@ -126,7 +126,7 @@ export default function AboutPage() {
 
       {/* Toggle Buttons */}
       <div className="sticky top-0 z-10 bg-white border-b border-[#E5E5E5]">
-        <div className="px-6 md:px-12 lg:px-24 py-8">
+        <div className="section-px py-8">
           <div className="flex items-stretch gap-4 w-full flex-wrap lg:flex-nowrap">
             {sections.map((section) => (
               <div key={section.id} style={{ flex: '1 1 0', minWidth: '140px', position: 'relative' }}>
