@@ -165,7 +165,7 @@ export default function ProjectDetail({
         {allMedia.length > 0 && currentMedia && (
           <>
             {/* Media Container */}
-            <div className="w-full bg-black flex items-center justify-center mb-4" style={{ height: '85vh' }}>
+            <div className="w-full bg-white flex items-center justify-center mb-4" style={{ height: '85vh' }}>
               {currentMedia.type === 'image' ? (
                 <img
                   src={getImageUrl(currentMedia.data, 1920)}
