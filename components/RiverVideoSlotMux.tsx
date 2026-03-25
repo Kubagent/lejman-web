@@ -138,8 +138,9 @@ export default function RiverVideoSlotMux({
     };
   }, [isFirstVideo, onPlay, video._id]);
 
-  // Get localized title
+  // Get localized title and caption
   const title = video.title[locale] ?? video.title.en ?? 'Untitled';
+  const caption = video.caption?.[locale] ?? video.caption?.en;
 
   // Get Mux playback ID
   const playbackId = video.video?.asset?.playbackId;
@@ -236,7 +237,7 @@ export default function RiverVideoSlotMux({
           style={{
             width: '100%',
             height: '100%',
-            '--media-object-fit': 'contain',
+            '--media-object-fit': isMobile ? 'contain' : 'cover',
             '--media-object-position': 'center',
           } as any}
           onPlay={() => setIsPlaying(true)}
@@ -244,31 +245,54 @@ export default function RiverVideoSlotMux({
         />
       </div>
 
-      {/* More bar — only shown when a link is available */}
-      {video.linkedArtwork?.slug?.current && (
+      {/* Bottom bar — always present */}
+      <div
+        className="bg-white flex items-center"
+        style={{ minHeight: '44px', padding: '0 20px', flexShrink: 0 }}
+      >
+        {/* Caption — left side, truncated to one line */}
         <div
-          className="bg-white flex items-center justify-end"
-          style={{ minHeight: '44px', padding: '0 20px', flexShrink: 0 }}
+          style={{
+            flex: 1,
+            minWidth: 0,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            paddingRight: '16px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '13px',
+            fontWeight: 400,
+            color: '#000000',
+          }}
         >
-          <Link
-            href={`${video.linkedArtwork._type === 'project' ? '/projects' : '/works'}/${video.linkedArtwork.slug.current}`}
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '13px',
-              fontWeight: 400,
-              color: '#000000',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              minHeight: '44px',
-              padding: '0 4px',
-            }}
-            aria-label={`More about ${title} - view artwork details`}
-          >
-            More →
-          </Link>
+          {caption || ''}
         </div>
-      )}
+
+        {/* More button — right side, space always reserved */}
+        <div style={{ flexShrink: 0 }}>
+          {video.linkedArtwork?.slug?.current ? (
+            <Link
+              href={`${video.linkedArtwork._type === 'project' ? '/projects' : '/works'}/${video.linkedArtwork.slug.current}`}
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '13px',
+                fontWeight: 400,
+                color: '#000000',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                minHeight: '44px',
+                padding: '0 4px',
+              }}
+              aria-label={`More about ${title} - view artwork details`}
+            >
+              More →
+            </Link>
+          ) : (
+            <span style={{ display: 'inline-block', minHeight: '44px', padding: '0 4px', width: '51px' }} />
+          )}
+        </div>
+      </div>
     </article>
   );
 }

@@ -463,9 +463,10 @@ export default function AboutPage() {
                     {(() => {
                       const href = interview.url
                         ?? interview.pdfFile?.asset?.url
-                        ?? interview.videoFile?.asset?.url;
+                        ?? interview.videoFile?.asset?.url
+                        ?? interview.audioFile?.asset?.url;
                       const typeLabel = !interview.url
-                        ? interview.pdfFile?.asset?.url ? ' (PDF)' : interview.videoFile?.asset?.url ? ' (Video)' : ''
+                        ? interview.pdfFile?.asset?.url ? ' (PDF)' : interview.videoFile?.asset?.url ? ' (Video)' : interview.audioFile?.asset?.url ? ' (Audio)' : ''
                         : '';
                       return href ? (
                         <a

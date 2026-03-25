@@ -36,6 +36,7 @@ export interface RiverVideo {
   videoFile: SanityFileAsset;
   posterImage: SanityImageAsset;
   description?: LocalizedText;
+  caption?: LocalizedText;
   year?: number;
   linkedArtwork?: {
     slug: {

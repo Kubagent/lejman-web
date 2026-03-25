@@ -8,6 +8,7 @@ export interface Interview {
   url?: string;
   pdfFile?: { asset?: { url: string } };
   videoFile?: { asset?: { url: string } };
+  audioFile?: { asset?: { url: string } };
   order: number;
 }
 
@@ -26,6 +27,7 @@ export async function getInterviews(): Promise<Interview[]> {
       url,
       pdfFile { asset->{ url } },
       videoFile { asset->{ url } },
+      audioFile { asset->{ url } },
       order
     }`;
 

@@ -6,8 +6,8 @@ export default defineType({
   type: 'document',
   validation: (Rule) =>
     Rule.custom((doc: any) => {
-      if (!doc?.url && !doc?.pdfFile?.asset && !doc?.videoFile?.asset) {
-        return 'Please provide at least one of: URL, PDF file, or video file';
+      if (!doc?.url && !doc?.pdfFile?.asset && !doc?.videoFile?.asset && !doc?.audioFile?.asset) {
+        return 'Please provide at least one of: URL, PDF file, video file, or audio file';
       }
       return true;
     }),
@@ -51,6 +51,13 @@ export default defineType({
       type: 'file',
       description: 'Upload an MP4 video of the interview',
       options: { accept: 'video/mp4,video/*' },
+    }),
+    defineField({
+      name: 'audioFile',
+      title: 'Audio File (MP3)',
+      type: 'file',
+      description: 'Upload an MP3 audio of the interview',
+      options: { accept: 'audio/mpeg,.mp3' },
     }),
     defineField({
       name: 'order',

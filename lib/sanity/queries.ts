@@ -35,6 +35,7 @@ export const riverVideosQuery = groq`
     },
     posterImage,
     description,
+    caption,
     year,
     linkedArtwork-> {
       _type,

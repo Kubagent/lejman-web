@@ -50,6 +50,17 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'caption',
+      title: 'Caption (one-line)',
+      type: 'object',
+      description: 'Short single-line text shown beneath the video. Max 120 characters. Designed for desktop — truncated with … on mobile.',
+      fields: [
+        { name: 'en', title: 'English', type: 'string', validation: (Rule: any) => Rule.max(120) },
+        { name: 'de', title: 'German', type: 'string', validation: (Rule: any) => Rule.max(120) },
+        { name: 'pl', title: 'Polish', type: 'string', validation: (Rule: any) => Rule.max(120) },
+      ],
+    }),
+    defineField({
       name: 'year',
       title: 'Year',
       type: 'number',

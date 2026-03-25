@@ -171,17 +171,16 @@ export default function ArtworkDetail({
         {allMedia.length > 0 && currentMedia && (
           <>
             {/* Media Container */}
-            <div className="w-full bg-black flex items-center justify-center mb-4" style={{ maxHeight: '85vh' }}>
+            <div className="w-full bg-black flex items-center justify-center mb-4" style={{ height: '85vh' }}>
               {currentMedia.type === 'image' ? (
                 <img
                   src={getImageUrl(currentMedia.data, 1920)}
                   alt={`${title} by Dominik Lejman, ${yearDisplay}`}
                   className="w-full h-full object-contain cursor-pointer"
-                  style={{ maxHeight: '85vh' }}
                   onClick={handleImageClick}
                 />
               ) : (
-                <div className="w-full" style={{ maxHeight: '85vh' }}>
+                <div className="w-full" style={{ height: '100%' }}>
                   {/* Handle Mux video */}
                   {currentMedia.data._type === 'mux.video' && currentMedia.data.asset?.playbackId ? (
                     <MuxPlayer
@@ -192,9 +191,10 @@ export default function ArtworkDetail({
                       poster={artwork.mainImage ? getImageUrl(artwork.mainImage, 1920) : undefined}
                       style={{
                         width: '100%',
-                        maxHeight: '85vh',
+                        height: '100%',
                         '--media-object-fit': 'contain',
                         '--media-object-position': 'center',
+                        '--bottom-gradient': 'none',
                       } as any}
                     />
                   ) : currentMedia.data._type === 'file' && currentMedia.data.asset?.url ? (
@@ -203,8 +203,7 @@ export default function ArtworkDetail({
                       poster={artwork.mainImage ? getImageUrl(artwork.mainImage, 1920) : undefined}
                       controls
                       playsInline
-                      className="w-full h-auto"
-                      style={{ maxHeight: '85vh' }}
+                      className="w-full h-full"
                       preload="metadata"
                     >
                       Your browser does not support the video tag.
