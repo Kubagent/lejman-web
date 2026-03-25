@@ -187,7 +187,7 @@ export default function ProjectDetail({
                         height: '100%',
                         '--media-object-fit': 'contain',
                         '--media-object-position': 'center',
-                        '--bottom-gradient': 'none',
+                        '--gradient-steps': 'transparent',
                       } as any}
                     />
                   ) : currentMedia.data._type === 'file' && currentMedia.data.asset?.url ? (
